@@ -10,6 +10,7 @@ import {
 import { KanaBlock } from '../components/KanaBlock';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
+import { Audio } from 'expo';
 
 export default class KanaGridScreen extends React.Component {
   static navigationOptions = {
@@ -53,7 +54,19 @@ export default class KanaGridScreen extends React.Component {
       gojuonSelectedCount: gojuonSelectedCount
     });
   }
+  playAudio = async (kanaKey) => {
+    const soundObject = new Audio.Sound();
+
+    try {
+      await soundObject.loadAsync(Kana.KanaData[kanaKey].audio);
+      await soundObject.playAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  }
   handleKanaPress = (kanaItem) => {
+    this.playAudio(kanaItem.kana);
+
     var gojuonSelectedCount = this.state.gojuonSelectedCount;
     if (Kana.KanaGojuon.includes(kanaItem.kana)) {
       kanaItem.selected ? gojuonSelectedCount-- : gojuonSelectedCount++;

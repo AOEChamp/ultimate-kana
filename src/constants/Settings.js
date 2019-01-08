@@ -3,6 +3,8 @@ import React from "react";
 export const QuizSettings = {
     enableRomajiSelectionDrills: true,
     enableKanaSelectionDrills: false,
+    audioOnQuizDisplay: false,
+    audioOnQuizAnswer: true,
 }
 
 // export const Settings = React.createContext();

@@ -28,6 +28,14 @@ export default class SettingsScreen extends React.Component {
     QuizSettings.enableRomajiSelectionDrills = !QuizSettings.enableKanaSelectionDrills ? true : QuizSettings.enableRomajiSelectionDrills;
     this.setState({ QuizSettings });
   }
+  toggleAudioDisplay = () => {
+    QuizSettings.audioOnQuizDisplay = !QuizSettings.audioOnQuizDisplay;
+    this.setState({ QuizSettings });
+  }
+  toggleAudioAnswer = () => {
+    QuizSettings.audioOnQuizAnswer = !QuizSettings.audioOnQuizAnswer;
+    this.setState({ QuizSettings });
+  }
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
@@ -36,7 +44,8 @@ export default class SettingsScreen extends React.Component {
       <ScrollView style={styles.container}>
         <TextSwitch value={this.state.QuizSettings.enableRomajiSelectionDrills} onValueChange={this.toggleRomajiDrill} style={styles.switch}>Enable Romaji selection drills</TextSwitch>
         <TextSwitch value={this.state.QuizSettings.enableKanaSelectionDrills} onValueChange={this.toggleKanaDrill} style={styles.switch}>Enable Kana selection drills</TextSwitch>
-        {/* <TextSwitch value={false}>Enable audio only drills</TextSwitch> */}
+        <TextSwitch value={this.state.QuizSettings.audioOnQuizAnswer} onValueChange={this.toggleAudioAnswer} style={styles.switch}>Play audio on selection</TextSwitch>
+        <TextSwitch value={this.state.QuizSettings.audioOnQuizDisplay} onValueChange={this.toggleAudioDisplay} style={styles.switch}>Play audio on drill</TextSwitch>
       </ScrollView>
     );
   }

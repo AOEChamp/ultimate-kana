@@ -9,6 +9,7 @@ import { KanaBlock } from '../components/KanaBlock';
 import { KanaText } from '../components/KanaText';
 import * as Kana from '../constants/Kana';
 import { QuizSettings } from '../constants/Settings';
+import { Audio } from 'expo';
 
 export default class QuizScreen extends React.Component {
     static navigationOptions = {
@@ -31,6 +32,16 @@ export default class QuizScreen extends React.Component {
             this.setState({ quizOptions: quizOptions });
         }
     }
+    playAudio = async (kanaData) => {
+        const soundObject = new Audio.Sound();
+
+        try {
+            await soundObject.loadAsync(kanaData.audio);
+            await soundObject.playAsync();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     getNewQuizItem = () => {
         const currentQuizItem = Kana.KanaData[this.kanaSet[Math.floor(Math.random() * this.kanaSet.length)]];
         var quizOptions = new Array(this.kanaSet.length >= 6 ? 6 : this.kanaSet.length);
@@ -45,6 +56,11 @@ export default class QuizScreen extends React.Component {
                 }
             }
         }
+        
+        if (QuizSettings.audioOnQuizDisplay) {
+            this.playAudio(currentQuizItem);
+        }
+
         var useKanaSelection = QuizSettings.enableKanaSelectionDrills;
         if (useKanaSelection && QuizSettings.enableRomajiSelectionDrills) {
             useKanaSelection = Math.random() >= 0.5;
