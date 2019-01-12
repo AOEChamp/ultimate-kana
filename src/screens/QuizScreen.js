@@ -18,15 +18,40 @@ export default class QuizScreen extends React.Component {
     constructor(props) {
         super(props);
 
-        this.kanaSet = this.props.navigation.state.params.kanaSet;
+        this.fullQuizPool = _.cloneDeep(this.props.navigation.state.params.kanaSet);
+        this.resetQuizPool();
         this.state = this.getNewQuizItem();
     }
+    resetQuizPool = () => {
+        this.currentQuizPool = _.cloneDeep(this.fullQuizPool);
+    }
+    pickQuizItemFromPool = () => {
+        if (this.currentQuizPool.length == 0) {
+            this.resetQuizPool();
+        }
+        const idx = Math.floor(Math.random() * this.currentQuizPool.length);
+        const currentQuizItem = Kana.KanaData[this.currentQuizPool.splice(idx, 1)];
+        return currentQuizItem;
+    }
     handleAnswerSelected = (kanaData) => {
+        if (this.state.lockUntilNextQuiz) {
+            return;
+        }
+
         var quizOptions = this.state.quizOptions;
         var idx = quizOptions.indexOf(kanaData);
 
+        if (QuizSettings.audioOnQuizAnswer) {
+            this.playAudio(kanaData);
+        }
+
         if (kanaData.kana === this.state.currentQuizItem.kana) {
-            this.showNewQuizItem();
+            quizOptions[idx].success = true;
+            this.setState({
+                quizOptions: quizOptions,
+                lockUntilNextQuiz: true
+            });
+            setTimeout(() => this.showNewQuizItem(), 1000);
         } else if (idx != -1) {
             quizOptions[idx].fail = true;
             this.setState({ quizOptions: quizOptions });
@@ -43,12 +68,13 @@ export default class QuizScreen extends React.Component {
         }
     }
     getNewQuizItem = () => {
-        const currentQuizItem = Kana.KanaData[this.kanaSet[Math.floor(Math.random() * this.kanaSet.length)]];
-        var quizOptions = new Array(this.kanaSet.length >= 6 ? 6 : this.kanaSet.length);
+        const currentQuizItem = this.pickQuizItemFromPool();
+
+        var quizOptions = new Array(this.fullQuizPool.length >= 6 ? 6 : this.fullQuizPool.length);
         quizOptions[Math.floor(Math.random() * quizOptions.length)] = currentQuizItem;
         for (var i = 0; i < quizOptions.length; i++) {
             while (quizOptions[i] !== currentQuizItem) {
-                const randomItem = Kana.KanaData[this.kanaSet[Math.floor(Math.random() * this.kanaSet.length)]];
+                const randomItem = Kana.KanaData[this.fullQuizPool[Math.floor(Math.random() * this.fullQuizPool.length)]];
                 if (randomItem != currentQuizItem
                     && !quizOptions.includes(randomItem)) {
                     quizOptions[i] = randomItem;
@@ -56,7 +82,7 @@ export default class QuizScreen extends React.Component {
                 }
             }
         }
-        
+
         if (QuizSettings.audioOnQuizDisplay) {
             this.playAudio(currentQuizItem);
         }
@@ -68,7 +94,8 @@ export default class QuizScreen extends React.Component {
         return {
             currentQuizItem: currentQuizItem,
             quizOptions: _.cloneDeep(quizOptions),
-            useKanaSelection: useKanaSelection
+            useKanaSelection: useKanaSelection,
+            lockUntilNextQuiz: false
         };
     }
     showNewQuizItem = () => {
@@ -95,7 +122,7 @@ const KanaQuizRow = props => (
     <View style={styles.kanaRow}>
         {
             props.options.map((kanaData, i) =>
-                <KanaBlock onPress={props.onKanaPress.bind(this, kanaData)} selectColor="#f00" key={i} selected={kanaData.fail}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
+                <KanaBlock onPress={props.onKanaPress.bind(this, kanaData)} selectColor={kanaData.fail ? "#f00" : "#0f0"} key={i} selected={kanaData.fail || kanaData.success}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
             )
         }
     </View>
