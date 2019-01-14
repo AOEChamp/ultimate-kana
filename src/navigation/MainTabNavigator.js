@@ -29,16 +29,16 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const KanaGridStack = createStackNavigator({
+  KanaGrid: KanaGridScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+KanaGridStack.navigationOptions = {
+  tabBarLabel: 'Grid',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-grid' : 'md-grid'}
     />
   ),
 };
@@ -59,6 +59,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  KanaGridStack,
   SettingsStack,
 });

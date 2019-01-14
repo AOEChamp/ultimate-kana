@@ -41,12 +41,12 @@ export default class HomeScreen extends React.Component {
 
             <Button
               title="View Hiragana"
-              onPress={() => this.props.navigation.navigate('KanaGrid', KanaGridTypes.Hiragana)}
+              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana, showBottomPanel: true })}
             />
 
             <Button
               title="View Katakana"
-              onPress={() => this.props.navigation.navigate('KanaGrid', KanaGridTypes.Katakana)}
+              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana, showBottomPanel: true })}
             />
 
             <Text style={styles.getStartedText}>

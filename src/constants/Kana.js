@@ -1,5 +1,5 @@
 import React from 'react';
- 
+
 export const KanaData = {
     // Hiragana
     'あ': { kana: 'あ', eng: 'a', audio: require('../assets/audio/set1/a.mp3') },
@@ -48,6 +48,31 @@ export const KanaData = {
     'わ': { kana: 'わ', eng: 'wa', audio: require('../assets/audio/set1/wa.mp3') },
     'を': { kana: 'を', eng: 'wo', audio: require('../assets/audio/set1/wo.mp3') },
     'ん': { kana: 'ん', eng: 'n', audio: require('../assets/audio/set1/n.mp3') },
+    'が': { kana: 'が', eng: 'ga', audio: require('../assets/audio/set1/ga.mp3') },
+    'ぎ': { kana: 'ぎ', eng: 'gi', audio: require('../assets/audio/set1/gi.mp3') },
+    'ぐ': { kana: 'ぐ', eng: 'gu', audio: require('../assets/audio/set1/gu.mp3') },
+    'げ': { kana: 'げ', eng: 'ge', audio: require('../assets/audio/set1/ge.mp3') },
+    'ご': { kana: 'ご', eng: 'go', audio: require('../assets/audio/set1/go.mp3') },
+    'ざ': { kana: 'ざ', eng: 'za', audio: require('../assets/audio/set1/za.mp3') },
+    'じ': { kana: 'じ', eng: 'ji', audio: require('../assets/audio/set1/ji.mp3') },
+    'ず': { kana: 'ず', eng: 'zu', audio: require('../assets/audio/set1/zu.mp3') },
+    'ぜ': { kana: 'ぜ', eng: 'ze', audio: require('../assets/audio/set1/ze.mp3') },
+    'ぞ': { kana: 'ぞ', eng: 'zo', audio: require('../assets/audio/set1/zo.mp3') },
+    'だ': { kana: 'だ', eng: 'da', audio: require('../assets/audio/set1/da.mp3') },
+    'ぢ': { kana: 'ぢ', eng: 'ji', audio: require('../assets/audio/set1/ji.mp3') },
+    'づ': { kana: 'づ', eng: 'zu', audio: require('../assets/audio/set1/zu.mp3') },
+    'で': { kana: 'で', eng: 'de', audio: require('../assets/audio/set1/de.mp3') },
+    'ど': { kana: 'ど', eng: 'do', audio: require('../assets/audio/set1/do.mp3') },
+    'ば': { kana: 'ば', eng: 'ba', audio: require('../assets/audio/set1/ba.mp3') },
+    'び': { kana: 'び', eng: 'bi', audio: require('../assets/audio/set1/bi.mp3') },
+    'ぶ': { kana: 'ぶ', eng: 'bu', audio: require('../assets/audio/set1/bu.mp3') },
+    'べ': { kana: 'べ', eng: 'be', audio: require('../assets/audio/set1/be.mp3') },
+    'ぼ': { kana: 'ぼ', eng: 'bo', audio: require('../assets/audio/set1/bo.mp3') },
+    'ぱ': { kana: 'ぱ', eng: 'pa', audio: require('../assets/audio/set1/pa.mp3') },
+    'ぴ': { kana: 'ぴ', eng: 'pi', audio: require('../assets/audio/set1/pi.mp3') },
+    'ぷ': { kana: 'ぷ', eng: 'pu', audio: require('../assets/audio/set1/pu.mp3') },
+    'ぺ': { kana: 'ぺ', eng: 'pe', audio: require('../assets/audio/set1/pe.mp3') },
+    'ぽ': { kana: 'ぽ', eng: 'po', audio: require('../assets/audio/set1/po.mp3') },
     'きゃ': { kana: 'きゃ', eng: 'kya', audio: require('../assets/audio/set1/kya.mp3') },
     'きゅ': { kana: 'きゅ', eng: 'kyu', audio: require('../assets/audio/set1/kyu.mp3') },
     'きょ': { kana: 'きょ', eng: 'kyo', audio: require('../assets/audio/set1/kyo.mp3') },
@@ -153,6 +178,31 @@ export const KanaData = {
     'ワ': { kana: 'ワ', eng: 'wa', audio: require('../assets/audio/set1/wa.mp3') },
     'ヲ': { kana: 'ヲ', eng: 'wo', audio: require('../assets/audio/set1/wo.mp3') },
     'ン': { kana: 'ン', eng: 'n', audio: require('../assets/audio/set1/n.mp3') },
+    'ガ': { kana: 'ガ', eng: 'ga', audio: require('../assets/audio/set1/ga.mp3') },
+    'ギ': { kana: 'ギ', eng: 'gi', audio: require('../assets/audio/set1/gi.mp3') },
+    'グ': { kana: 'グ', eng: 'gu', audio: require('../assets/audio/set1/gu.mp3') },
+    'ゲ': { kana: 'ゲ', eng: 'ge', audio: require('../assets/audio/set1/ge.mp3') },
+    'ゴ': { kana: 'ゴ', eng: 'go', audio: require('../assets/audio/set1/go.mp3') },
+    'ザ': { kana: 'ザ', eng: 'za', audio: require('../assets/audio/set1/za.mp3') },
+    'ジ': { kana: 'ジ', eng: 'ji', audio: require('../assets/audio/set1/ji.mp3') },
+    'ズ': { kana: 'ズ', eng: 'zu', audio: require('../assets/audio/set1/zu.mp3') },
+    'ゼ': { kana: 'ゼ', eng: 'ze', audio: require('../assets/audio/set1/ze.mp3') },
+    'ゾ': { kana: 'ゾ', eng: 'zo', audio: require('../assets/audio/set1/zo.mp3') },
+    'ダ': { kana: 'ダ', eng: 'da', audio: require('../assets/audio/set1/da.mp3') },
+    'ヂ': { kana: 'ヂ', eng: 'ji', audio: require('../assets/audio/set1/ji.mp3') },
+    'ヅ': { kana: 'ヅ', eng: 'zu', audio: require('../assets/audio/set1/zu.mp3') },
+    'デ': { kana: 'デ', eng: 'de', audio: require('../assets/audio/set1/de.mp3') },
+    'ド': { kana: 'ド', eng: 'do', audio: require('../assets/audio/set1/do.mp3') },
+    'バ': { kana: 'バ', eng: 'ba', audio: require('../assets/audio/set1/ba.mp3') },
+    'ビ': { kana: 'ビ', eng: 'bi', audio: require('../assets/audio/set1/bi.mp3') },
+    'ブ': { kana: 'ブ', eng: 'bu', audio: require('../assets/audio/set1/bu.mp3') },
+    'ベ': { kana: 'ベ', eng: 'be', audio: require('../assets/audio/set1/be.mp3') },
+    'ボ': { kana: 'ボ', eng: 'bo', audio: require('../assets/audio/set1/bo.mp3') },
+    'パ': { kana: 'パ', eng: 'pa', audio: require('../assets/audio/set1/pa.mp3') },
+    'ピ': { kana: 'ピ', eng: 'pi', audio: require('../assets/audio/set1/pi.mp3') },
+    'プ': { kana: 'プ', eng: 'pu', audio: require('../assets/audio/set1/pu.mp3') },
+    'ペ': { kana: 'ペ', eng: 'pe', audio: require('../assets/audio/set1/pe.mp3') },
+    'ポ': { kana: 'ポ', eng: 'po', audio: require('../assets/audio/set1/po.mp3') },
     'キャ': { kana: 'キャ', eng: 'kya', audio: require('../assets/audio/set1/kya.mp3') },
     'キュ': { kana: 'キュ', eng: 'kyu', audio: require('../assets/audio/set1/kyu.mp3') },
     'キョ': { kana: 'キョ', eng: 'kyo', audio: require('../assets/audio/set1/kyo.mp3') },
@@ -204,7 +254,23 @@ export const HiraganaGridLayout = [
     ['や', '', 'ゆ', '', 'よ'],
     ['ら', 'り', 'る', 'れ', 'ろ'],
     ['わ', '', '', '', 'を'],
-    ['ん', '', '', '', '']
+    ['ん', '', '', '', ''],
+    ['が', 'ぎ', 'ぐ', 'げ', 'ご'],
+    ['ざ', 'じ', 'ず', 'ぜ', 'ぞ'],
+    ['だ', 'ぢ', 'づ', 'で', 'ど'],
+    ['ば', 'び', 'ぶ', 'べ', 'ぼ'],
+    ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'],
+    ['きゃ', '', 'きゅ', '', 'きょ'],
+    ['ぎゃ', '', 'ぎゅ', '', 'ぎょ'],
+    ['しゃ', '', 'しゅ', '', 'しょ'],
+    ['じゃ', '', 'じゅ', '', 'じょ'],
+    ['ちゃ', '', 'ちゅ', '', 'ちょ'],
+    ['にゃ', '', 'にゅ', '', 'にょ'],
+    ['ひゃ', '', 'ひゅ', '', 'ひょ'],
+    ['びゃ', '', 'びゅ', '', 'びょ'],
+    ['ぴゃ', '', 'ぴゅ', '', 'ぴょ'],
+    ['みゃ', '', 'みゅ', '', 'みょ'],
+    ['りゃ', '', 'りゅ', '', 'りょ'],
 ];
 
 export const KatakanaGridLayout = [
@@ -218,7 +284,33 @@ export const KatakanaGridLayout = [
     ['ヤ', '', 'ユ', '', 'ヨ'],
     ['ラ', 'リ', 'ル', 'レ', 'ロ'],
     ['ワ', '', '', '', 'ヲ'],
-    ['ン', '', '', '', '']
+    ['ン', '', '', '', ''],
+    ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ'],
+    ['ザ', 'ジ', 'ズ', 'ゼ', 'ゾ'],
+    ['ダ', 'ヂ', 'ヅ', 'デ', 'ド'],
+    ['バ', 'ビ', 'ブ', 'ベ', 'ボ'],
+    ['パ', 'ピ', 'プ', 'ペ', 'ポ'],
+    ['キャ', '', 'キュ', '', 'キョ'],
+    ['ギャ', '', 'ギュ', '', 'ギョ'],
+    ['シャ', '', 'シュ', '', 'ショ'],
+    ['ジャ', '', 'ジュ', '', 'ジョ'],
+    ['チャ', '', 'チュ', '', 'チョ'],
+    ['ニャ', '', 'ニュ', '', 'ニョ'],
+    ['ヒャ', '', 'ヒュ', '', 'ヒョ'],
+    ['ビャ', '', 'ビュ', '', 'ビョ'],
+    ['ピャ', '', 'ピュ', '', 'ピョ'],
+    ['ミャ', '', 'ミュ', '', 'ミョ'],
+    ['リャ', '', 'リュ', '', 'リョ'],
 ];
 
-export const KanaGojuon = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん'];
+export const HiraganaGojuon = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん'];
+
+export const HiraganaDakuten = ['が', 'ぎ', 'ぐ', 'げ', 'ご', 'ざ', 'じ', 'ず', 'ぜ', 'ぞ', 'だ', 'ぢ', 'づ', 'で', 'ど', 'ば', 'び', 'ぶ', 'べ', 'ぼ', 'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'];
+
+export const HiraganaYoon = ['きゃ', 'きゅ', 'きょ', 'ぎゃ', 'ぎゅ', 'ぎょ', 'しゃ', 'しゅ', 'しょ', 'じゃ', 'じゅ', 'じょ', 'ちゃ', 'ちゅ', 'ちょ', 'にゃ', 'にゅ', 'にょ', 'ひゃ', 'ひゅ', 'ひょ', 'びゃ', 'びゅ', 'びょ', 'ぴゃ', 'ぴゅ', 'ぴょ', 'みゃ', 'みゅ', 'みょ', 'りゃ', 'りゅ', 'りょ'];
+
+export const KatakanaGojuon = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', '', 'ユ', '', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'];
+
+export const KatakanaDakuten = ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ', 'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ', 'ダ', 'ヂ', 'ヅ', 'デ', 'ド', 'バ', 'ビ', 'ブ', 'ベ', 'ボ', 'パ', 'ピ', 'プ', 'ペ', 'ポ'];
+
+export const KatakanaYoon = ['キャ', 'キュ', 'キョ', 'ギャ', 'ギュ', 'ギョ', 'シャ', 'シュ', 'ショ', 'ジャ', 'ジュ', 'ジョ', 'チャ', 'チュ', 'チョ', 'ニャ', 'ニュ', 'ニョ', 'ヒャ', 'ヒュ', 'ヒョ', 'ビャ', 'ビュ', 'ビョ', 'ピャ', 'ピュ', 'ピョ', 'ミャ', 'ミュ', 'ミョ', 'リャ', 'リュ', 'リョ'];

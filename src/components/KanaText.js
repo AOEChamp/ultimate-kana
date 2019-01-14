@@ -20,7 +20,9 @@ export class KanaText extends React.Component {
         const isEnglish = /^[a-zA-Z]+$/.test(this.props.children);
         var fontSize = this.state.width;
         if(isEnglish) {
-            fontSize = this.props.children.length == 1 ? this.state.width / 2 : this.state.width / this.props.children.length;
+            fontSize = this.state.width / 2;
+        } else {
+            fontSize = this.props.children.length === 1 ? this.state.width : this.state.width / 2;
         }
         
         return (
