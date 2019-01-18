@@ -9,6 +9,7 @@ import { KanaBlock } from '../components/KanaBlock';
 import { KanaText } from '../components/KanaText';
 import * as Kana from '../constants/Kana';
 import { QuizSettings } from '../constants/Settings';
+import { JapaneseFonts } from '../constants/Fonts';
 import { Audio } from 'expo';
 
 export default class QuizScreen extends React.Component {
@@ -91,11 +92,20 @@ export default class QuizScreen extends React.Component {
         if (useKanaSelection && QuizSettings.enableRomajiSelectionDrills) {
             useKanaSelection = Math.random() >= 0.5;
         }
+
+        var kanaFont = QuizSettings.kanaFont;
+        if (QuizSettings.randomizeKanaFont) {
+            const fontNames = Object.keys(JapaneseFonts);
+            const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
+            kanaFont = fontNames[fontIdx];
+        }
+
         return {
             currentQuizItem: currentQuizItem,
             quizOptions: _.cloneDeep(quizOptions),
             useKanaSelection: useKanaSelection,
-            lockUntilNextQuiz: false
+            lockUntilNextQuiz: false,
+            kanaFont: kanaFont,
         };
     }
     showNewQuizItem = () => {
@@ -106,12 +116,12 @@ export default class QuizScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.displayKanaView}>
                     <View style={styles.tmp}>
-                        <KanaText>{this.state.useKanaSelection ? this.state.currentQuizItem.eng : this.state.currentQuizItem.kana}</KanaText>
+                        <KanaText kanaFont={this.state.kanaFont}>{this.state.useKanaSelection ? this.state.currentQuizItem.eng : this.state.currentQuizItem.kana}</KanaText>
                     </View>
                 </View>
                 <View style={styles.quizOptionsView}>
-                    <KanaQuizRow useKanaSelection={this.state.useKanaSelection} onKanaPress={this.handleAnswerSelected} options={this.state.quizOptions.slice(0, 3)} />
-                    <KanaQuizRow useKanaSelection={this.state.useKanaSelection} onKanaPress={this.handleAnswerSelected} options={this.state.quizOptions.slice(3, 6)} />
+                    <KanaQuizRow kanaFont={this.state.kanaFont} useKanaSelection={this.state.useKanaSelection} onKanaPress={this.handleAnswerSelected} options={this.state.quizOptions.slice(0, 3)} />
+                    <KanaQuizRow kanaFont={this.state.kanaFont} useKanaSelection={this.state.useKanaSelection} onKanaPress={this.handleAnswerSelected} options={this.state.quizOptions.slice(3, 6)} />
                 </View>
             </View>
         )
@@ -122,7 +132,7 @@ const KanaQuizRow = props => (
     <View style={styles.kanaRow}>
         {
             props.options.map((kanaData, i) =>
-                <KanaBlock onPress={props.onKanaPress.bind(this, kanaData)} selectColor={kanaData.fail ? "#f00" : "#0f0"} key={i} selected={kanaData.fail || kanaData.success}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
+                <KanaBlock kanaFont={props.kanaFont} onPress={props.onKanaPress.bind(this, kanaData)} selectColor={kanaData.fail ? "#f00" : "#0f0"} key={i} selected={kanaData.fail || kanaData.success}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
             )
         }
     </View>

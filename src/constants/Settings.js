@@ -5,6 +5,8 @@ export const QuizSettings = {
     enableKanaSelectionDrills: false,
     audioOnQuizDisplay: false,
     audioOnQuizAnswer: true,
+    kanaFont: 'HiraKakuPro',
+    randomizeKanaFont: false,
 }
 
 // export const Settings = React.createContext();

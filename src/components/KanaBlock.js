@@ -18,11 +18,11 @@ export class KanaBlock extends React.Component {
     render() {
         if (this.props.children !== '') {
             return (
-                <TouchableOpacity style={styles.block} onPress={this.props.onPress}>
+                <TouchableOpacity disabled={this.props.disabled} style={styles.block} onPress={this.props.onPress}>
                     <View style={[styles.view, {
                         backgroundColor: this.props.selected ? this.props.selectColor || '#0c4' : '#ccc'
                     }]}>
-                        <KanaText>{this.props.children}</KanaText>
+                        <KanaText kanaFont={this.props.kanaFont}>{this.props.children}</KanaText>
                     </View>
                 </TouchableOpacity>
 
