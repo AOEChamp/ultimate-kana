@@ -160,7 +160,7 @@ const KanaRow = props => (
   <View style={styles.kanaRow}>
     {
       props.row.map((item, i) =>
-        <KanaBlock onPress={props.onKanaPress.bind(this, item)} key={i} selected={item.selected}>{item.kana}</KanaBlock>
+        <KanaBlock style={styles.kanaBlock} fontSize={50} onPress={props.onKanaPress.bind(this, item)} key={i} selected={item.selected}>{item.kana}</KanaBlock>
       )
     }
   </View>
@@ -185,6 +185,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 5,
     marginRight: 5
+  },
+  kanaBlock: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#000',
   },
   tabBarRightView: {
     flex: 1,

@@ -70,8 +70,8 @@ export default class SettingsScreen extends React.Component {
 const FontSelector = props => (
   <View opacity={props.disabled ? 0.5 : 1} style={styles.fontSelector}>
     {
-      Object.keys(JapaneseFonts).map((fontName, i) =>
-        <KanaBlock disabled={props.disabled} onPress={props.onSelected.bind(this, fontName)} key={i} kanaFont={fontName} selected={props.selectedFont === fontName}>きこ</KanaBlock>
+      JapaneseFonts.map((fontName, i) =>
+        <KanaBlock style={styles.kanaBlock} disabled={props.disabled} onPress={props.onSelected.bind(this, fontName)} key={i} kanaFont={fontName} selected={props.selectedFont === fontName}>き</KanaBlock>
       )
     }
   </View>
@@ -92,6 +92,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 5,
     marginRight: 5,
+  },
+  kanaBlock: {
+    aspectRatio: 1,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#000',
   },
   switch: {
     margin: 10

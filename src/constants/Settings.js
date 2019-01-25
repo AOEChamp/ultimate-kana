@@ -5,7 +5,7 @@ export const QuizSettings = {
     enableKanaSelectionDrills: false,
     audioOnQuizDisplay: false,
     audioOnQuizAnswer: true,
-    kanaFont: 'HiraKakuPro',
+    kanaFont: 'System',
     randomizeKanaFont: false,
 }
 

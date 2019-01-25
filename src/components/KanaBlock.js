@@ -18,12 +18,11 @@ export class KanaBlock extends React.Component {
     render() {
         if (this.props.children !== '') {
             return (
-                <TouchableOpacity disabled={this.props.disabled} style={styles.block} onPress={this.props.onPress}>
-                    <View style={[styles.view, {
+                <TouchableOpacity disabled={this.props.disabled} onPress={this.props.onPress}
+                    style={[this.props.style, styles.block, {
                         backgroundColor: this.props.selected ? this.props.selectColor || '#0c4' : '#ccc'
                     }]}>
-                        <KanaText kanaFont={this.props.kanaFont}>{this.props.children}</KanaText>
-                    </View>
+                    <KanaText fontSize={this.props.fontSize} kanaFont={this.props.kanaFont}>{this.props.children}</KanaText>
                 </TouchableOpacity>
 
             );
@@ -38,16 +37,10 @@ export class KanaBlock extends React.Component {
 const styles = StyleSheet.create({
     block: {
         flex: 1,
-        aspectRatio: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 5,
         margin: 5
     },
-    view: {
-        flex: 1,
-        aspectRatio: 1,
-        backgroundColor: '#ccc',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
 });

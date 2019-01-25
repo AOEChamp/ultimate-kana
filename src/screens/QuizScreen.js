@@ -116,7 +116,7 @@ export default class QuizScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.displayKanaView}>
                     <View style={styles.tmp}>
-                        <KanaText kanaFont={this.state.kanaFont}>{this.state.useKanaSelection ? this.state.currentQuizItem.eng : this.state.currentQuizItem.kana}</KanaText>
+                        <KanaText fontSize={100} kanaFont={this.state.kanaFont}>{this.state.useKanaSelection ? this.state.currentQuizItem.eng : this.state.currentQuizItem.kana}</KanaText>
                     </View>
                 </View>
                 <View style={styles.quizOptionsView}>
@@ -132,7 +132,7 @@ const KanaQuizRow = props => (
     <View style={styles.kanaRow}>
         {
             props.options.map((kanaData, i) =>
-                <KanaBlock kanaFont={props.kanaFont} onPress={props.onKanaPress.bind(this, kanaData)} selectColor={kanaData.fail ? "#f00" : "#0f0"} key={i} selected={kanaData.fail || kanaData.success}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
+                <KanaBlock fontSize={60} style={styles.kanaBlock} kanaFont={props.kanaFont} onPress={props.onKanaPress.bind(this, kanaData)} selectColor={kanaData.fail ? "#f00" : "#0f0"} key={i} selected={kanaData.fail || kanaData.success}>{props.useKanaSelection ? kanaData.kana : kanaData.eng}</KanaBlock>
             )
         }
     </View>
@@ -157,12 +157,17 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5
     },
+    kanaBlock: {
+        aspectRatio: 1,
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: '#000',
+    },
     tmp: {
         flex: 1,
         margin: '25%',
     },
     displayKanaView: {
         flex: 1,
-        aspectRatio: 1,
     },
 });
