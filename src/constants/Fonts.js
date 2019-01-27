@@ -2,7 +2,7 @@ import React from 'react';
 import { Asset } from 'expo';
 import * as opentype from 'opentype.js';
 
-export const LoadFonts = {
+export const LoadFonts = __DEV__ ? {} : {
     'HiraKakuPro': require('../assets/fonts/HiraKakuPro-W3.otf'),
     'HiraMinoPro': require('../assets/fonts/HiraMinoPro-W3.otf'),
     'NotoSansCJK': require('../assets/fonts/NotoSansCJKjp-Regular.otf'),
@@ -12,9 +12,11 @@ export const JSFonts = {}
 
 export const JapaneseFonts = [
     'System',
-    'HiraKakuPro',
-    'HiraMinoPro',
-    'NotoSansCJK',
+    ...(__DEV__ ? [] : [
+        'HiraKakuPro',
+        'HiraMinoPro',
+        'NotoSansCJK',
+    ])
 ]
 
 export function loadFontAsync(fontModule) {
