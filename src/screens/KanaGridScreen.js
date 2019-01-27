@@ -11,6 +11,7 @@ import { KanaBlock } from '../components/KanaBlock';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo';
+import { QuizSettings } from '../constants/Settings';
 
 export default class KanaGridScreen extends React.Component {
   static navigationOptions = {
@@ -46,7 +47,8 @@ export default class KanaGridScreen extends React.Component {
     this.state = {
       kanaGridState: kanaGridState,
       gojuonSelectedCount: 0,
-      dakutenSelectedCount: 0
+      dakutenSelectedCount: 0,
+      kanaFont: QuizSettings.kanaFont
     };
   }
   toggleDakuten = () => {
@@ -134,7 +136,7 @@ export default class KanaGridScreen extends React.Component {
       <View style={styles.container}>
         <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
           {
-            this.state.kanaGridState.map((kanaRowLayout, i) => <KanaRow onKanaPress={this.handleKanaPress} key={i} row={kanaRowLayout} />)
+            this.state.kanaGridState.map((kanaRowLayout, i) => <KanaRow kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} key={i} row={kanaRowLayout} />)
           }
         </ScrollView>
 
@@ -160,7 +162,7 @@ const KanaRow = props => (
   <View style={styles.kanaRow}>
     {
       props.row.map((item, i) =>
-        <KanaBlock style={styles.kanaBlock} fontSize={50} onPress={props.onKanaPress.bind(this, item)} key={i} selected={item.selected}>{item.kana}</KanaBlock>
+        <KanaBlock style={styles.kanaBlock} kanaFont={props.kanaFont} fontSize={50} onPress={props.onKanaPress.bind(this, item)} key={i} selected={item.selected}>{item.kana}</KanaBlock>
       )
     }
   </View>
