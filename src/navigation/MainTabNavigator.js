@@ -10,12 +10,14 @@ import KanaReferenceGridScreen from '../screens/KanaReferenceGridScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QuizScreen from '../screens/QuizScreen';
 import LessonSelectScreen from '../screens/LessonSelectScreen';
+import LessonScreen from '../screens/LessonScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   KanaGrid: KanaGridScreen,
   QuizScreen: QuizScreen,
   LessonSelectScreen: LessonSelectScreen,
+  LessonScreen: LessonScreen
 });
 
 HomeStack.navigationOptions = {

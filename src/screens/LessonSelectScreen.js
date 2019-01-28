@@ -9,17 +9,20 @@ import { RoundedButton } from '../components/RoundedButton';
 import { Icon } from 'expo';
 import { HiraganaLessons } from '../constants/Kana';
 
-export default class HomeScreen extends React.Component {
+export default class LessonSelectScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
+    navigateToLesson = (index) => {
+        this.props.navigation.navigate('LessonScreen', { lesson: HiraganaLessons[index] });
+    }
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.titleText}>Hiragana Lessons</Text>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                     {HiraganaLessons.map(({ title, subtitle }, i) =>
-                        <LessonButton key={i} text={title} subtext={subtitle} />
+                        <LessonButton onClick={this.navigateToLesson.bind(this, i)} key={i} text={title} subtext={subtitle} />
                     )}
                 </ScrollView>
             </View>
