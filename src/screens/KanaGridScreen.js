@@ -7,7 +7,7 @@ import {
   Button,
 } from 'react-native';
 
-import { KanaBlock } from '../components/KanaBlock';
+import { KanaGrid } from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo';
@@ -22,7 +22,6 @@ export default class KanaGridScreen extends React.Component {
 
     this.props.navigation.state.params = this.props.navigation.state.params || {};
     this.kanaGridType = this.props.navigation.state.params.gridType || Kana.KanaGridTypes.Hiragana;
-    this.showBottomPanel = this.props.navigation.state.params.showBottomPanel || false;
 
     var gridLayout;
 
@@ -106,8 +105,6 @@ export default class KanaGridScreen extends React.Component {
   handleKanaPress = (kanaItem) => {
     this.playAudio(kanaItem.kana);
 
-    if (!this.showBottomPanel) return;
-
     var gojuonSelectedCount = this.state.gojuonSelectedCount;
     if (this.gojuonList.includes(kanaItem.kana)) {
       kanaItem.selected ? gojuonSelectedCount-- : gojuonSelectedCount++;
@@ -135,63 +132,35 @@ export default class KanaGridScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
-          {
-            this.state.kanaGridState.map((kanaRowLayout, i) => <KanaRow kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} key={i} row={kanaRowLayout} />)
-          }
+          <KanaGrid gridState={this.state.kanaGridState} kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} />
         </ScrollView>
 
-        {this.showBottomPanel &&
-          <View style={styles.tabBarInfoContainer}>
-            <View>
-              <TextSwitch value={this.state.gojuonSelectedCount === this.gojuonList.length} onValueChange={this.toggleGojuon}>All Gojūon ({this.gojuonList.length})</TextSwitch>
-              <TextSwitch value={this.state.dakutenSelectedCount === this.dakutenList.length} onValueChange={this.toggleDakuten}>All (Han)Dakuten ({this.dakutenList.length})</TextSwitch>
-              <TextSwitch value={this.state.yoonSelectedCount === this.yoonList.length} onValueChange={this.toggleYoon}>All Yōon ({this.yoonList.length})</TextSwitch>
-            </View>
-            <View style={styles.tabBarRightView}>
-              <Button title="Start!" onPress={this.navigateToQuiz} />
-            </View>
+        <View style={styles.tabBarInfoContainer}>
+          <View>
+            <TextSwitch value={this.state.gojuonSelectedCount === this.gojuonList.length} onValueChange={this.toggleGojuon}>All Gojūon ({this.gojuonList.length})</TextSwitch>
+            <TextSwitch value={this.state.dakutenSelectedCount === this.dakutenList.length} onValueChange={this.toggleDakuten}>All (Han)Dakuten ({this.dakutenList.length})</TextSwitch>
+            <TextSwitch value={this.state.yoonSelectedCount === this.yoonList.length} onValueChange={this.toggleYoon}>All Yōon ({this.yoonList.length})</TextSwitch>
           </View>
-        }
+          <View style={styles.tabBarRightView}>
+            <Button title="Start!" onPress={this.navigateToQuiz} />
+          </View>
+        </View>
       </View>
     );
   }
-
 }
-
-const KanaRow = props => (
-  <View style={styles.kanaRow}>
-    {
-      props.row.map((item, i) =>
-        <KanaBlock style={styles.kanaBlock} kanaFont={props.kanaFont} fontSize={50} onPress={props.onKanaPress.bind(this, item)} key={i} selected={item.selected}>{item.kana}</KanaBlock>
-      )
-    }
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
     backgroundColor: '#fff',
   },
   kanaGridContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    // marginBottom: 130
   },
   contentContainer: {
     paddingTop: 30,
-  },
-  kanaRow: {
-    flex: 1,
-    flexDirection: 'row',
-    marginLeft: 5,
-    marginRight: 5
-  },
-  kanaBlock: {
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: '#000',
   },
   tabBarRightView: {
     flex: 1,
@@ -200,10 +169,6 @@ const styles = StyleSheet.create({
   },
   tabBarInfoContainer: {
     height: 130,
-    // position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -215,7 +180,6 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
-    // flex: 1,
     flexDirection: 'row',
     backgroundColor: '#fbfbfb',
     padding: 10,

@@ -12,12 +12,16 @@ import {
 import { WebBrowser } from 'expo';
 
 import { KanaGridTypes } from '../constants/Kana';
-import { MonoText } from '../components/StyledText';
+import { RoundedButton } from '../components/RoundedButton';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  navigateToLessonSelect = () => {
+    this.props.navigation.navigate('LessonSelectScreen');
+  }
 
   render() {
     return (
@@ -33,20 +37,23 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-
+          <View style={styles.contentContainer}>
+            <RoundedButton onClick={this.navigateToLessonSelect}><Text style={styles.roundedButtonTextStyle}>Hiragana</Text></RoundedButton>
+          </View>
           <View style={styles.getStartedContainer}>
+
             {this._maybeRenderDevelopmentModeWarning()}
 
             <Text style={styles.getStartedText}>Get started by viewing the Kana Grid!</Text>
 
             <Button
               title="View Hiragana"
-              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana, showBottomPanel: true })}
+              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana })}
             />
 
             <Button
               title="View Katakana"
-              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana, showBottomPanel: true })}
+              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana })}
             />
 
             <Text style={styles.getStartedText}>
@@ -93,6 +100,15 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  roundedButtonTextStyle: {
+    fontSize: 24,
+    color: '#fff',
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -106,6 +122,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 30,
+    marginLeft: 20,
+    marginRight: 20,
   },
   welcomeContainer: {
     alignItems: 'center',
