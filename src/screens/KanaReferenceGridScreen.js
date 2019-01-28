@@ -39,7 +39,7 @@ export default class KanaReferenceGridScreen extends React.Component {
                 break;
         }
         let kanaGridState = gridLayout.map(row => row.map(kana => (
-            { kana: kana, selected: false }
+            { kana: kana, selected: false, eng: kana === '' ? '' : Kana.KanaData[kana].eng }
         )));
         return kanaGridState;
     }

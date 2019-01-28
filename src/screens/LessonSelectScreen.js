@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-    Image,
-    Platform,
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
-    Button
 } from 'react-native';
 import { RoundedButton } from '../components/RoundedButton';
 import { Icon } from 'expo';

@@ -41,8 +41,9 @@ export default class KanaGridScreen extends React.Component {
     }
 
     var kanaGridState = gridLayout.map(row => row.map(kana => (
-      { kana: kana, selected: false }
+      { kana: kana, selected: false, eng: kana === '' ? '' : Kana.KanaData[kana].eng }
     )));
+
     this.state = {
       kanaGridState: kanaGridState,
       gojuonSelectedCount: 0,
@@ -53,12 +54,8 @@ export default class KanaGridScreen extends React.Component {
   toggleDakuten = () => {
     var selected = !(this.state.dakutenSelectedCount === this.dakutenList.length);
     var dakutenSelectedCount = selected ? this.dakutenList.length : 0;
-    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
-      {
-        kana: item.kana,
-        selected: this.dakutenList.includes(item.kana) ? selected : item.selected
-      }
-    )));
+    var kanaGridState = this.selectGridWithList(this.dakutenList, selected);
+
     this.setState({
       kanaGridState: kanaGridState,
       dakutenSelectedCount: dakutenSelectedCount
@@ -67,12 +64,8 @@ export default class KanaGridScreen extends React.Component {
   toggleGojuon = () => {
     var selected = !(this.state.gojuonSelectedCount === this.gojuonList.length);
     var gojuonSelectedCount = selected ? this.gojuonList.length : 0;
-    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
-      {
-        kana: item.kana,
-        selected: this.gojuonList.includes(item.kana) ? selected : item.selected
-      }
-    )));
+    var kanaGridState = this.selectGridWithList(this.gojuonList, selected);
+
     this.setState({
       kanaGridState: kanaGridState,
       gojuonSelectedCount: gojuonSelectedCount
@@ -81,16 +74,21 @@ export default class KanaGridScreen extends React.Component {
   toggleYoon = () => {
     var selected = !(this.state.yoonSelectedCount === this.yoonList.length);
     var yoonSelectedCount = selected ? this.yoonList.length : 0;
-    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
-      {
-        kana: item.kana,
-        selected: this.yoonList.includes(item.kana) ? selected : item.selected
-      }
-    )));
+    var kanaGridState = this.selectGridWithList(this.yoonList, selected);
+
     this.setState({
       kanaGridState: kanaGridState,
       yoonSelectedCount: yoonSelectedCount
     });
+  }
+  selectGridWithList = (list, selected) => {
+    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
+      {
+        ...item,
+        selected: list.includes(item.kana) ? selected : item.selected
+      }
+    )));
+    return kanaGridState;
   }
   playAudio = async (kanaKey) => {
     const soundObject = new Audio.Sound();
@@ -111,7 +109,7 @@ export default class KanaGridScreen extends React.Component {
     }
     var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
       {
-        kana: item.kana,
+        ...item,
         selected: item.kana === kanaItem.kana ? !kanaItem.selected : item.selected
       }
     )));
