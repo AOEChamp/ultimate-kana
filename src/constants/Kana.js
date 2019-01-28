@@ -239,8 +239,8 @@ export const KanaData = {
 };
 
 export const KanaGridTypes = Object.freeze({
-    Hiragana: 1,
-    Katakana: 2,
+    Hiragana: "Hiragana",
+    Katakana: "Katakana",
 });
 
 export const HiraganaGridLayout = [

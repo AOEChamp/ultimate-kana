@@ -9,6 +9,7 @@ import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo';
 import { QuizSettings } from '../constants/Settings';
+import { Dropdown } from 'react-native-material-dropdown';
 
 export default class KanaReferenceGridScreen extends React.Component {
     static navigationOptions = {
@@ -21,6 +22,8 @@ export default class KanaReferenceGridScreen extends React.Component {
         this.kanaGridType = this.props.navigation.state.params.gridType || Kana.KanaGridTypes.Hiragana;
 
         let kanaGridState = this.getGridStateForLayout(this.kanaGridType);
+
+        this.gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({ value: gridType }));
 
         this.state = {
             kanaGridState: kanaGridState,
@@ -56,10 +59,25 @@ export default class KanaReferenceGridScreen extends React.Component {
     handleKanaPress = (kanaItem) => {
         this.playAudio(kanaItem.kana);
     }
+    handleDropdownChange = (value) => {
+        if (this.kanaGridType !== value && Kana.KanaGridTypes[value]) {
+            this.kanaGridType = value;
+            let kanaGridState = this.getGridStateForLayout(this.kanaGridType);
 
+            this.setState({ kanaGridState: kanaGridState });
+        }
+    }
     render() {
         return (
             <View style={styles.container}>
+                <Dropdown
+                    labelFontSize={0}
+                    dropdownPosition={-2}
+                    data={this.gridTypeData}
+                    value={this.kanaGridType}
+                    containerStyle={styles.dropdownStyle}
+                    onChangeText={this.handleDropdownChange}
+                />
                 <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
                     <KanaGrid gridState={this.state.kanaGridState} kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} />
                 </ScrollView>
@@ -69,6 +87,10 @@ export default class KanaReferenceGridScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    dropdownStyle: {
+        marginRight: 20,
+        marginLeft: 20,
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',
@@ -78,6 +100,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     contentContainer: {
-        paddingTop: 30,
+        // paddingTop: 30,
     },
 });
