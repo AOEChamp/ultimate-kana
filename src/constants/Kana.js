@@ -315,7 +315,36 @@ export const KatakanaDakuten = ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ', 'ザ', 'ジ',
 
 export const KatakanaYoon = ['キャ', 'キュ', 'キョ', 'ギャ', 'ギュ', 'ギョ', 'シャ', 'シュ', 'ショ', 'ジャ', 'ジュ', 'ジョ', 'チャ', 'チュ', 'チョ', 'ニャ', 'ニュ', 'ニョ', 'ヒャ', 'ヒュ', 'ヒョ', 'ビャ', 'ビュ', 'ビョ', 'ピャ', 'ピュ', 'ピョ', 'ミャ', 'ミュ', 'ミョ', 'リャ', 'リュ', 'リョ'];
 
+class Lesson {
+    title;
+    subtitle;
+    kana;
+
+    constructor(title, subtitle, kana) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.kana = kana;
+    }
+}
+
 export const HiraganaLessons = [
-    { title: "Lesson 1", subtitle: "あいうえお", kana: ['あ', 'い', 'う', 'え', 'お'] },
-    { title: "Lesson 2", subtitle: "かきくけこ", kana: ['か', 'き', 'く', 'け', 'こ'] },
+    new Lesson("Lesson 1", "あいうえお", ['あ', 'い', 'う', 'え', 'お']),
+    new Lesson("Lesson 2", "かきくけこ", ['か', 'き', 'く', 'け', 'こ']),
+    new Lesson("Lesson 3", "さしすせそ", ['さ', 'し', 'す', 'せ', 'そ']),
+    new Lesson("Lesson 4", "たちつてと", ['た', 'ち', 'つ', 'て', 'と']),
+    new Lesson("Lesson 5", "なにぬねの", ['な', 'に', 'ぬ', 'ね', 'の']),
+    new Lesson("Lesson 6", "はひふへほ", ['は', 'ひ', 'ふ', 'へ', 'ほ']),
+    new Lesson("Lesson 7", "まみむめも", ['ま', 'み', 'む', 'め', 'も']),
+    new Lesson("Lesson 8", "らりるれろ", ['ら', 'り', 'る', 'れ', 'ろ']),
+    new Lesson("Lesson 9", "やゆよわをん", ['や', 'ゆ', 'よ', 'わ', 'を', 'ん']),
+    new Lesson("Lesson 10", "がぎぐげご", ['が', 'ぎ', 'ぐ', 'げ', 'ご']),
+    new Lesson("Lesson 11", "ざじずぜぞ", ['ざ', 'じ', 'ず', 'ぜ', 'ぞ']),
+    new Lesson("Lesson 12", "だぢづでど", ['だ', 'ぢ', 'づ', 'で', 'ど']),
+    new Lesson("Lesson 13", "ばびぶべぼ", ['ば', 'び', 'ぶ', 'べ', 'ぼ']),
+    new Lesson("Lesson 14", "ぱぴぷぺぽ", ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ']),
+    new Lesson("Lesson 15", "きゃきゅきょぎゃぎゅぎょ", ['きゃ', 'きゅ', 'きょ', 'ぎゃ', 'ぎゅ', 'ぎょ']),
+    new Lesson("Lesson 16", "しゃしゅしょじゃじゅじょ", ['しゃ', 'しゅ', 'しょ', 'じゃ', 'じゅ', 'じょ']),
+    new Lesson("Lesson 17", "ちゃちゅちょにゃにゅにょ", ['ちゃ', 'ちゅ', 'ちょ', 'にゃ', 'にゅ', 'にょ']),
+    new Lesson("Lesson 18", "ひゃひゅひょびゃびゅびょぴゃぴゅぴょ", ['ひゃ', 'ひゅ', 'ひょ', 'びゃ', 'びゅ', 'びょ', 'ぴゃ', 'ぴゅ', 'ぴょ']),
+    new Lesson("Lesson 19", "みゃみゅみょりゃりゅりょ", ['みゃ', 'みゅ', 'みょ', 'りゃ', 'りゅ', 'りょ']),
 ];

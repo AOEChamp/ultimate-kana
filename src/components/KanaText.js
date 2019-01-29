@@ -77,11 +77,9 @@ export class KanaText extends React.Component {
 
 const styles = StyleSheet.create({
     svg: {
-        flex: 1,
         color: '#333',
     },
     text: {
-        flex: 1,
         textAlign: "center",
         color: '#333',
     },

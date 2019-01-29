@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginLeft: 20,
         marginRight: 20,
+        paddingBottom: 20
     },
     buttonIconStyle: {
         marginRight: 20,

@@ -22,6 +22,7 @@
     "react-dom": "^16.7.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-material-dropdown": "^0.11.1",
+    "react-native-progress": "^3.5.0",
     "react-native-svg": "^8.0.10",
     "react-native-web": "^0.9.13",
     "react-navigation": "^3.0.9",
