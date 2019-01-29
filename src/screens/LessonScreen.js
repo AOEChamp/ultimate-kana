@@ -90,9 +90,7 @@ export default class LessonScreen extends React.Component {
                                 {this.state.currentKanaItem.eng}
                             </KanaText>
                         </View>
-                        <RoundedButton onClick={this.showNextItem} style={styles.nextButtonStyle}>
-                            <Text style={styles.buttonText}>Next</Text>
-                        </RoundedButton>
+                        <RoundedButton onClick={this.showNextItem} style={styles.nextButtonStyle} title="Next" />
                     </View>
                 </View>
             );
@@ -124,11 +122,6 @@ const styles = StyleSheet.create({
     },
     nextButtonStyle: {
         marginBottom: 20,
-    },
-    buttonText: {
-        fontSize: 24,
-        color: '#fff',
-        textAlign: 'center',
     },
     titleText: {
         fontSize: 24,

@@ -41,8 +41,8 @@ export default class HomeScreen extends React.Component {
             />
           </View>
           <View style={styles.contentContainer}>
-            <RoundedButton onClick={this.navigateToLessonSelectH}><Text style={styles.roundedButtonTextStyle}>Hiragana</Text></RoundedButton>
-            <RoundedButton onClick={this.navigateToLessonSelectK}><Text style={styles.roundedButtonTextStyle}>Katakana</Text></RoundedButton>
+            <RoundedButton onClick={this.navigateToLessonSelectH} title="Hiragana" />
+            <RoundedButton onClick={this.navigateToLessonSelectK} title="Katakana" />
           </View>
           <View style={styles.getStartedContainer}>
 

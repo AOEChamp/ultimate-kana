@@ -12,6 +12,7 @@ import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo';
 import { QuizSettings } from '../constants/Settings';
+import { RoundedButton } from '../components/RoundedButton';
 
 export default class KanaGridScreen extends React.Component {
   static navigationOptions = {
@@ -140,7 +141,7 @@ export default class KanaGridScreen extends React.Component {
             <TextSwitch value={this.state.yoonSelectedCount === this.yoonList.length} onValueChange={this.toggleYoon}>All Yōon ({this.yoonList.length})</TextSwitch>
           </View>
           <View style={styles.tabBarRightView}>
-            <Button title="Start!" onPress={this.navigateToQuiz} />
+            <RoundedButton onClick={this.navigateToQuiz} title="Start!" />
           </View>
         </View>
       </View>

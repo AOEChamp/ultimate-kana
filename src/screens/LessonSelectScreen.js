@@ -5,7 +5,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import { RoundedButton } from '../components/RoundedButton';
+import { RoundedButtonBase } from '../components/RoundedButton';
 import { Icon } from 'expo';
 import * as Kana from '../constants/Kana';
 
@@ -45,7 +45,7 @@ export default class LessonSelectScreen extends React.Component {
 }
 
 const LessonButton = ({ text, subtext, onClick }) => (
-    <RoundedButton style={styles.buttonStyle} onClick={onClick}>
+    <RoundedButtonBase style={styles.buttonStyle} onClick={onClick}>
         <View style={styles.buttonLeft}>
             <Text style={styles.buttonText}>{text}</Text>
             <Text style={styles.buttonSubtext}>{subtext}</Text>
@@ -56,7 +56,7 @@ const LessonButton = ({ text, subtext, onClick }) => (
             style={styles.buttonIconStyle}
             color="#fff"
         />
-    </RoundedButton>
+    </RoundedButtonBase>
 );
 
 const styles = StyleSheet.create({

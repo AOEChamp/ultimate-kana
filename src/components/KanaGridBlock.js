@@ -19,7 +19,7 @@ export class KanaGridBlock extends React.Component {
         return (
             <TouchableOpacity disabled={this.props.disabled} onPress={this.props.onPress}
                 style={[this.props.style, styles.block, {
-                    backgroundColor: this.props.selected ? this.props.selectColor || '#0c4' : '#ccc'
+                    backgroundColor: this.props.selected ? this.props.selectColor || '#00BCD4' : '#ccc'
                 }]}>
                 <KanaText fontSize={this.props.fontSize} kanaFont={this.props.kanaFont}>{this.props.kanaItem.kana}</KanaText>
                 <Text>{this.props.kanaItem.eng}</Text>
