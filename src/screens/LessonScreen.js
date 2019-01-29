@@ -18,6 +18,7 @@ export default class LessonScreen extends React.Component {
     constructor(props) {
         super(props);
 
+        this.lessonType = this.props.navigation.state.params.lessonType;
         this.lesson = this.props.navigation.state.params.lesson;
         this.lessonItems = this.lesson.kana;
 
@@ -78,7 +79,7 @@ export default class LessonScreen extends React.Component {
         } else {
             content = (
                 <View style={styles.contentContainer}>
-                    <Text style={styles.titleText}>Hiragana {this.lesson.title}</Text>
+                    <Text style={styles.titleText}>{this.lessonType} {this.lesson.title}</Text>
                     <Text style={styles.subtitleText}>Memorize the following...</Text>
                     <View style={styles.contentContainer}>
                         <View style={styles.kanaDisplayContainer}>

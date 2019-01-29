@@ -19,8 +19,11 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  navigateToLessonSelect = () => {
-    this.props.navigation.navigate('LessonSelectScreen');
+  navigateToLessonSelectH = () => {
+    this.props.navigation.navigate('LessonSelectScreen', { lessonType: KanaGridTypes.Hiragana });
+  }
+  navigateToLessonSelectK = () => {
+    this.props.navigation.navigate('LessonSelectScreen', { lessonType: KanaGridTypes.Katakana });
   }
 
   render() {
@@ -38,7 +41,8 @@ export default class HomeScreen extends React.Component {
             />
           </View>
           <View style={styles.contentContainer}>
-            <RoundedButton onClick={this.navigateToLessonSelect}><Text style={styles.roundedButtonTextStyle}>Hiragana</Text></RoundedButton>
+            <RoundedButton onClick={this.navigateToLessonSelectH}><Text style={styles.roundedButtonTextStyle}>Hiragana</Text></RoundedButton>
+            <RoundedButton onClick={this.navigateToLessonSelectK}><Text style={styles.roundedButtonTextStyle}>Katakana</Text></RoundedButton>
           </View>
           <View style={styles.getStartedContainer}>
 

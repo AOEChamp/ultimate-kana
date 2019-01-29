@@ -7,21 +7,35 @@ import {
 } from 'react-native';
 import { RoundedButton } from '../components/RoundedButton';
 import { Icon } from 'expo';
-import { HiraganaLessons } from '../constants/Kana';
+import * as Kana from '../constants/Kana';
 
 export default class LessonSelectScreen extends React.Component {
     static navigationOptions = {
         header: null,
     };
+    constructor(props) {
+        super(props);
+
+        this.lessonType = this.props.navigation.state.params.lessonType;
+
+        switch (this.lessonType) {
+            case Kana.KanaGridTypes.Hiragana:
+                this.lessonsSet = Kana.HiraganaLessons;
+                break;
+            case Kana.KanaGridTypes.Katakana:
+                this.lessonsSet = Kana.KatakanaLessons;
+                break;
+        }
+    }
     navigateToLesson = (index) => {
-        this.props.navigation.navigate('LessonScreen', { lesson: HiraganaLessons[index] });
+        this.props.navigation.navigate('LessonScreen', { lesson: this.lessonsSet[index], lessonType: this.lessonType });
     }
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.titleText}>Hiragana Lessons</Text>
+                <Text style={styles.titleText}>{this.lessonType} Lessons</Text>
                 <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    {HiraganaLessons.map(({ title, subtitle }, i) =>
+                    {this.lessonsSet.map(({ title, subtitle }, i) =>
                         <LessonButton onClick={this.navigateToLesson.bind(this, i)} key={i} text={title} subtext={subtitle} />
                     )}
                 </ScrollView>
