@@ -10,7 +10,7 @@ import {
 import { TextSwitch } from '../components/TextSwitch';
 import { QuizSettings } from '../constants/Settings';
 import { KanaBlock } from '../components/KanaBlock';
-import { JapaneseFonts } from '../constants/Fonts';
+import { FontList } from '../constants/Fonts';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -70,7 +70,7 @@ export default class SettingsScreen extends React.Component {
 const FontSelector = props => (
   <View opacity={props.disabled ? 0.5 : 1} style={styles.fontSelector}>
     {
-      JapaneseFonts.map((fontName, i) =>
+      FontList.map((fontName, i) =>
         <KanaBlock style={styles.kanaBlock} disabled={props.disabled} onPress={props.onSelected.bind(this, fontName)} key={i} kanaFont={fontName} selected={props.selectedFont === fontName}>き</KanaBlock>
       )
     }

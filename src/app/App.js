@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon, Audio } from 'expo';
 import AppNavigator from '../navigation/AppNavigator';
-import { LoadFonts, loadAllFonts, loadFontAsync } from '../constants/Fonts';
+import { LoadFonts, loadAllSVGFonts } from '../constants/Fonts';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export default class HybridApp extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      loadAllFonts(),
+      loadAllSVGFonts(),
       Asset.loadAsync([
         require('../assets/images/robot-dev.png'),
         require('../assets/images/robot-prod.png'),

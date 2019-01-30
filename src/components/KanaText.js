@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { JSFonts } from '../constants/Fonts';
+import { SVGFonts } from '../constants/Fonts';
 import { Svg } from 'expo';
 
 export class KanaText extends React.Component {
@@ -11,8 +11,8 @@ export class KanaText extends React.Component {
     static getRenderData(text, fontSize, fontFamily) {
         var retVal = {};
 
-        if (fontFamily !== "System") {
-            const font = JSFonts[fontFamily];
+        if (fontFamily in SVGFonts) {
+            const font = SVGFonts[fontFamily];
 
             const path = font.getPath(
                 text,
@@ -50,17 +50,7 @@ export class KanaText extends React.Component {
     render() {
         let textElement;
 
-        if (this.state.fontFamily === "System") {
-            textElement = (
-                <Text {...this.props}
-                    style={[this.props.style, styles.text, {
-                        fontSize: this.state.fontSize,
-                        fontFamily: this.state.fontFamily
-                    }]}>
-                    {this.state.text}
-                </Text>
-            );
-        } else {
+        if (this.state.fontFamily in SVGFonts) {
             textElement = (
                 <Svg height={this.state.renderData.height} width={this.state.renderData.width} style={styles.svg}>
                     <Svg.Path
@@ -69,6 +59,17 @@ export class KanaText extends React.Component {
                         d={this.state.renderData.pathData}
                     />
                 </Svg>
+            );
+
+        } else {
+            textElement = (
+                <Text {...this.props}
+                    style={[this.props.style, styles.text, {
+                        fontSize: this.state.fontSize,
+                        fontFamily: this.state.fontFamily
+                    }]}>
+                    {this.state.text}
+                </Text>
             );
         }
         return textElement;
