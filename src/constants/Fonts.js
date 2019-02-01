@@ -4,6 +4,7 @@ import * as opentype from 'opentype.js';
 
 export const LoadFonts = {
     'NotoSansCJK': require('../assets/fonts/NotoSansCJKjp-Regular.otf'),
+    'Arkipelago': require('../assets/fonts/Arkipelago.otf'),
 }
 
 export const SVGFonts = {
