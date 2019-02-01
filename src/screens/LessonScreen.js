@@ -46,23 +46,33 @@ export default class LessonScreen extends React.Component {
         };
         this.playAudio(this.state.currentKanaItem);
     }
+    shuffleArray = (a) => {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
     getStateForQuizItem = (quizItemIndex) => {
         let currentKanaItem = Kana.KanaData[this.lessonItems[quizItemIndex]];
-        let fullQuizPool = this.lessonItems.slice(0, this.currentLearnedIndex + 1);
+        let fullQuizPool = this.shuffleArray(this.lessonItems.slice(0, this.currentLearnedIndex + 1));
         let quizOptions = new Array(6);
-        // for (var i = 0; i < 6; i++) {
-        //     quizOptions[i] = {};
-        // }
+
+        for (var i = 0; i < quizOptions.length; i++) {
+            quizOptions[i] = { ignore: true };
+        }
 
         quizOptions[Math.floor(Math.random() * quizOptions.length)] = currentKanaItem;
-        for (var i = 0; i < quizOptions.length; i++) {
-            while (quizOptions[i] !== currentKanaItem) {
-                const randomItem = Kana.KanaData[fullQuizPool[Math.floor(Math.random() * fullQuizPool.length)]];
-                if (randomItem != currentKanaItem) {
-                    quizOptions[i] = randomItem;
-                    break;
-                }
-            }
+        for (var i = 0; i < Math.min(quizOptions.length - 1, fullQuizPool.length); i++) {
+            const item = Kana.KanaData[fullQuizPool[i]];
+            if (item === currentKanaItem)
+                continue;
+            let j;
+            do {
+                j = Math.floor(Math.random() * quizOptions.length);
+            } while (quizOptions[j].kana)
+
+            quizOptions[j] = item;
         }
         return {
             quizOptions: _.cloneDeep(quizOptions),
@@ -89,8 +99,8 @@ export default class LessonScreen extends React.Component {
             currentItemIndex -= this.quizCounter;
         } else if (lessonState == LessonState.QUIZ
             && this.quizCounter == 0) {
-                lessonState = LessonState.MEMORIZE;
-                this.memorizeCounter += this.lessonItems.length - currentItemIndex == 4 ? 3 : 2;
+            lessonState = LessonState.MEMORIZE;
+            this.memorizeCounter += this.lessonItems.length - currentItemIndex == 4 ? 3 : 2;
         }
 
         if (lessonState === LessonState.MEMORIZE) {
