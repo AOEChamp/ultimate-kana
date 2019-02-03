@@ -30,7 +30,7 @@ export default class LessonScreen extends React.Component {
         this.lessonType = this.props.navigation.state.params.lessonType;
         this.lesson = this.props.navigation.state.params.lesson;
         this.lessonItems = this.lesson.kana;
-        this.lessonSteps = this.lessonItems.length * 2;
+        this.lessonSteps = this.lessonItems.length * 3;
         this.currentLessonStep = 0;
         this.currentLearnedIndex = 0;
         this.memorizeCounter = this.lessonItems.length > 3 ? 1 : this.lessonItems.length - 1;
@@ -93,7 +93,10 @@ export default class LessonScreen extends React.Component {
         let lessonState = this.state.lessonState;
         let currentItemIndex = this.state.currentItemIndex;
 
-        if (lessonState === LessonState.MEMORIZE
+        if (this.currentLessonStep === this.lessonSteps / 3 * 2) {
+            this.quizCounter = this.lessonItems.length;
+            currentItemIndex = -1;
+        } else if (lessonState === LessonState.MEMORIZE
             && this.memorizeCounter == 0) {
             lessonState = LessonState.QUIZ;
             currentItemIndex -= this.quizCounter;
@@ -128,7 +131,8 @@ export default class LessonScreen extends React.Component {
                 currentItemIndex: currentItemIndex,
                 barProgress: this.currentLessonStep / this.lessonSteps,
                 lessonState: LessonState.QUIZ,
-                lockUntilNextQuiz: false
+                lockUntilNextQuiz: false,
+                useKanaSelection: this.currentLessonStep >= this.lessonSteps / 3 * 2
             });
         }
     }
@@ -185,17 +189,20 @@ export default class LessonScreen extends React.Component {
             );
         } else if (this.state.lessonState == LessonState.QUIZ) {
             content = (
-                <QuizView style={styles.container}
-                    kanaFont={this.state.kanaFont}
-                    useKanaSelection={this.state.useKanaSelection}
-                    onKanaPress={this.handleAnswerSelected}
-                    quizOptions={this.state.quizOptions}
-                    quizQuestion={this.state.currentKanaItem} />
+                <View style={styles.quizView}>
+                    <Text style={styles.subtitleText}>Choose the correct sound...</Text>
+                    <QuizView style={styles.quizView}
+                        kanaFont={this.state.kanaFont}
+                        useKanaSelection={this.state.useKanaSelection}
+                        onKanaPress={this.handleAnswerSelected}
+                        quizOptions={this.state.quizOptions}
+                        quizQuestion={this.state.currentKanaItem} />
+                </View>
             );
         } else {
             content = (
                 <View style={styles.contentContainer}>
-                    <Text style={styles.titleText}>{this.lessonType} {this.lesson.title}</Text>
+                    {/* <Text style={styles.titleText}>{this.lessonType} {this.lesson.title}</Text> */}
                     <Text style={styles.subtitleText}>Memorize the following...</Text>
                     <View style={styles.contentContainer}>
                         <View style={styles.kanaDisplayContainer}>
@@ -262,6 +269,9 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         flexDirection: 'column',
+    },
+    quizView: {
+        flex: 1,
     },
     container: {
         flex: 1,
