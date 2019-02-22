@@ -1,13 +1,12 @@
 import React from 'react';
 import {
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
+import ScalableText from 'react-native-text';
 
 import { KanaGridTypes } from '../constants/Kana';
 import { RoundedButton } from '../components/RoundedButton';
@@ -26,10 +25,10 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.mainContainer}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
-            <Text style={styles.titleText}>Ultimate Kana</Text>
+            <ScalableText style={styles.titleText}>Ultimate Kana</ScalableText>
             <Image
               source={
                 __DEV__
@@ -49,7 +48,7 @@ export default class HomeScreen extends React.Component {
             <RoundedButton title="Hiragana"
               onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana })} />
             <RoundedButton title="Katakana"
-              onPress={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana })} />
+              onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana })} />
           </View>
           <Text style={styles.subtext}>
             Choose the Kana you wish to be quizzed on in the following page
@@ -63,7 +62,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'Arkipelago',
-    fontSize: 60,
+    fontSize: 50,
     marginTop: 20,
   },
   headerText: {
@@ -74,9 +73,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  container: {
+    flex: 1,
   },
   subtext: {
     color: 'rgba(0,0,0,0.4)',
@@ -84,9 +86,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   contentContainer: {
-    flex: 1,
     justifyContent: 'center',
-    margin: 40,
+    padding: 40
   },
   welcomeContainer: {
     alignItems: 'center',
