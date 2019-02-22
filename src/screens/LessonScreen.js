@@ -204,7 +204,7 @@ export default class LessonScreen extends React.Component {
                 <View style={styles.contentContainer}>
                     {/* <Text style={styles.titleText}>{this.lessonType} {this.lesson.title}</Text> */}
                     <Text style={styles.subtitleText}>Memorize the following...</Text>
-                    <View style={styles.contentContainer}>
+                    <View style={styles.lessonLearnView}>
                         <View style={styles.kanaDisplayContainer}>
                             <KanaText fontSize={150} kanaFont={this.state.kanaFont}>
                                 {this.state.currentKanaItem.kana}
@@ -247,8 +247,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     progressView: {
-        marginTop: 20,
-        marginBottom: 20
+        margin: 20
     },
     lessonCompleteView: {
         flex: 1,
@@ -264,9 +263,16 @@ const styles = StyleSheet.create({
     subtitleText: {
         fontSize: 16,
         marginTop: 5,
-        marginBottom: 20
+        marginBottom: 20,
+        marginLeft: 20
+    },
+    lessonLearnView: {
+        flex: 1,
+        flexDirection: 'column',
     },
     contentContainer: {
+        marginRight: 20,
+        marginLeft: 20,
         flex: 1,
         flexDirection: 'column',
     },
@@ -275,7 +281,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 20,
         backgroundColor: '#fff',
     },
 });
