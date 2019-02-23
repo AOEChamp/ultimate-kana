@@ -5,8 +5,9 @@ import {
     Text
 } from 'react-native';
 
-export const RoundedButtonBase = ({ onClick, children, style }) => (
+export const RoundedButtonBase = ({ onClick, children, style, disabled }) => (
     <TouchableOpacity
+        disabled={disabled}
         style={[styles.roundedButtonStyle, style]}
         activeOpacity={.5}
         onPress={onClick}
@@ -15,8 +16,9 @@ export const RoundedButtonBase = ({ onClick, children, style }) => (
     </TouchableOpacity>
 );
 
-export const RoundedButton = ({ onClick, style, title }) => (
-    <RoundedButtonBase onClick={onClick} style={[styles.roundedButtonStyle, style]}>
+export const RoundedButton = ({ onClick, style, title, disabled }) => (
+    <RoundedButtonBase disabled={disabled}
+        onClick={onClick} style={[styles.roundedButtonStyle, style, disabled ? { backgroundColor: "#ccc" } : {}]}>
         <Text style={styles.buttonText}>{title}</Text>
     </RoundedButtonBase>
 );

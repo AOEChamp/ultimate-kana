@@ -1,0 +1,18 @@
+Grid
+* Track global accuracy?
+
+Quiz
+* Track accuracy
+* Increase frequency of trouble characters
+* Don't play sound on mistakes
+
+Lessons
+* Introduce 1-2 rows at a time
+* Suggest breaks
+* Track progress
+
+Bugs
+
+Misc
+* Kana drag drop?
+* Migrate off opentypejs

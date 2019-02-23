@@ -9,7 +9,7 @@ import { RoundedButton, RoundedButtonBase } from '../components/RoundedButton';
 import { KanaText } from '../components/KanaText';
 import * as Kana from '../constants/Kana';
 import { Icon } from 'expo';
-import { QuizSettings } from '../constants/Settings';
+import { QuizSettings, getLessonSetting, setLessonSetting, LessonSetting } from '../constants/Settings';
 import ProgressBar from 'react-native-progress/Bar';
 import { Audio } from 'expo';
 import { QuizView } from '../components/QuizView';
@@ -79,10 +79,24 @@ export default class LessonScreen extends React.Component {
             currentKanaItem: currentKanaItem,
         };
     }
+    saveLesson = async () => {
+        let lessonSetting = await getLessonSetting(this.lesson.subtitle);
+
+        if (lessonSetting === null) {
+            lessonSetting = new LessonSetting(true, 1);
+        } else {
+            lessonSetting.completed = true;
+            lessonSetting.attempts++;
+        }
+
+        setLessonSetting(this.lesson.subtitle, lessonSetting);
+    }
     showNextItem = () => {
         this.currentLessonStep++;
 
         if (this.currentLessonStep === this.lessonSteps) {
+            this.saveLesson();
+
             this.setState({
                 lessonState: LessonState.COMPLETE,
                 barProgress: 100

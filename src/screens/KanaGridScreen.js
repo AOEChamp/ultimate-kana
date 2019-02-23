@@ -49,6 +49,7 @@ export default class KanaGridScreen extends React.Component {
       kanaGridState: kanaGridState,
       gojuonSelectedCount: 0,
       dakutenSelectedCount: 0,
+      yoonSelectedCount: 0,
       kanaFont: QuizSettings.kanaFont
     };
   }
@@ -101,22 +102,31 @@ export default class KanaGridScreen extends React.Component {
       console.log(error);
     }
   }
+  getCountModifier = (kanaItem, list) => {
+    if (list.includes(kanaItem.kana)) {
+      return kanaItem.selected ? -1 : 1;
+    }
+    return 0;
+  }
   handleKanaPress = (kanaItem) => {
     this.playAudio(kanaItem.kana);
 
-    var gojuonSelectedCount = this.state.gojuonSelectedCount;
-    if (this.gojuonList.includes(kanaItem.kana)) {
-      kanaItem.selected ? gojuonSelectedCount-- : gojuonSelectedCount++;
-    }
+    var gojuonSelectedCount = this.state.gojuonSelectedCount + this.getCountModifier(kanaItem, this.gojuonList);
+    var dakutenSelectedCount = this.state.dakutenSelectedCount + this.getCountModifier(kanaItem, this.dakutenList);
+    var yoonSelectedCount = this.state.yoonSelectedCount + this.getCountModifier(kanaItem, this.yoonList);
+
     var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
       {
         ...item,
         selected: item.kana === kanaItem.kana ? !kanaItem.selected : item.selected
       }
     )));
+
     this.setState({
       kanaGridState: kanaGridState,
-      gojuonSelectedCount: gojuonSelectedCount
+      gojuonSelectedCount: gojuonSelectedCount,
+      dakutenSelectedCount: dakutenSelectedCount,
+      yoonSelectedCount: yoonSelectedCount
     });
   }
   navigateToQuiz = () => {
@@ -126,6 +136,9 @@ export default class KanaGridScreen extends React.Component {
         , []))
       , []);
     this.props.navigation.navigate('QuizScreen', { kanaSet: selectedKana });
+  }
+  getTotalCount = () => {
+    return this.state.gojuonSelectedCount + this.state.yoonSelectedCount + this.state.dakutenSelectedCount;
   }
   render() {
     return (
@@ -141,7 +154,7 @@ export default class KanaGridScreen extends React.Component {
             <TextSwitch value={this.state.yoonSelectedCount === this.yoonList.length} onValueChange={this.toggleYoon}>All Yōon ({this.yoonList.length})</TextSwitch>
           </View>
           <View style={styles.tabBarRightView}>
-            <RoundedButton onClick={this.navigateToQuiz} title="Start!" />
+            <RoundedButton onClick={this.navigateToQuiz} disabled={this.getTotalCount() < 6} title="Start!" />
           </View>
         </View>
       </View>

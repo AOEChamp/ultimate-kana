@@ -3,6 +3,8 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon, Audio } from 'expo';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts, loadAllSVGFonts } from '../constants/Fonts';
+import { getItem, setItem, KanaStats, SettingKeys } from '../constants/Settings';
+import { KanaData } from '../constants/Kana';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -23,11 +25,30 @@ export default class HybridApp extends React.Component {
     }
   }
 
+  initAsync = async () => {
+    return Promise.all([
+      this._loadResourcesAsync(),
+      this.initKanaStats()
+    ]);
+  }
+
+  initKanaStats = async () => {
+    let kanaStats = await getItem(SettingKeys.KanaGridStats);
+
+    if (kanaStats == null) {
+      kanaStats = Object.keys(KanaData).reduce(function (result, key) {
+        result[key] = new KanaStats(key);
+        return result;
+      }, {});
+      await setItem(SettingKeys.KanaGridStats, kanaStats);
+    }
+  }
+
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
-          startAsync={this._loadResourcesAsync}
+          startAsync={this.initAsync}
           onError={this._handleLoadingError}
           onFinish={this._handleFinishLoading}
         />

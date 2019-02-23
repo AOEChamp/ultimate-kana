@@ -29,30 +29,23 @@ export default class HomeScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <ScalableText style={styles.titleText}>Ultimate Kana</ScalableText>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
           </View>
           <Text style={styles.headerText}>Lessons</Text>
           <View style={styles.buttonContainer}>
             <RoundedButton onClick={this.navigateToLessonSelectH} title="Hiragana" />
             <RoundedButton onClick={this.navigateToLessonSelectK} title="Katakana" />
           </View>
+          <View style={styles.hr}></View>
           <Text style={styles.headerText}>Quiz</Text>
+          <Text style={styles.subtext}>
+            Choose the Kana you wish to be quizzed on in the following page
+          </Text>
           <View style={styles.buttonContainer}>
             <RoundedButton title="Hiragana"
               onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana })} />
             <RoundedButton title="Katakana"
               onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana })} />
           </View>
-          <Text style={styles.subtext}>
-            Choose the Kana you wish to be quizzed on in the following page
-          </Text>
         </ScrollView>
       </View>
     );
@@ -66,12 +59,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   headerText: {
+    fontWeight: "bold",
     fontSize: 24,
     marginTop: 20,
   },
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',
+  },
+  hr: {
+    marginTop: 40,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    width: '100%'
   },
   mainContainer: {
     flex: 1,
@@ -81,9 +81,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   subtext: {
+    marginTop: 10,
     color: 'rgba(0,0,0,0.4)',
     fontSize: 14,
-    textAlign: 'center',
   },
   contentContainer: {
     justifyContent: 'center',

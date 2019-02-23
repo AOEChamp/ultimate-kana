@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 
 import * as Kana from '../constants/Kana';
-import { QuizSettings } from '../constants/Settings';
+import { QuizSettings, getItem, setItem, SettingKeys } from '../constants/Settings';
 import { FontList } from '../constants/Fonts';
 import { Audio } from 'expo';
 import { QuizView } from '../components/QuizView';
@@ -50,11 +50,27 @@ export default class QuizScreen extends React.Component {
                 quizOptions: quizOptions,
                 lockUntilNextQuiz: true
             });
+            this.setQuizStat(kanaData, false);
             setTimeout(() => this.showNewQuizItem(), 1000);
         } else if (idx != -1) {
             quizOptions[idx].fail = true;
             this.setState({ quizOptions: quizOptions });
+            this.setQuizStat(kanaData, true);
         }
+    }
+    setQuizStat = async (kanaData, fail) => {
+        if(!this.kanaStats) {
+            this.kanaStats = await getItem(SettingKeys.KanaGridStats);
+        }
+
+        let stat = this.kanaStats[kanaData.kana];
+        stat.totalFailures += fail ? 1 : 0;
+        stat.totalViews++;
+        if(stat.lastNAttempts.unshift(fail ? false : true) > 5) {
+            stat.lastNAttempts.pop();
+        }
+        
+        setItem(SettingKeys.KanaGridStats, this.kanaStats);
     }
     playAudio = async (kanaData) => {
         const soundObject = new Audio.Sound();
