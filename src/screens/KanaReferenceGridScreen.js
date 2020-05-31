@@ -7,13 +7,13 @@ import {
 
 import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 import { QuizSettings } from '../constants/Settings';
 import { Dropdown } from 'react-native-material-dropdown';
 
 export default class KanaReferenceGridScreen extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerShown: false,
     };
     constructor(props) {
         super(props);

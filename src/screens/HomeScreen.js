@@ -13,7 +13,7 @@ import { RoundedButton } from '../components/RoundedButton';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    headerShown: false,
   };
 
   navigateToLessonSelectH = () => {

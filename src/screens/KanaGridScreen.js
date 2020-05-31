@@ -10,13 +10,13 @@ import {
 import { KanaGrid } from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 import { QuizSettings } from '../constants/Settings';
 import { RoundedButton } from '../components/RoundedButton';
 
 export default class KanaGridScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    headerShown: false,
   };
   constructor(props) {
     super(props);

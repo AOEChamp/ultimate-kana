@@ -1,9 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
+import * as Svg from 'react-native-svg';
 
-// Use import Svg from 'react-native-svg' if you are not using Expo
-import { Svg } from 'expo';
 const {
   Circle,
   Rect,

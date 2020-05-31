@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon, Audio } from 'expo';
+import { AppLoading } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
+import { Audio } from 'expo-av';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts, loadAllSVGFonts } from '../constants/Fonts';
 import { getItem, setItem, KanaStats, SettingKeys } from '../constants/Settings';
@@ -72,7 +76,7 @@ export default class HybridApp extends React.Component {
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
-        ...Icon.Ionicons.font,
+        ...Ionicons.font,
         ...LoadFonts,
       }),
     ]);

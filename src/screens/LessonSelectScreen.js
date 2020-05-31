@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 import { RoundedButtonBase } from '../components/RoundedButton';
 import { getAllLessonSettings } from '../constants/Settings';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import * as Kana from '../constants/Kana';
 
 export default class LessonSelectScreen extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerShown: false,
     };
     constructor(props) {
         super(props);
@@ -82,13 +82,13 @@ const LessonButton = ({ text, subtext, onClick, completed, disabled }) => (
         </View>
         <View style={{ flexDirection: "row" }}>
             {completed &&
-                <Icon.Ionicons
+                <Ionicons
                     name="md-checkmark-circle-outline"
                     size={26}
                     style={styles.buttonIconStyle}
                     color="#0f0"
                 />}
-            <Icon.Ionicons
+            <Ionicons
                 name="ios-arrow-forward"
                 size={26}
                 style={styles.buttonIconStyle}

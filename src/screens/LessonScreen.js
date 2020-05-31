@@ -8,10 +8,10 @@ import _ from 'lodash';
 import { RoundedButton, RoundedButtonBase } from '../components/RoundedButton';
 import { KanaText } from '../components/KanaText';
 import * as Kana from '../constants/Kana';
-import { Icon } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import { QuizSettings, getLessonSetting, setLessonSetting, LessonSetting } from '../constants/Settings';
 import ProgressBar from 'react-native-progress/Bar';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
 
 const LessonState = {
@@ -22,7 +22,7 @@ const LessonState = {
 
 export default class LessonScreen extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerShown: false,
     };
     constructor(props) {
         super(props);
@@ -228,7 +228,7 @@ export default class LessonScreen extends React.Component {
                                 {this.state.currentKanaItem.eng}
                             </KanaText>
                             <RoundedButtonBase style={styles.soundButton} onClick={this.playCurrentSound}>
-                                <Icon.Ionicons
+                                <Ionicons
                                     name="md-volume-high"
                                     size={26}
                                     color="#fff"

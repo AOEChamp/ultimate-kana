@@ -7,12 +7,12 @@ import {
 import * as Kana from '../constants/Kana';
 import { QuizSettings, getItem, setItem, SettingKeys } from '../constants/Settings';
 import { FontList } from '../constants/Fonts';
-import { Audio } from 'expo';
+import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
 
 export default class QuizScreen extends React.Component {
     static navigationOptions = {
-        header: null,
+        headerShown: false,
     };
     constructor(props) {
         super(props);

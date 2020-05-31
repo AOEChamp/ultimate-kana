@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { SVGFonts } from '../constants/Fonts';
-import { Svg } from 'expo';
+import * as Svg from 'react-native-svg';
 
 export class KanaText extends React.Component {
     constructor(props) {
