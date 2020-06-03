@@ -247,9 +247,9 @@ export default class LessonScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.progressView}>
-                    <ProgressBar progress={this.state.barProgress} width={null} color="#00BCD4" borderRadius={30} height={20} />
+                    <ProgressBar progress={this.state.barProgress} style={styles.progressBar} width={null} color="#00BCD4" borderRadius={30} height={20} />
                     {__DEV__ &&
-                        <RoundedButton onClick={this.skipToEnd} title="Skip" />
+                        <RoundedButton onClick={this.skipToEnd} style={styles.skipBtn} title="Skip" />
                     }
                 </View>
                 {content}
@@ -259,6 +259,14 @@ export default class LessonScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    progressBar: {
+        flexGrow: 1,
+    },
+    skipBtn: {
+        height: 30,
+        marginTop: 0,
+        padding: 0,
+    },
     soundButton: {
         alignSelf: 'center'
     },
@@ -269,7 +277,8 @@ const styles = StyleSheet.create({
     },
     progressView: {
         margin: 20,
-        flex: 1
+        flexDirection: 'row',
+        alignItems: 'flex-start'
     },
     lessonCompleteView: {
         flex: 1,

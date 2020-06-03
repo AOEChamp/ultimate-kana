@@ -1,23 +1,24 @@
 import React, { useReducer, useEffect } from "react";
 import { HiraganaLessons, KatakanaLessons } from '../constants/Kana';
+import { getItem, setItem } from '../utils/Storage';
+
+const LessonHistoryContext = React.createContext();
+const SettingKey = "LessonHistory";
 
 let reducer = (lessonHistory, newLessonHistory) => {
   if (newLessonHistory === null) {
-    // localStorage.removeItem("lessonHistory");
-    return initialState;
+    const tmp = initialLessionHistory();
+    setItem(SettingKey, tmp);
+    return tmp;
   }
   return { ...lessonHistory, ...newLessonHistory };
 };
-
-const LessonHistoryContext = React.createContext();
-
-const SettingKey = "LessonHistory";
 
 function LessonHistoryProvider(props) {
   const [lessonHistory, setLessonHistory] = useReducer(reducer, props.initialState);
 
   useEffect(() => {
-    // localStorage.setItem("lessonHistory", JSON.stringify(lessonHistory));
+    setItem(SettingKey, lessonHistory);
   }, [lessonHistory]);
 
   return (
