@@ -1,5 +1,4 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
 import {
   ScrollView,
   StyleSheet,
@@ -48,9 +47,6 @@ export default class SettingsScreen extends React.Component {
     this.setState({ QuizSettings });
   }
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
-    // return <ExpoConfigView />;
     return (
       <ScrollView style={styles.container}>
         <TextSwitch value={this.state.QuizSettings.enableRomajiSelectionDrills} onValueChange={this.toggleRomajiDrill} style={styles.switch}>Enable Romaji selection drills</TextSwitch>
@@ -71,6 +67,7 @@ const FontSelector = props => (
   <View opacity={props.disabled ? 0.5 : 1} style={styles.fontSelector}>
     {
       FontList.map((fontName, i) =>
+      // <Text>{fontName}{i}</Text>
         <KanaBlock style={styles.kanaBlock} disabled={props.disabled} onPress={props.onSelected.bind(this, fontName)} key={i} kanaFont={fontName} selected={props.selectedFont === fontName}>き</KanaBlock>
       )
     }

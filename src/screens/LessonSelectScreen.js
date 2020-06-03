@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -6,72 +6,55 @@ import {
     View,
 } from 'react-native';
 import { RoundedButtonBase } from '../components/RoundedButton';
-import { getAllLessonSettings } from '../constants/Settings';
 import { Ionicons } from '@expo/vector-icons';
 import * as Kana from '../constants/Kana';
+import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 
-export default class LessonSelectScreen extends React.Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-    constructor(props) {
-        super(props);
-
-        this.lessonType = this.props.navigation.state.params.lessonType;
-
-        switch (this.lessonType) {
+const LessonSelectScreen = ({navigation}) => {
+    let lessonType = navigation.state.params.lessonType;
+    let [lessonSet] = useState(() => {
+        switch (lessonType) {
             case Kana.KanaGridTypes.Hiragana:
-                this.lessonsSet = Kana.HiraganaLessons;
-                break;
+                return Kana.HiraganaLessons;
             case Kana.KanaGridTypes.Katakana:
-                this.lessonsSet = Kana.KatakanaLessons;
-                break;
+                return Kana.KatakanaLessons;
         }
-
-        this.state = { disabledIndex: this.lessonsSet.length };
-        this.init();
-    }
-    init = async () => {
-        let lessonSettings = await getAllLessonSettings(this.lessonsSet.map(lesson => lesson.subtitle));
-        console.log(lessonSettings);
-
-        let disabledIndex = 1;
-        for (let i = 0; i < lessonSettings.length; i++) {
-            if (!lessonSettings[i]) {
-                disabledIndex = i + 1;
-                break;
-            }
+    });
+    const { lessonHistory } = useContext(LessonHistoryContext);
+    let disabledIndex = 1;
+    for (let i = 0; i < lessonSet.length; i++) {
+        if (!lessonHistory[lessonSet[i].id].completed) {
+            disabledIndex = i + 1;
+            break;
         }
+    }
 
-        this.setState({
-            lessonSettings: lessonSettings,
-            disabledIndex: disabledIndex
-        });
-    }
-    isLessonCompleted = (index) => {
-        if (this.state.lessonSettings &&
-            this.state.lessonSettings[index]) {
-            return this.state.lessonSettings[index].completed;
-        }
-        return false;
-    }
-    navigateToLesson = (index) => {
-        this.props.navigation.navigate('LessonScreen', { lesson: this.lessonsSet[index], lessonType: this.lessonType });
-    }
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.titleText}>{this.lessonType} Lessons</Text>
-                <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                    {this.lessonsSet.map(({ title, subtitle }, i) =>
-                        <LessonButton onClick={this.navigateToLesson.bind(this, i)} key={i} text={title} subtext={subtitle}
-                            completed={this.isLessonCompleted(i)} disabled={i >= this.state.disabledIndex} />
-                    )}
-                </ScrollView>
-            </View>
-        );
-    }
-}
+    const isLessonCompleted = (id) => {
+        return lessonHistory[id].completed;
+    };
+
+    const navigateToLesson = (index) => {
+        navigation.navigate('LessonScreen', { lesson: lessonSet[index], lessonType: lessonType });
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.titleText}>{lessonType} Lessons</Text>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                {lessonSet.map(({ title, subtitle, id }, i) =>
+                    <LessonButton onClick={navigateToLesson.bind(this, i)} key={i} text={title} subtext={subtitle}
+                        completed={isLessonCompleted(id)} disabled={i >= disabledIndex} />
+                )}
+            </ScrollView>
+        </View>
+    );
+};
+
+LessonSelectScreen.navigationOptions = {
+    headerShown: false,
+};
+
+export default LessonSelectScreen;
 
 const LessonButton = ({ text, subtext, onClick, completed, disabled }) => (
     <RoundedButtonBase onClick={onClick}

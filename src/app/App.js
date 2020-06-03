@@ -7,8 +7,10 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts, loadAllSVGFonts } from '../constants/Fonts';
-import { getItem, setItem, KanaStats, SettingKeys } from '../constants/Settings';
+import { getItem, setItem } from '../utils/Storage';
+import { KanaStats, SettingKeys } from '../constants/Settings';
 import { KanaData } from '../constants/Kana';
+import { LessonHistoryProvider, initialLessionHistory, SettingKey } from '../contexts/LessonHistoryContext';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -32,8 +34,15 @@ export default class HybridApp extends React.Component {
   initAsync = async () => {
     return Promise.all([
       this._loadResourcesAsync(),
-      this.initKanaStats()
+      this.initKanaStats(),
+      this.loadLessonHistory()
     ]);
+  }
+
+  initialLessionHistoryState = null;
+
+  loadLessonHistory = async () => {
+    this.initialLessionHistoryState = await getItem(SettingKey) || initialLessionHistory();
   }
 
   initKanaStats = async () => {
@@ -61,7 +70,9 @@ export default class HybridApp extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
+          <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
+            <AppNavigator />
+          </LessonHistoryProvider>
         </View>
       );
     }

@@ -9,10 +9,11 @@ import { RoundedButton, RoundedButtonBase } from '../components/RoundedButton';
 import { KanaText } from '../components/KanaText';
 import * as Kana from '../constants/Kana';
 import { Ionicons } from '@expo/vector-icons';
-import { QuizSettings, getLessonSetting, setLessonSetting, LessonSetting } from '../constants/Settings';
+import { QuizSettings } from '../constants/Settings';
 import ProgressBar from 'react-native-progress/Bar';
 import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
+import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 
 const LessonState = {
     MEMORIZE: 1,
@@ -79,24 +80,10 @@ export default class LessonScreen extends React.Component {
             currentKanaItem: currentKanaItem,
         };
     }
-    saveLesson = async () => {
-        let lessonSetting = await getLessonSetting(this.lesson.subtitle);
-
-        if (lessonSetting === null) {
-            lessonSetting = new LessonSetting(true, 1);
-        } else {
-            lessonSetting.completed = true;
-            lessonSetting.attempts++;
-        }
-
-        setLessonSetting(this.lesson.subtitle, lessonSetting);
-    }
     showNextItem = () => {
         this.currentLessonStep++;
 
         if (this.currentLessonStep === this.lessonSteps) {
-            this.saveLesson();
-
             this.setState({
                 lessonState: LessonState.COMPLETE,
                 barProgress: 100
@@ -187,7 +174,17 @@ export default class LessonScreen extends React.Component {
             this.setState({ quizOptions: quizOptions });
         }
     }
-    endLesson = () => {
+    skipToEnd = () => {
+        this.setState({
+            lessonState: LessonState.COMPLETE,
+            barProgress: 100
+        });
+    }
+    endLesson = (lessonHistory, setLessonHistory) => {
+        const newLessonHistory = _.cloneDeep(lessonHistory);
+        newLessonHistory[this.lesson.id].completed = true;
+        newLessonHistory[this.lesson.id].attempts++;
+        setLessonHistory(newLessonHistory);
         this.props.navigation.pop();
     }
     render() {
@@ -198,7 +195,14 @@ export default class LessonScreen extends React.Component {
                     <View style={styles.lessonCompleteView}>
                         <Text style={styles.titleText}>Lesson complete!</Text>
                     </View>
-                    <RoundedButton onClick={this.endLesson} style={styles.nextButtonStyle} title="Finish" />
+                    <LessonHistoryContext.Consumer>
+                        {({lessonHistory, setLessonHistory}) => (
+                            <RoundedButton
+                                onClick={this.endLesson.bind(this, lessonHistory, setLessonHistory)} 
+                                style={styles.nextButtonStyle} title="Finish"
+                            />
+                        )}
+                    </LessonHistoryContext.Consumer>
                 </View>
             );
         } else if (this.state.lessonState == LessonState.QUIZ) {
@@ -244,6 +248,9 @@ export default class LessonScreen extends React.Component {
             <View style={styles.container}>
                 <View style={styles.progressView}>
                     <ProgressBar progress={this.state.barProgress} width={null} color="#00BCD4" borderRadius={30} height={20} />
+                    {__DEV__ &&
+                        <RoundedButton onClick={this.skipToEnd} title="Skip" />
+                    }
                 </View>
                 {content}
             </View>
@@ -261,7 +268,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     progressView: {
-        margin: 20
+        margin: 20,
+        flex: 1
     },
     lessonCompleteView: {
         flex: 1,
