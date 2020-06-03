@@ -6,7 +6,7 @@ import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
-import { LoadFonts, loadAllSVGFonts } from '../constants/Fonts';
+import { LoadFonts } from '../constants/Fonts';
 import { getItem, setItem } from '../utils/Storage';
 import { KanaStats, SettingKeys } from '../constants/Settings';
 import { KanaData } from '../constants/Kana';
@@ -80,7 +80,6 @@ export default class HybridApp extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      loadAllSVGFonts(),
       Asset.loadAsync([
         require('../assets/images/robot-dev.png'),
         require('../assets/images/robot-prod.png'),

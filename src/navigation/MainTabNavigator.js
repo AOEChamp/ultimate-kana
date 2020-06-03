@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import KanaGridScreen from '../screens/KanaGridScreen';
-import LinksScreen from '../screens/LinksScreen';
 import KanaReferenceGridScreen from '../screens/KanaReferenceGridScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QuizScreen from '../screens/QuizScreen';
