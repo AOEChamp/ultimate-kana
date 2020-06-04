@@ -5,15 +5,14 @@ import {
     View,
 } from 'react-native';
 import _ from 'lodash';
-import { RoundedButton, RoundedButtonBase } from '../components/RoundedButton';
-import { KanaText } from '../components/KanaText';
+import { RoundedButton } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
-import { Ionicons } from '@expo/vector-icons';
-import { QuizSettings } from '../constants/Settings';
 import ProgressBar from 'react-native-progress/Bar';
 import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
+import MemorizeView from '../components/MemorizeView';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 const LessonState = {
     MEMORIZE: 1,
@@ -39,7 +38,6 @@ export default class LessonScreen extends React.Component {
 
         this.state = {
             lessonState: LessonState.MEMORIZE,
-            kanaFont: QuizSettings.kanaFont,
             currentItemIndex: 0,
             currentKanaItem: Kana.KanaData[this.lessonItems[0]],
             barProgress: 0,
@@ -150,7 +148,7 @@ export default class LessonScreen extends React.Component {
             console.log(error);
         }
     }
-    handleAnswerSelected = (kanaData) => {
+    handleAnswerSelected = (audioOnQuizAnswer, kanaData) => {
         if (this.state.lockUntilNextQuiz) {
             return;
         }
@@ -158,7 +156,7 @@ export default class LessonScreen extends React.Component {
         var quizOptions = this.state.quizOptions;
         var idx = quizOptions.indexOf(kanaData);
 
-        if (QuizSettings.audioOnQuizAnswer) {
+        if (audioOnQuizAnswer) {
             this.playAudio(kanaData);
         }
 
@@ -187,10 +185,9 @@ export default class LessonScreen extends React.Component {
         setLessonHistory(newLessonHistory);
         this.props.navigation.pop();
     }
-    render() {
-        let content;
+    getSubView(settings) {
         if (this.state.lessonState == LessonState.COMPLETE) {
-            content = (
+            return (
                 <View style={styles.contentContainer}>
                     <View style={styles.lessonCompleteView}>
                         <Text style={styles.titleText}>Lesson complete!</Text>
@@ -206,44 +203,32 @@ export default class LessonScreen extends React.Component {
                 </View>
             );
         } else if (this.state.lessonState == LessonState.QUIZ) {
-            content = (
+            return (
                 <View style={styles.quizView}>
                     <Text style={styles.subtitleText}>Choose the correct sound...</Text>
                     <QuizView style={styles.quizView}
-                        kanaFont={this.state.kanaFont}
+                        kanaFont={settings.kanaFont}
                         useKanaSelection={this.state.useKanaSelection}
-                        onKanaPress={this.handleAnswerSelected}
+                        onKanaPress={this.handleAnswerSelected.bind(this, settings.audioOnQuizAnswer)}
                         quizOptions={this.state.quizOptions}
                         quizQuestion={this.state.currentKanaItem} />
                 </View>
             );
         } else {
-            content = (
+            return (
                 <View style={styles.contentContainer}>
-                    {/* <Text style={styles.titleText}>{this.lessonType} {this.lesson.title}</Text> */}
                     <Text style={styles.subtitleText}>Memorize the following...</Text>
-                    <View style={styles.lessonLearnView}>
-                        <View style={styles.kanaDisplayContainer}>
-                            <KanaText fontSize={150} kanaFont={this.state.kanaFont}>
-                                {this.state.currentKanaItem.kana}
-                            </KanaText>
-
-                            <KanaText fontSize={100} kanaFont={this.state.kanaFont}>
-                                {this.state.currentKanaItem.eng}
-                            </KanaText>
-                            <RoundedButtonBase style={styles.soundButton} onClick={this.playCurrentSound}>
-                                <Ionicons
-                                    name="md-volume-high"
-                                    size={26}
-                                    color="#fff"
-                                />
-                            </RoundedButtonBase>
-                        </View>
-                        <RoundedButton onClick={this.showNextItem} style={styles.nextButtonStyle} title="Next" />
-                    </View>
+                    <MemorizeView
+                        kanaFont={settings.kanaFont}
+                        currentKanaItem={this.state.currentKanaItem}
+                        playCurrentSound={this.playCurrentSound}
+                        showNextItem={this.showNextItem}
+                    />
                 </View>
             );
         }
+    }
+    render() {
         return (
             <View style={styles.container}>
                 <View style={styles.progressView}>
@@ -252,7 +237,9 @@ export default class LessonScreen extends React.Component {
                         <RoundedButton onClick={this.skipToEnd} style={styles.skipBtn} title="Skip" />
                     }
                 </View>
-                {content}
+                <SettingsContext.Consumer>
+                    {settings => this.getSubView(settings)}
+                </SettingsContext.Consumer>
             </View>
         );
     }
@@ -266,14 +253,6 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 0,
         padding: 0,
-    },
-    soundButton: {
-        alignSelf: 'center'
-    },
-    kanaDisplayContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     progressView: {
         margin: 20,
@@ -296,10 +275,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 20,
         marginLeft: 20
-    },
-    lessonLearnView: {
-        flex: 1,
-        flexDirection: 'column',
     },
     contentContainer: {
         marginRight: 20,

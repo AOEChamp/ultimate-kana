@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 
 import { KanaBlock } from '../components/KanaBlock';
-import { KanaText } from '../components/KanaText';
+import KanaText from '../components/KanaText';
 
 export const QuizView = ({ kanaFont, useKanaSelection, onKanaPress, quizOptions, quizQuestion, style }) => (
     <View style={style}>

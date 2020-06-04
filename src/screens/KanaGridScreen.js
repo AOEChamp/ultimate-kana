@@ -4,15 +4,14 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Button,
 } from 'react-native';
 
 import { KanaGrid } from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo-av';
-import { QuizSettings } from '../constants/Settings';
 import { RoundedButton } from '../components/RoundedButton';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 export default class KanaGridScreen extends React.Component {
   static navigationOptions = {
@@ -50,7 +49,6 @@ export default class KanaGridScreen extends React.Component {
       gojuonSelectedCount: 0,
       dakutenSelectedCount: 0,
       yoonSelectedCount: 0,
-      kanaFont: QuizSettings.kanaFont
     };
   }
   toggleDakuten = () => {
@@ -144,7 +142,11 @@ export default class KanaGridScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
-          <KanaGrid gridState={this.state.kanaGridState} kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} />
+          <SettingsContext.Consumer>
+            {settings => (
+              <KanaGrid gridState={this.state.kanaGridState} kanaFont={settings.kanaFont} onKanaPress={this.handleKanaPress} />
+            )}
+          </SettingsContext.Consumer>
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>

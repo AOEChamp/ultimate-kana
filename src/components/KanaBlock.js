@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { KanaText } from './KanaText';
+import KanaText from './KanaText';
 
 export class KanaBlock extends React.Component {
     constructor(props) {

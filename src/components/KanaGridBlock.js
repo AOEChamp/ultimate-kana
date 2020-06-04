@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { KanaText } from './KanaText';
+import KanaText from './KanaText';
 
 export class KanaGridBlock extends React.Component {
     constructor(props) {

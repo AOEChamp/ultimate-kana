@@ -5,12 +5,13 @@ import {
 } from 'react-native';
 
 import * as Kana from '../constants/Kana';
-import { QuizSettings, getItem, setItem, SettingKeys } from '../constants/Settings';
+import { getItem, setItem, SettingKeys } from '../constants/Settings';
 import { FontList } from '../constants/Fonts';
 import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
+import { SettingsContext } from '../contexts/SettingsContext';
 
-export default class QuizScreen extends React.Component {
+class QuizScreen extends React.Component {
     static navigationOptions = {
         headerShown: false,
     };
@@ -19,8 +20,10 @@ export default class QuizScreen extends React.Component {
 
         this.fullQuizPool = _.cloneDeep(this.props.navigation.state.params.kanaSet);
         this.resetQuizPool();
-        this.state = this.getNewQuizItem();
     }
+    componentWillMount() {
+        this.showNewQuizItem();
+      }
     resetQuizPool = () => {
         this.currentQuizPool = _.cloneDeep(this.fullQuizPool);
     }
@@ -40,7 +43,7 @@ export default class QuizScreen extends React.Component {
         var quizOptions = this.state.quizOptions;
         var idx = quizOptions.indexOf(kanaData);
 
-        if (QuizSettings.audioOnQuizAnswer) {
+        if (this.context.settings.audioOnQuizAnswer) {
             this.playAudio(kanaData);
         }
 
@@ -98,20 +101,13 @@ export default class QuizScreen extends React.Component {
             }
         }
 
-        if (QuizSettings.audioOnQuizDisplay) {
+        if (this.context.settings.audioOnQuizDisplay) {
             this.playAudio(currentQuizItem);
         }
 
-        var useKanaSelection = QuizSettings.enableKanaSelectionDrills;
-        if (useKanaSelection && QuizSettings.enableRomajiSelectionDrills) {
+        var useKanaSelection = this.context.settings.enableKanaSelectionDrills;
+        if (useKanaSelection && this.context.settings.enableRomajiSelectionDrills) {
             useKanaSelection = Math.random() >= 0.5;
-        }
-
-        var kanaFont = QuizSettings.kanaFont;
-        if (QuizSettings.randomizeKanaFont) {
-            const fontNames = Object.keys(FontList);
-            const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
-            kanaFont = fontNames[fontIdx];
         }
 
         return {
@@ -119,16 +115,24 @@ export default class QuizScreen extends React.Component {
             quizOptions: _.cloneDeep(quizOptions),
             useKanaSelection: useKanaSelection,
             lockUntilNextQuiz: false,
-            kanaFont: kanaFont,
         };
     }
     showNewQuizItem = () => {
         this.setState(this.getNewQuizItem());
     }
+    getFont = () => {
+        let kanaFont = this.context.settings.kanaFont;
+        if (this.context.settings.randomizeKanaFont) {
+            const fontNames = Object.keys(FontList);
+            const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
+            kanaFont = fontNames[fontIdx];
+        }
+        return kanaFont;
+    }
     render() {
         return (
             <QuizView style={styles.container}
-                kanaFont={this.state.kanaFont}
+                kanaFont={this.getFont()}
                 useKanaSelection={this.state.useKanaSelection}
                 onKanaPress={this.handleAnswerSelected}
                 quizOptions={this.state.quizOptions}
@@ -136,6 +140,10 @@ export default class QuizScreen extends React.Component {
         )
     }
 };
+
+QuizScreen.contextType = SettingsContext;
+
+export default QuizScreen;
 
 const styles = StyleSheet.create({
     container: {

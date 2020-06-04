@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -7,61 +7,60 @@ import {
 } from 'react-native';
 
 import { TextSwitch } from '../components/TextSwitch';
-import { QuizSettings } from '../constants/Settings';
 import { KanaBlock } from '../components/KanaBlock';
 import { FontList } from '../constants/Fonts';
+import { SettingsContext } from '../contexts/SettingsContext';
 
-export default class SettingsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Settings',
-  };
-  constructor(props) {
-    super(props);
+const SettingsScreen = () => {
+  let { settings, setSettings } = useContext(SettingsContext);
 
-    this.state = { QuizSettings };
+  const toggleRomajiDrill = () => {
+    settings.enableRomajiSelectionDrills = !settings.enableRomajiSelectionDrills;
+    settings.enableKanaSelectionDrills = !settings.enableRomajiSelectionDrills ? true : settings.enableKanaSelectionDrills;
+    setSettings(settings);
   }
-  toggleRomajiDrill = () => {
-    QuizSettings.enableRomajiSelectionDrills = !QuizSettings.enableRomajiSelectionDrills;
-    QuizSettings.enableKanaSelectionDrills = !QuizSettings.enableRomajiSelectionDrills ? true : QuizSettings.enableKanaSelectionDrills;
-    this.setState({ QuizSettings });
+  const toggleKanaDrill = () => {
+    settings.enableKanaSelectionDrills = !settings.enableKanaSelectionDrills;
+    settings.enableRomajiSelectionDrills = !settings.enableKanaSelectionDrills ? true : settings.enableRomajiSelectionDrills;
+    setSettings(settings);
   }
-  toggleKanaDrill = () => {
-    QuizSettings.enableKanaSelectionDrills = !QuizSettings.enableKanaSelectionDrills;
-    QuizSettings.enableRomajiSelectionDrills = !QuizSettings.enableKanaSelectionDrills ? true : QuizSettings.enableRomajiSelectionDrills;
-    this.setState({ QuizSettings });
+  const toggleAudioDisplay = () => {
+    settings.audioOnQuizDisplay = !settings.audioOnQuizDisplay;
+    setSettings(settings);
   }
-  toggleAudioDisplay = () => {
-    QuizSettings.audioOnQuizDisplay = !QuizSettings.audioOnQuizDisplay;
-    this.setState({ QuizSettings });
+  const toggleAudioAnswer = () => {
+    settings.audioOnQuizAnswer = !settings.audioOnQuizAnswer;
+    setSettings(settings);
   }
-  toggleAudioAnswer = () => {
-    QuizSettings.audioOnQuizAnswer = !QuizSettings.audioOnQuizAnswer;
-    this.setState({ QuizSettings });
+  const toggleRandomizeFont = () => {
+    settings.randomizeKanaFont = !settings.randomizeKanaFont;
+    setSettings(settings);
   }
-  toggleRandomizeFont = () => {
-    QuizSettings.randomizeKanaFont = !QuizSettings.randomizeKanaFont;
-    this.setState({ QuizSettings });
+  const setFont = (fontName) => {
+    settings.kanaFont = fontName;
+    setSettings(settings);
   }
-  setFont = (fontName) => {
-    QuizSettings.kanaFont = fontName;
-    this.setState({ QuizSettings });
-  }
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <TextSwitch value={this.state.QuizSettings.enableRomajiSelectionDrills} onValueChange={this.toggleRomajiDrill} style={styles.switch}>Enable Romaji selection drills</TextSwitch>
-        <TextSwitch value={this.state.QuizSettings.enableKanaSelectionDrills} onValueChange={this.toggleKanaDrill} style={styles.switch}>Enable Kana selection drills</TextSwitch>
-        <TextSwitch value={this.state.QuizSettings.audioOnQuizAnswer} onValueChange={this.toggleAudioAnswer} style={styles.switch}>Play audio on selection</TextSwitch>
-        <TextSwitch value={this.state.QuizSettings.audioOnQuizDisplay} onValueChange={this.toggleAudioDisplay} style={styles.switch}>Play audio on drill</TextSwitch>
-        <View>
-          <Text style={styles.fontLabel}>Font:</Text>
-          <TextSwitch value={this.state.QuizSettings.randomizeKanaFont} onValueChange={this.toggleRandomizeFont} style={styles.switch}>Randomize font</TextSwitch>
-          <FontSelector disabled={this.state.QuizSettings.randomizeKanaFont} selectedFont={this.state.QuizSettings.kanaFont} onSelected={this.setFont} />
-        </View>
-      </ScrollView>
-    );
-  }
+
+  return (
+    <ScrollView style={styles.container}>
+      <TextSwitch value={settings.enableRomajiSelectionDrills} onValueChange={toggleRomajiDrill} style={styles.switch}>Enable Romaji selection drills</TextSwitch>
+      <TextSwitch value={settings.enableKanaSelectionDrills} onValueChange={toggleKanaDrill} style={styles.switch}>Enable Kana selection drills</TextSwitch>
+      <TextSwitch value={settings.audioOnQuizAnswer} onValueChange={toggleAudioAnswer} style={styles.switch}>Play audio on selection</TextSwitch>
+      <TextSwitch value={settings.audioOnQuizDisplay} onValueChange={toggleAudioDisplay} style={styles.switch}>Play audio on drill</TextSwitch>
+      <View>
+        <Text style={styles.fontLabel}>Font:</Text>
+        <TextSwitch value={settings.randomizeKanaFont} onValueChange={toggleRandomizeFont} style={styles.switch}>Randomize font</TextSwitch>
+        <FontSelector disabled={settings.randomizeKanaFont} selectedFont={settings.kanaFont} onSelected={setFont} />
+      </View>
+    </ScrollView>
+  );
 }
+
+SettingsScreen.navigationOptions = {
+  title: 'Settings',
+};
+
+export default SettingsScreen;
 
 const FontSelector = props => (
   <View opacity={props.disabled ? 0.5 : 1} style={styles.fontSelector}>

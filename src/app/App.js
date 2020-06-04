@@ -10,7 +10,8 @@ import { LoadFonts } from '../constants/Fonts';
 import { getItem, setItem } from '../utils/Storage';
 import { KanaStats, SettingKeys } from '../constants/Settings';
 import { KanaData } from '../constants/Kana';
-import { LessonHistoryProvider, initialLessionHistory, SettingKey } from '../contexts/LessonHistoryContext';
+import { LessonHistoryProvider, initialLessionHistory, LessonHistoryKey } from '../contexts/LessonHistoryContext';
+import { SettingsProvider, initialSettings, SettingsKey } from '../contexts/SettingsContext';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -35,14 +36,16 @@ export default class HybridApp extends React.Component {
     return Promise.all([
       this._loadResourcesAsync(),
       this.initKanaStats(),
-      this.loadLessonHistory()
+      this.loadSavedStates()
     ]);
   }
 
   initialLessionHistoryState = null;
+  initialSettingsState = null;
 
-  loadLessonHistory = async () => {
-    this.initialLessionHistoryState = await getItem(SettingKey) || initialLessionHistory();
+  loadSavedStates = async () => {
+    this.initialLessionHistoryState = await getItem(LessonHistoryKey) || initialLessionHistory();
+    this.initialSettingsState = await getItem(SettingsKey) || initialSettings();
   }
 
   initKanaStats = async () => {
@@ -71,7 +74,9 @@ export default class HybridApp extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
-            <AppNavigator />
+            <SettingsProvider initialState={this.initialSettingsState}>
+              <AppNavigator />
+            </SettingsProvider>
           </LessonHistoryProvider>
         </View>
       );

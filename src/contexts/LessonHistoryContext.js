@@ -1,14 +1,14 @@
 import React, { useReducer, useEffect } from "react";
 import { HiraganaLessons, KatakanaLessons } from '../constants/Kana';
-import { getItem, setItem } from '../utils/Storage';
+import { setItem } from '../utils/Storage';
 
 const LessonHistoryContext = React.createContext();
-const SettingKey = "LessonHistory";
+const LessonHistoryKey = "LessonHistory";
 
 let reducer = (lessonHistory, newLessonHistory) => {
   if (newLessonHistory === null) {
     const tmp = initialLessionHistory();
-    setItem(SettingKey, tmp);
+    setItem(LessonHistoryKey, tmp);
     return tmp;
   }
   return { ...lessonHistory, ...newLessonHistory };
@@ -18,7 +18,7 @@ function LessonHistoryProvider(props) {
   const [lessonHistory, setLessonHistory] = useReducer(reducer, props.initialState);
 
   useEffect(() => {
-    setItem(SettingKey, lessonHistory);
+    setItem(LessonHistoryKey, lessonHistory);
   }, [lessonHistory]);
 
   return (
@@ -37,4 +37,4 @@ function initialLessionHistory() {
     return hist;
 }
 
-export { LessonHistoryContext, LessonHistoryProvider, initialLessionHistory, SettingKey };
+export { LessonHistoryContext, LessonHistoryProvider, initialLessionHistory, LessonHistoryKey };

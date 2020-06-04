@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -8,29 +8,11 @@ import {
 import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
 import { Audio } from 'expo-av';
-import { QuizSettings } from '../constants/Settings';
+import { SettingsContext }  from '../contexts/SettingsContext';
 import { Dropdown } from 'react-native-material-dropdown';
 
-export default class KanaReferenceGridScreen extends React.Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-    constructor(props) {
-        super(props);
-
-        this.props.navigation.state.params = this.props.navigation.state.params || {};
-        this.kanaGridType = this.props.navigation.state.params.gridType || Kana.KanaGridTypes.Hiragana;
-
-        let kanaGridState = this.getGridStateForLayout(this.kanaGridType);
-
-        this.gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({ value: gridType }));
-
-        this.state = {
-            kanaGridState: kanaGridState,
-            kanaFont: QuizSettings.kanaFont
-        };
-    }
-    getGridStateForLayout = (gridType) => {
+const KanaReferenceGridScreen = ({navigation}) => {
+    const getGridStateForLayout = (gridType) => {
         var gridLayout;
 
         switch (gridType) {
@@ -46,7 +28,14 @@ export default class KanaReferenceGridScreen extends React.Component {
         )));
         return kanaGridState;
     }
-    playAudio = async (kanaKey) => {
+
+    const [kanaGridType, setKanaGridType] = useState(navigation.state.params?.gridType || Kana.KanaGridTypes.Hiragana);
+    const [kanaGridState, setKanaGridState] = useState(getGridStateForLayout(kanaGridType));
+    const gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({ value: gridType }));
+    const { settings } = useContext(SettingsContext);
+    console.log("font:"+settings.kanaFont);
+
+    const playAudio = async (kanaKey) => {
         const soundObject = new Audio.Sound();
 
         try {
@@ -56,35 +45,38 @@ export default class KanaReferenceGridScreen extends React.Component {
             console.log(error);
         }
     }
-    handleKanaPress = (kanaItem) => {
-        this.playAudio(kanaItem.kana);
+    const handleKanaPress = (kanaItem) => {
+        playAudio(kanaItem.kana);
     }
-    handleDropdownChange = (value) => {
-        if (this.kanaGridType !== value && Kana.KanaGridTypes[value]) {
-            this.kanaGridType = value;
-            let kanaGridState = this.getGridStateForLayout(this.kanaGridType);
-
-            this.setState({ kanaGridState: kanaGridState });
+    const handleDropdownChange = (value) => {
+        if (kanaGridType !== value && Kana.KanaGridTypes[value]) {
+            setKanaGridType(value);
+            setKanaGridState(getGridStateForLayout(value));
         }
     }
-    render() {
-        return (
-            <View style={styles.container}>
-                <Dropdown
-                    labelFontSize={0}
-                    dropdownPosition={-2}
-                    data={this.gridTypeData}
-                    value={this.kanaGridType}
-                    containerStyle={styles.dropdownStyle}
-                    onChangeText={this.handleDropdownChange}
-                />
-                <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
-                    <KanaGrid gridState={this.state.kanaGridState} kanaFont={this.state.kanaFont} onKanaPress={this.handleKanaPress} />
-                </ScrollView>
-            </View>
-        );
-    }
+
+    return (
+        <View style={styles.container}>
+            <Dropdown
+                labelFontSize={0}
+                dropdownPosition={-2}
+                data={gridTypeData}
+                value={kanaGridType}
+                containerStyle={styles.dropdownStyle}
+                onChangeText={handleDropdownChange}
+            />
+            <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
+                <KanaGrid gridState={kanaGridState} kanaFont={settings.kanaFont} onKanaPress={handleKanaPress} />
+            </ScrollView>
+        </View>
+    );
 }
+
+KanaReferenceGridScreen.navigationOptions = {
+    headerShown: false,
+};
+
+export default KanaReferenceGridScreen;
 
 const styles = StyleSheet.create({
     dropdownStyle: {
