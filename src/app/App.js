@@ -7,11 +7,10 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts } from '../constants/Fonts';
-import { getItem, setItem } from '../utils/Storage';
-import { KanaStats, SettingKeys } from '../constants/Settings';
-import { KanaData } from '../constants/Kana';
+import { getItem } from '../utils/Storage';
 import { LessonHistoryProvider, initialLessionHistory, LessonHistoryKey } from '../contexts/LessonHistoryContext';
 import { SettingsProvider, initialSettings, SettingsKey } from '../contexts/SettingsContext';
+import { KanaStatsProvider, initialKanaStats, KanaStatsKey } from '../contexts/KanaStatsContext';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -35,29 +34,18 @@ export default class HybridApp extends React.Component {
   initAsync = async () => {
     return Promise.all([
       this._loadResourcesAsync(),
-      this.initKanaStats(),
       this.loadSavedStates()
     ]);
   }
 
   initialLessionHistoryState = null;
   initialSettingsState = null;
+  initialKanaStatsState = null;
 
   loadSavedStates = async () => {
     this.initialLessionHistoryState = await getItem(LessonHistoryKey) || initialLessionHistory();
     this.initialSettingsState = await getItem(SettingsKey) || initialSettings();
-  }
-
-  initKanaStats = async () => {
-    let kanaStats = await getItem(SettingKeys.KanaGridStats);
-
-    if (kanaStats == null) {
-      kanaStats = Object.keys(KanaData).reduce(function (result, key) {
-        result[key] = new KanaStats(key);
-        return result;
-      }, {});
-      await setItem(SettingKeys.KanaGridStats, kanaStats);
-    }
+    this.initialKanaStatsState = await getItem(KanaStatsKey) || initialKanaStats();
   }
 
   render() {
@@ -75,7 +63,9 @@ export default class HybridApp extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
             <SettingsProvider initialState={this.initialSettingsState}>
-              <AppNavigator />
+              <KanaStatsProvider initialState={this.initialKanaStatsState}>
+                <AppNavigator />
+              </KanaStatsProvider>
             </SettingsProvider>
           </LessonHistoryProvider>
         </View>

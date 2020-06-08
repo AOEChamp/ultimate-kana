@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import QuizScreen from '../screens/QuizScreen';
 import LessonSelectScreen from '../screens/LessonSelectScreen';
 import LessonScreen from '../screens/LessonScreen';
+import ReviewSelectScreen from '../screens/ReviewSelectScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -29,6 +30,22 @@ HomeStack.navigationOptions = {
           ? `ios-information-circle${focused ? '' : '-outline'}`
           : 'md-information-circle'
       }
+    />
+  ),
+};
+
+const ReviewStack = createStackNavigator({
+  ReviewSelectScreen: ReviewSelectScreen,
+  KanaGrid: KanaGridScreen,
+  QuizScreen: QuizScreen,
+});
+
+ReviewStack.navigationOptions = {
+  tabBarLabel: 'Review',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={'md-book'}
     />
   ),
 };
@@ -63,6 +80,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  ReviewStack,
   KanaGridStack,
   SettingsStack,
 });

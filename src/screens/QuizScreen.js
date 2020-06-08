@@ -5,11 +5,11 @@ import {
 } from 'react-native';
 
 import * as Kana from '../constants/Kana';
-import { getItem, setItem, SettingKeys } from '../constants/Settings';
 import { FontList } from '../constants/Fonts';
 import { Audio } from 'expo-av';
 import { QuizView } from '../components/QuizView';
 import { SettingsContext } from '../contexts/SettingsContext';
+import { KanaStatsContext } from '../contexts/KanaStatsContext';
 
 class QuizScreen extends React.Component {
     static navigationOptions = {
@@ -35,7 +35,7 @@ class QuizScreen extends React.Component {
         const currentQuizItem = Kana.KanaData[this.currentQuizPool.splice(idx, 1)];
         return currentQuizItem;
     }
-    handleAnswerSelected = (kanaData) => {
+    handleAnswerSelected = (kanaStats, setKanaStats, kanaData) => {
         if (this.state.lockUntilNextQuiz) {
             return;
         }
@@ -53,27 +53,23 @@ class QuizScreen extends React.Component {
                 quizOptions: quizOptions,
                 lockUntilNextQuiz: true
             });
-            this.setQuizStat(kanaData, false);
+            this.setQuizStat(kanaStats, setKanaStats, kanaData, false);
             setTimeout(() => this.showNewQuizItem(), 1000);
         } else if (idx != -1) {
             quizOptions[idx].fail = true;
             this.setState({ quizOptions: quizOptions });
-            this.setQuizStat(kanaData, true);
+            this.setQuizStat(kanaStats, setKanaStats, kanaData, true);
         }
     }
-    setQuizStat = async (kanaData, fail) => {
-        if(!this.kanaStats) {
-            this.kanaStats = await getItem(SettingKeys.KanaGridStats);
-        }
-
-        let stat = this.kanaStats[kanaData.kana];
+    setQuizStat = (kanaStats, setKanaStats, kanaData, fail) => {
+        let newKanaStats = _.cloneDeep(kanaStats);
+        let stat = newKanaStats[kanaData.kana];
         stat.totalFailures += fail ? 1 : 0;
         stat.totalViews++;
         if(stat.lastNAttempts.unshift(fail ? false : true) > 5) {
             stat.lastNAttempts.pop();
         }
-        
-        setItem(SettingKeys.KanaGridStats, this.kanaStats);
+        setKanaStats(newKanaStats);
     }
     playAudio = async (kanaData) => {
         const soundObject = new Audio.Sound();
@@ -131,12 +127,16 @@ class QuizScreen extends React.Component {
     }
     render() {
         return (
-            <QuizView style={styles.container}
-                kanaFont={this.getFont()}
-                useKanaSelection={this.state.useKanaSelection}
-                onKanaPress={this.handleAnswerSelected}
-                quizOptions={this.state.quizOptions}
-                quizQuestion={this.state.currentQuizItem} />
+            <KanaStatsContext.Consumer>
+                {({kanaStats, setKanaStats}) => (
+                    <QuizView style={styles.container}
+                        kanaFont={this.getFont()}
+                        useKanaSelection={this.state.useKanaSelection}
+                        onKanaPress={this.handleAnswerSelected.bind(this, kanaStats, setKanaStats)}
+                        quizOptions={this.state.quizOptions}
+                        quizQuestion={this.state.currentQuizItem} />
+                )}
+            </KanaStatsContext.Consumer>
         )
     }
 };
