@@ -1,15 +1,16 @@
 import React from 'react';
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   View,
+  Dimensions,
 } from 'react-native';
 import ScalableText from 'react-native-text';
 
 import { KanaGridTypes } from '../constants/Kana';
 import { RoundedButton } from '../components/RoundedButton';
+import KanaDropText from '../components/KanaDropText';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -30,21 +31,11 @@ export default class HomeScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <ScalableText style={styles.titleText}>Ultimate Kana</ScalableText>
           </View>
+          <KanaDropText height={Math.round(Dimensions.get('window').height / 2)} style={styles.canvas} />
           <Text style={styles.headerText}>Lessons</Text>
           <View style={styles.buttonContainer}>
             <RoundedButton onClick={this.navigateToLessonSelectH} title="Hiragana" />
             <RoundedButton onClick={this.navigateToLessonSelectK} title="Katakana" />
-          </View>
-          <View style={styles.hr}></View>
-          <Text style={styles.headerText}>Quiz</Text>
-          <Text style={styles.subtext}>
-            Choose the Kana you wish to be quizzed on in the following page
-          </Text>
-          <View style={styles.buttonContainer}>
-            <RoundedButton title="Hiragana"
-              onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Hiragana })} />
-            <RoundedButton title="Katakana"
-              onClick={() => this.props.navigation.navigate('KanaGrid', { gridType: KanaGridTypes.Katakana })} />
           </View>
         </ScrollView>
       </View>
@@ -53,6 +44,9 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  canvas: {
+    flexShrink: 1
+  },
   titleText: {
     fontFamily: 'Arkipelago',
     fontSize: 50,
@@ -64,14 +58,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  hr: {
-    marginTop: 40,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    width: '100%'
   },
   mainContainer: {
     flex: 1,
@@ -80,23 +66,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  subtext: {
-    marginTop: 10,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-  },
   contentContainer: {
     justifyContent: 'center',
-    padding: 40
+    padding: 40,
+    flex: 1
   },
   welcomeContainer: {
     alignItems: 'center',
     marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 10,
   },
 });
