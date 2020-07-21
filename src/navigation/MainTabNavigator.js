@@ -17,7 +17,7 @@ const HomeStack = createStackNavigator({
   Home: HomeScreen,
   KanaGrid: KanaGridScreen,
   LessonSelectScreen: LessonSelectScreen,
-  LessonScreen: LessonScreen
+  LessonScreen: LessonScreen,
 });
 
 HomeStack.navigationOptions = {
@@ -38,16 +38,13 @@ const ReviewStack = createStackNavigator({
   ReviewSelectScreen: ReviewSelectScreen,
   KanaGrid: KanaGridScreen,
   QuizScreen: QuizScreen,
-  ReviewScreen: ReviewScreen
+  ReviewScreen: ReviewScreen,
 });
 
 ReviewStack.navigationOptions = {
   tabBarLabel: 'Review',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={'md-book'}
-    />
+    <TabBarIcon focused={focused} name={'md-book'} />
   ),
 };
 

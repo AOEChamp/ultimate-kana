@@ -1,9 +1,9 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect } from 'react';
 import { HiraganaLessons, KatakanaLessons } from '../constants/Kana';
 import { setItem } from '../utils/Storage';
 
 const LessonHistoryContext = React.createContext();
-const LessonHistoryKey = "LessonHistory";
+const LessonHistoryKey = 'LessonHistory';
 
 let reducer = (lessonHistory, newLessonHistory) => {
   if (newLessonHistory === null) {
@@ -15,7 +15,10 @@ let reducer = (lessonHistory, newLessonHistory) => {
 };
 
 function LessonHistoryProvider(props) {
-  const [lessonHistory, setLessonHistory] = useReducer(reducer, props.initialState);
+  const [lessonHistory, setLessonHistory] = useReducer(
+    reducer,
+    props.initialState
+  );
 
   useEffect(() => {
     setItem(LessonHistoryKey, lessonHistory);
@@ -29,12 +32,20 @@ function LessonHistoryProvider(props) {
 }
 
 function initialLessionHistory() {
-    let hist = {};
-    [...HiraganaLessons, ...KatakanaLessons].forEach(lesson => hist[lesson.id] = {
+  let hist = {};
+  [...HiraganaLessons, ...KatakanaLessons].forEach(
+    (lesson) =>
+      (hist[lesson.id] = {
         completed: false,
         attempts: 0,
-    });
-    return hist;
+      })
+  );
+  return hist;
 }
 
-export { LessonHistoryContext, LessonHistoryProvider, initialLessionHistory, LessonHistoryKey };
+export {
+  LessonHistoryContext,
+  LessonHistoryProvider,
+  initialLessionHistory,
+  LessonHistoryKey,
+};

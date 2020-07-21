@@ -8,9 +8,21 @@ import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts } from '../constants/Fonts';
 import { getItem } from '../utils/Storage';
-import { LessonHistoryProvider, initialLessionHistory, LessonHistoryKey } from '../contexts/LessonHistoryContext';
-import { SettingsProvider, initialSettings, SettingsKey } from '../contexts/SettingsContext';
-import { KanaStatsProvider, initialKanaStats, KanaStatsKey } from '../contexts/KanaStatsContext';
+import {
+  LessonHistoryProvider,
+  initialLessionHistory,
+  LessonHistoryKey,
+} from '../contexts/LessonHistoryContext';
+import {
+  SettingsProvider,
+  initialSettings,
+  SettingsKey,
+} from '../contexts/SettingsContext';
+import {
+  KanaStatsProvider,
+  initialKanaStats,
+  KanaStatsKey,
+} from '../contexts/KanaStatsContext';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -23,30 +35,30 @@ export default class HybridApp extends React.Component {
       playsInSilentModeIOS: true,
       shouldDuckAndroid: false,
       interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
-      playThroughEarpieceAndroid: false
+      playThroughEarpieceAndroid: false,
     });
 
     this.state = {
-      isLoadingComplete: false
-    }
+      isLoadingComplete: false,
+    };
   }
 
   initAsync = async () => {
-    return Promise.all([
-      this._loadResourcesAsync(),
-      this.loadSavedStates()
-    ]);
-  }
+    return Promise.all([this._loadResourcesAsync(), this.loadSavedStates()]);
+  };
 
   initialLessionHistoryState = null;
   initialSettingsState = null;
   initialKanaStatsState = null;
 
   loadSavedStates = async () => {
-    this.initialLessionHistoryState = await getItem(LessonHistoryKey) || initialLessionHistory();
-    this.initialSettingsState = await getItem(SettingsKey) || initialSettings();
-    this.initialKanaStatsState = await getItem(KanaStatsKey) || initialKanaStats();
-  }
+    this.initialLessionHistoryState =
+      (await getItem(LessonHistoryKey)) || initialLessionHistory();
+    this.initialSettingsState =
+      (await getItem(SettingsKey)) || initialSettings();
+    this.initialKanaStatsState =
+      (await getItem(KanaStatsKey)) || initialKanaStats();
+  };
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -87,7 +99,7 @@ export default class HybridApp extends React.Component {
     ]);
   };
 
-  _handleLoadingError = error => {
+  _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);

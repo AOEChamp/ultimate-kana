@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { setItem } from '../utils/Storage';
 import { KanaData } from '../constants/Kana';
 
 class KanaStats {
-    totalFailures;
-    totalViews;
-    lastNAttempts;
-    kanaKey;
+  totalFailures;
+  totalViews;
+  lastNAttempts;
+  kanaKey;
 
-    constructor(kanaKey) {
-        this.totalFailures = 0;
-        this.totalViews = 0;
-        this.lastNAttempts = [];
-        this.kanaKey = kanaKey;
-    }
+  constructor(kanaKey) {
+    this.totalFailures = 0;
+    this.totalViews = 0;
+    this.lastNAttempts = [];
+    this.kanaKey = kanaKey;
+  }
 }
 
 const KanaStatsContext = React.createContext();
-const KanaStatsKey = "KanaStats";
+const KanaStatsKey = 'KanaStats';
 
 function KanaStatsProvider(props) {
   const [kanaStats, setKanaStats] = useState(props.initialState);
@@ -34,10 +34,16 @@ function KanaStatsProvider(props) {
 }
 
 function initialKanaStats() {
-    return Object.keys(KanaData).reduce(function (result, key) {
-        result[key] = new KanaStats(key);
-        return result;
-      }, {});
+  return Object.keys(KanaData).reduce(function (result, key) {
+    result[key] = new KanaStats(key);
+    return result;
+  }, {});
 }
 
-export { KanaStatsContext, KanaStatsProvider, initialKanaStats, KanaStatsKey, KanaStats };
+export {
+  KanaStatsContext,
+  KanaStatsProvider,
+  initialKanaStats,
+  KanaStatsKey,
+  KanaStats,
+};

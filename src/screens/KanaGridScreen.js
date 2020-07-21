@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 
 import { KanaGrid } from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
@@ -20,8 +15,11 @@ export default class KanaGridScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.props.navigation.state.params = this.props.navigation.state.params || {};
-    this.kanaGridType = this.props.navigation.state.params.gridType || Kana.KanaGridTypes.Hiragana;
+    this.props.navigation.state.params =
+      this.props.navigation.state.params || {};
+    this.kanaGridType =
+      this.props.navigation.state.params.gridType ||
+      Kana.KanaGridTypes.Hiragana;
 
     var gridLayout;
 
@@ -40,9 +38,13 @@ export default class KanaGridScreen extends React.Component {
         break;
     }
 
-    var kanaGridState = gridLayout.map(row => row.map(kana => (
-      { kana: kana, selected: false, eng: kana === '' ? '' : Kana.KanaData[kana].eng }
-    )));
+    var kanaGridState = gridLayout.map((row) =>
+      row.map((kana) => ({
+        kana: kana,
+        selected: false,
+        eng: kana === '' ? '' : Kana.KanaData[kana].eng,
+      }))
+    );
 
     this.state = {
       kanaGridState: kanaGridState,
@@ -52,15 +54,17 @@ export default class KanaGridScreen extends React.Component {
     };
   }
   toggleDakuten = () => {
-    var selected = !(this.state.dakutenSelectedCount === this.dakutenList.length);
+    var selected = !(
+      this.state.dakutenSelectedCount === this.dakutenList.length
+    );
     var dakutenSelectedCount = selected ? this.dakutenList.length : 0;
     var kanaGridState = this.selectGridWithList(this.dakutenList, selected);
 
     this.setState({
       kanaGridState: kanaGridState,
-      dakutenSelectedCount: dakutenSelectedCount
+      dakutenSelectedCount: dakutenSelectedCount,
     });
-  }
+  };
   toggleGojuon = () => {
     var selected = !(this.state.gojuonSelectedCount === this.gojuonList.length);
     var gojuonSelectedCount = selected ? this.gojuonList.length : 0;
@@ -68,9 +72,9 @@ export default class KanaGridScreen extends React.Component {
 
     this.setState({
       kanaGridState: kanaGridState,
-      gojuonSelectedCount: gojuonSelectedCount
+      gojuonSelectedCount: gojuonSelectedCount,
     });
-  }
+  };
   toggleYoon = () => {
     var selected = !(this.state.yoonSelectedCount === this.yoonList.length);
     var yoonSelectedCount = selected ? this.yoonList.length : 0;
@@ -78,75 +82,120 @@ export default class KanaGridScreen extends React.Component {
 
     this.setState({
       kanaGridState: kanaGridState,
-      yoonSelectedCount: yoonSelectedCount
+      yoonSelectedCount: yoonSelectedCount,
     });
-  }
+  };
   selectGridWithList = (list, selected) => {
-    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
-      {
+    var kanaGridState = this.state.kanaGridState.map((row) =>
+      row.map((item) => ({
         ...item,
-        selected: list.includes(item.kana) ? selected : item.selected
-      }
-    )));
+        selected: list.includes(item.kana) ? selected : item.selected,
+      }))
+    );
     return kanaGridState;
-  }
+  };
   getCountModifier = (kanaItem, list) => {
     if (list.includes(kanaItem.kana)) {
       return kanaItem.selected ? -1 : 1;
     }
     return 0;
-  }
+  };
   handleKanaPress = (kanaItem) => {
     playAudio(Kana.KanaData[kanaItem.kana]);
 
-    var gojuonSelectedCount = this.state.gojuonSelectedCount + this.getCountModifier(kanaItem, this.gojuonList);
-    var dakutenSelectedCount = this.state.dakutenSelectedCount + this.getCountModifier(kanaItem, this.dakutenList);
-    var yoonSelectedCount = this.state.yoonSelectedCount + this.getCountModifier(kanaItem, this.yoonList);
+    var gojuonSelectedCount =
+      this.state.gojuonSelectedCount +
+      this.getCountModifier(kanaItem, this.gojuonList);
+    var dakutenSelectedCount =
+      this.state.dakutenSelectedCount +
+      this.getCountModifier(kanaItem, this.dakutenList);
+    var yoonSelectedCount =
+      this.state.yoonSelectedCount +
+      this.getCountModifier(kanaItem, this.yoonList);
 
-    var kanaGridState = this.state.kanaGridState.map(row => row.map(item => (
-      {
+    var kanaGridState = this.state.kanaGridState.map((row) =>
+      row.map((item) => ({
         ...item,
-        selected: item.kana === kanaItem.kana ? !kanaItem.selected : item.selected
-      }
-    )));
+        selected:
+          item.kana === kanaItem.kana ? !kanaItem.selected : item.selected,
+      }))
+    );
 
     this.setState({
       kanaGridState: kanaGridState,
       gojuonSelectedCount: gojuonSelectedCount,
       dakutenSelectedCount: dakutenSelectedCount,
-      yoonSelectedCount: yoonSelectedCount
+      yoonSelectedCount: yoonSelectedCount,
     });
-  }
+  };
   navigateToQuiz = () => {
-    var selectedKana = this.state.kanaGridState.reduce((result, current) =>
-      result.concat(current.reduce(
-        (result, kanaItem) => kanaItem.selected ? result.concat(kanaItem.kana) : result
-        , []))
-      , []);
+    var selectedKana = this.state.kanaGridState.reduce(
+      (result, current) =>
+        result.concat(
+          current.reduce(
+            (result, kanaItem) =>
+              kanaItem.selected ? result.concat(kanaItem.kana) : result,
+            []
+          )
+        ),
+      []
+    );
     this.props.navigation.navigate('QuizScreen', { kanaSet: selectedKana });
-  }
+  };
   getTotalCount = () => {
-    return this.state.gojuonSelectedCount + this.state.yoonSelectedCount + this.state.dakutenSelectedCount;
-  }
+    return (
+      this.state.gojuonSelectedCount +
+      this.state.yoonSelectedCount +
+      this.state.dakutenSelectedCount
+    );
+  };
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
+        <ScrollView
+          style={styles.kanaGridContainer}
+          contentContainerStyle={styles.contentContainer}
+        >
           <SettingsContext.Consumer>
-            {settings => (
-              <KanaGrid gridState={this.state.kanaGridState} kanaFont={settings.kanaFont} onKanaPress={this.handleKanaPress} />
+            {(settings) => (
+              <KanaGrid
+                gridState={this.state.kanaGridState}
+                kanaFont={settings.kanaFont}
+                onKanaPress={this.handleKanaPress}
+              />
             )}
           </SettingsContext.Consumer>
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>
           <View>
-            <TextSwitch value={this.state.gojuonSelectedCount === this.gojuonList.length} onValueChange={this.toggleGojuon}>All Gojūon ({this.gojuonList.length})</TextSwitch>
-            <TextSwitch value={this.state.dakutenSelectedCount === this.dakutenList.length} onValueChange={this.toggleDakuten}>All (Han)Dakuten ({this.dakutenList.length})</TextSwitch>
-            <TextSwitch value={this.state.yoonSelectedCount === this.yoonList.length} onValueChange={this.toggleYoon}>All Yōon ({this.yoonList.length})</TextSwitch>
+            <TextSwitch
+              value={this.state.gojuonSelectedCount === this.gojuonList.length}
+              onValueChange={this.toggleGojuon}
+            >
+              All Gojūon ({this.gojuonList.length})
+            </TextSwitch>
+            <TextSwitch
+              value={
+                this.state.dakutenSelectedCount === this.dakutenList.length
+              }
+              onValueChange={this.toggleDakuten}
+            >
+              All (Han)Dakuten ({this.dakutenList.length})
+            </TextSwitch>
+            <TextSwitch
+              value={this.state.yoonSelectedCount === this.yoonList.length}
+              onValueChange={this.toggleYoon}
+            >
+              All Yōon ({this.yoonList.length})
+            </TextSwitch>
           </View>
           <View style={styles.tabBarRightView}>
-            <RoundedButton onClick={this.navigateToQuiz} disabled={this.getTotalCount() < 6} title="Start!" />
+            <RoundedButton
+              onClick={this.navigateToQuiz}
+              disabled={this.getTotalCount() < 6}
+              title="Start!"
+            />
           </View>
         </View>
       </View>
@@ -168,8 +217,8 @@ const styles = StyleSheet.create({
   },
   tabBarRightView: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabBarInfoContainer: {
     height: 130,

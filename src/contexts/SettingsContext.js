@@ -1,8 +1,8 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect } from 'react';
 import { setItem } from '../utils/Storage';
 
 const SettingsContext = React.createContext();
-const SettingsKey = "Settings";
+const SettingsKey = 'Settings';
 
 let reducer = (settings, newSettings) => {
   if (newSettings === null) {
@@ -28,14 +28,14 @@ function SettingsProvider(props) {
 }
 
 function initialSettings() {
-    return {
-        enableRomajiSelectionDrills: true,
-        enableKanaSelectionDrills: false,
-        audioOnQuizDisplay: false,
-        audioOnQuizAnswer: true,
-        kanaFont: 'System',
-        randomizeKanaFont: false,
-    };
+  return {
+    enableRomajiSelectionDrills: true,
+    enableKanaSelectionDrills: false,
+    audioOnQuizDisplay: false,
+    audioOnQuizAnswer: true,
+    kanaFont: 'System',
+    randomizeKanaFont: false,
+  };
 }
 
 export { SettingsContext, SettingsProvider, initialSettings, SettingsKey };
