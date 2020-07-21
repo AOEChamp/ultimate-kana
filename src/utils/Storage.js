@@ -18,7 +18,7 @@ export const getItem = async (key) => {
 
 export const setItem = async (key, value) => {
   try {
-    let jsonObj = JSON.stringify(value);
+    const jsonObj = JSON.stringify(value);
     await AsyncStorage.setItem(key, jsonObj);
     asyncStorageCache[key] = jsonObj;
   } catch (error) {

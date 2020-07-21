@@ -7,7 +7,7 @@ import { FontList } from '../constants/Fonts';
 import { SettingsContext } from '../contexts/SettingsContext';
 
 const SettingsScreen = () => {
-  let { settings, setSettings } = useContext(SettingsContext);
+  const { settings, setSettings } = useContext(SettingsContext);
 
   const toggleRomajiDrill = () => {
     settings.enableRomajiSelectionDrills = !settings.enableRomajiSelectionDrills;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { KanaGridBlock } from '../components/KanaGridBlock';
+import { KanaGridBlock } from './KanaGridBlock';
 
 export const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
   gridState.map((rowState, i) => (

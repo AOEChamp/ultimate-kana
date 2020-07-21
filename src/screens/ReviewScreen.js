@@ -29,13 +29,13 @@ const ReviewScreen = () => {
       fullQuizPool.length >= 6 ? 6 : fullQuizPool.length
     );
     quizOptions[Math.floor(Math.random() * quizOptions.length)] = currItem;
-    for (let i = 0; i < quizOptions.length; i++) {
+    for (let i = 0; i < quizOptions.length; i += 1) {
       while (quizOptions[i] !== currItem) {
         const randomItem =
           Kana.KanaData[
             fullQuizPool[Math.floor(Math.random() * fullQuizPool.length)]
           ];
-        if (randomItem != currItem && !quizOptions.includes(randomItem)) {
+        if (randomItem !== currItem && !quizOptions.includes(randomItem)) {
           quizOptions[i] = randomItem;
           break;
         }
@@ -49,11 +49,11 @@ const ReviewScreen = () => {
 
   const showNewQuizItem = () => {
     const newCurrItem = getRandomItem();
-    if (currentQuizPool.length == 1) {
+    if (currentQuizPool.length === 1) {
       setCurrentQuizPool(fullQuizPool);
     } else {
       setCurrentQuizPool(
-        currentQuizPool.filter((kanaKey) => kanaKey != newCurrItem.kana)
+        currentQuizPool.filter((kanaKey) => kanaKey !== newCurrItem.kana)
       );
     }
     setCurrentQuizItem(newCurrItem);
@@ -72,7 +72,7 @@ const ReviewScreen = () => {
       setIsUILocked(true);
       // this.setQuizStat(kanaStats, setKanaStats, kanaData, false);
       setTimeout(() => showNewQuizItem(), 1000);
-    } else if (idx != -1) {
+    } else if (idx !== -1) {
       quizOptions[idx].fail = true;
       setCurrentQuizOptions(quizOptions);
       // this.setQuizStat(kanaStats, setKanaStats, kanaData, true);

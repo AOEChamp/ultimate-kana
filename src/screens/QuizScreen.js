@@ -11,18 +11,22 @@ class QuizScreen extends React.Component {
   static navigationOptions = {
     headerShown: false,
   };
+
   constructor(props) {
     super(props);
 
     this.fullQuizPool = _.cloneDeep(this.props.navigation.state.params.kanaSet);
     this.resetQuizPool();
   }
+
   componentWillMount() {
     this.showNewQuizItem();
   }
+
   resetQuizPool = () => {
     this.currentQuizPool = _.cloneDeep(this.fullQuizPool);
   };
+
   pickQuizItemFromPool = () => {
     if (this.currentQuizPool.length == 0) {
       this.resetQuizPool();
@@ -31,48 +35,51 @@ class QuizScreen extends React.Component {
     const currentQuizItem = Kana.KanaData[this.currentQuizPool.splice(idx, 1)];
     return currentQuizItem;
   };
+
   handleAnswerSelected = (kanaStats, setKanaStats, kanaData) => {
     if (this.state.lockUntilNextQuiz) {
       return;
     }
 
-    var quizOptions = this.state.quizOptions;
-    var idx = quizOptions.indexOf(kanaData);
+    const { quizOptions } = this.state;
+    const idx = quizOptions.indexOf(kanaData);
 
     if (kanaData.kana === this.state.currentQuizItem.kana) {
       quizOptions[idx].success = true;
       this.setState({
-        quizOptions: quizOptions,
+        quizOptions,
         lockUntilNextQuiz: true,
       });
       this.setQuizStat(kanaStats, setKanaStats, kanaData, false);
       setTimeout(() => this.showNewQuizItem(), 1000);
     } else if (idx != -1) {
       quizOptions[idx].fail = true;
-      this.setState({ quizOptions: quizOptions });
+      this.setState({ quizOptions });
       this.setQuizStat(kanaStats, setKanaStats, kanaData, true);
     }
   };
+
   setQuizStat = (kanaStats, setKanaStats, kanaData, fail) => {
-    let newKanaStats = _.cloneDeep(kanaStats);
-    let stat = newKanaStats[kanaData.kana];
+    const newKanaStats = _.cloneDeep(kanaStats);
+    const stat = newKanaStats[kanaData.kana];
     stat.totalFailures += fail ? 1 : 0;
     stat.totalViews++;
-    if (stat.lastNAttempts.unshift(fail ? false : true) > 5) {
+    if (stat.lastNAttempts.unshift(!fail) > 5) {
       stat.lastNAttempts.pop();
     }
     setKanaStats(newKanaStats);
   };
+
   getNewQuizItem = () => {
     const currentQuizItem = this.pickQuizItemFromPool();
 
-    var quizOptions = new Array(
+    const quizOptions = new Array(
       this.fullQuizPool.length >= 6 ? 6 : this.fullQuizPool.length
     );
     quizOptions[
       Math.floor(Math.random() * quizOptions.length)
     ] = currentQuizItem;
-    for (var i = 0; i < quizOptions.length; i++) {
+    for (let i = 0; i < quizOptions.length; i++) {
       while (quizOptions[i] !== currentQuizItem) {
         const randomItem =
           Kana.KanaData[
@@ -90,21 +97,23 @@ class QuizScreen extends React.Component {
       }
     }
 
-    var useKanaSelection = this.context.settings.enableKanaSelectionDrills;
+    let useKanaSelection = this.context.settings.enableKanaSelectionDrills;
     if (useKanaSelection && this.context.settings.enableRomajiSelectionDrills) {
       useKanaSelection = Math.random() >= 0.5;
     }
 
     return {
-      currentQuizItem: currentQuizItem,
+      currentQuizItem,
       quizOptions: _.cloneDeep(quizOptions),
-      useKanaSelection: useKanaSelection,
+      useKanaSelection,
       lockUntilNextQuiz: false,
     };
   };
+
   showNewQuizItem = () => {
     this.setState(this.getNewQuizItem());
   };
+
   render() {
     return (
       <KanaStatsContext.Consumer>

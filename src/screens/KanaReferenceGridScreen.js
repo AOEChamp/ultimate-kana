@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { Dropdown } from 'react-native-material-dropdown';
 import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
 import playAudio from '../utils/Audio';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
-import { Dropdown } from 'react-native-material-dropdown';
 
 const KanaReferenceGridScreen = ({ navigation }) => {
   const { kanaStats } = useContext(KanaStatsContext);
   const getGridStateForLayout = (gridType) => {
-    var gridLayout;
+    let gridLayout;
 
     switch (gridType) {
       case Kana.KanaGridTypes.Hiragana:
@@ -21,9 +21,9 @@ const KanaReferenceGridScreen = ({ navigation }) => {
         gridLayout = Kana.KatakanaGridLayout;
         break;
     }
-    let kanaGridState = gridLayout.map((row) =>
+    const kanaGridState = gridLayout.map((row) =>
       row.map((kana) => ({
-        kana: kana,
+        kana,
         selected: false,
         eng: kana === '' ? '' : Kana.KanaData[kana].eng,
         stats: kanaStats[kana],

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import KanaText from '../components/KanaText';
 import { Ionicons } from '@expo/vector-icons';
-import { RoundedButton, RoundedButtonBase } from '../components/RoundedButton';
+import KanaText from './KanaText';
+import { RoundedButton, RoundedButtonBase } from './RoundedButton';
 
 const MemorizeView = ({
   kanaFont,

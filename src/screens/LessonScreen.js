@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import _ from 'lodash';
+import ProgressBar from 'react-native-progress/Bar';
 import { RoundedButton } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
-import ProgressBar from 'react-native-progress/Bar';
 import playAudio from '../utils/Audio';
 import { QuizView } from '../components/QuizView';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
@@ -17,9 +17,6 @@ const LessonState = {
 };
 
 export default class LessonScreen extends React.Component {
-  static navigationOptions = {
-    headerShown: false,
-  };
   constructor(props) {
     super(props);
 
@@ -42,6 +39,7 @@ export default class LessonScreen extends React.Component {
     };
     playAudio(this.state.currentKanaItem);
   }
+
   shuffleArray = (a) => {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -49,12 +47,13 @@ export default class LessonScreen extends React.Component {
     }
     return a;
   };
+
   getStateForQuizItem = (quizItemIndex) => {
-    let currentKanaItem = Kana.KanaData[this.lessonItems[quizItemIndex]];
-    let fullQuizPool = this.shuffleArray(
+    const currentKanaItem = Kana.KanaData[this.lessonItems[quizItemIndex]];
+    const fullQuizPool = this.shuffleArray(
       this.lessonItems.slice(0, this.currentLearnedIndex + 1)
     );
-    let quizOptions = new Array(6);
+    const quizOptions = new Array(6);
 
     for (var i = 0; i < quizOptions.length; i++) {
       quizOptions[i] = { ignore: true };
@@ -79,9 +78,10 @@ export default class LessonScreen extends React.Component {
     }
     return {
       quizOptions: _.cloneDeep(quizOptions),
-      currentKanaItem: currentKanaItem,
+      currentKanaItem,
     };
   };
+
   showNextItem = () => {
     this.currentLessonStep++;
 
@@ -93,8 +93,8 @@ export default class LessonScreen extends React.Component {
       return;
     }
 
-    let lessonState = this.state.lessonState;
-    let currentItemIndex = this.state.currentItemIndex;
+    let { lessonState } = this.state;
+    let { currentItemIndex } = this.state;
 
     if (this.currentLessonStep === (this.lessonSteps / 3) * 2) {
       this.quizCounter = this.lessonItems.length;
@@ -117,11 +117,11 @@ export default class LessonScreen extends React.Component {
       currentItemIndex++;
       this.currentLearnedIndex = currentItemIndex;
 
-      console.log('memorize, idx: ' + currentItemIndex);
-      let currentKanaItem = Kana.KanaData[this.lessonItems[currentItemIndex]];
+      console.log(`memorize, idx: ${currentItemIndex}`);
+      const currentKanaItem = Kana.KanaData[this.lessonItems[currentItemIndex]];
       this.setState({
-        currentItemIndex: currentItemIndex,
-        currentKanaItem: currentKanaItem,
+        currentItemIndex,
+        currentKanaItem,
         barProgress: this.currentLessonStep / this.lessonSteps,
         lessonState: LessonState.MEMORIZE,
       });
@@ -129,11 +129,11 @@ export default class LessonScreen extends React.Component {
     } else {
       this.quizCounter--;
       currentItemIndex++;
-      console.log('quiz, idx: ' + currentItemIndex);
-      let state = this.getStateForQuizItem(currentItemIndex);
+      console.log(`quiz, idx: ${currentItemIndex}`);
+      const state = this.getStateForQuizItem(currentItemIndex);
       this.setState({
         ...state,
-        currentItemIndex: currentItemIndex,
+        currentItemIndex,
         barProgress: this.currentLessonStep / this.lessonSteps,
         lessonState: LessonState.QUIZ,
         lockUntilNextQuiz: false,
@@ -141,35 +141,39 @@ export default class LessonScreen extends React.Component {
       });
     }
   };
+
   playCurrentSound = () => {
     playAudio(this.state.currentKanaItem);
   };
+
   handleAnswerSelected = (kanaData) => {
     if (this.state.lockUntilNextQuiz) {
       return;
     }
 
-    var quizOptions = this.state.quizOptions;
-    var idx = quizOptions.indexOf(kanaData);
+    const { quizOptions } = this.state;
+    const idx = quizOptions.indexOf(kanaData);
 
     if (kanaData.kana === this.state.currentKanaItem.kana) {
       quizOptions[idx].success = true;
       this.setState({
-        quizOptions: quizOptions,
+        quizOptions,
         lockUntilNextQuiz: true,
       });
       setTimeout(() => this.showNextItem(), 1000);
     } else if (idx != -1) {
       quizOptions[idx].fail = true;
-      this.setState({ quizOptions: quizOptions });
+      this.setState({ quizOptions });
     }
   };
+
   skipToEnd = () => {
     this.setState({
       lessonState: LessonState.COMPLETE,
       barProgress: 100,
     });
   };
+
   endLesson = (lessonHistory, setLessonHistory) => {
     const newLessonHistory = _.cloneDeep(lessonHistory);
     newLessonHistory[this.lesson.id].completed = true;
@@ -177,6 +181,7 @@ export default class LessonScreen extends React.Component {
     setLessonHistory(newLessonHistory);
     this.props.navigation.pop();
   };
+
   getSubView(settings) {
     if (this.state.lessonState == LessonState.COMPLETE) {
       return (
@@ -199,7 +204,8 @@ export default class LessonScreen extends React.Component {
           </LessonHistoryContext.Consumer>
         </View>
       );
-    } else if (this.state.lessonState == LessonState.QUIZ) {
+    }
+    if (this.state.lessonState == LessonState.QUIZ) {
       return (
         <View style={styles.quizView}>
           <Text style={styles.subtitleText}>Choose the correct sound...</Text>
@@ -213,20 +219,20 @@ export default class LessonScreen extends React.Component {
           />
         </View>
       );
-    } else {
-      return (
-        <View style={styles.contentContainer}>
-          <Text style={styles.subtitleText}>Memorize the following...</Text>
-          <MemorizeView
-            kanaFont={settings.kanaFont}
-            currentKanaItem={this.state.currentKanaItem}
-            playCurrentSound={this.playCurrentSound}
-            showNextItem={this.showNextItem}
-          />
-        </View>
-      );
     }
+    return (
+      <View style={styles.contentContainer}>
+        <Text style={styles.subtitleText}>Memorize the following...</Text>
+        <MemorizeView
+          kanaFont={settings.kanaFont}
+          currentKanaItem={this.state.currentKanaItem}
+          playCurrentSound={this.playCurrentSound}
+          showNextItem={this.showNextItem}
+        />
+      </View>
+    );
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -254,6 +260,10 @@ export default class LessonScreen extends React.Component {
     );
   }
 }
+
+LessonScreen.navigationOptions = {
+  headerShown: false,
+};
 
 const styles = StyleSheet.create({
   progressBar: {

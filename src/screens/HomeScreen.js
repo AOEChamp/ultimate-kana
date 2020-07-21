@@ -16,6 +16,7 @@ export default class HomeScreen extends React.Component {
       lessonType: KanaGridTypes.Hiragana,
     });
   };
+
   navigateToLessonSelectK = () => {
     this.props.navigation.navigate('LessonSelectScreen', {
       lessonType: KanaGridTypes.Katakana,

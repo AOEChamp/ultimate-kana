@@ -48,7 +48,9 @@ export default class HybridApp extends React.Component {
   };
 
   initialLessionHistoryState = null;
+
   initialSettingsState = null;
+
   initialKanaStatsState = null;
 
   loadSavedStates = async () => {
@@ -69,20 +71,19 @@ export default class HybridApp extends React.Component {
           onFinish={this._handleFinishLoading}
         />
       );
-    } else {
-      return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
-            <SettingsProvider initialState={this.initialSettingsState}>
-              <KanaStatsProvider initialState={this.initialKanaStatsState}>
-                <AppNavigator />
-              </KanaStatsProvider>
-            </SettingsProvider>
-          </LessonHistoryProvider>
-        </View>
-      );
     }
+    return (
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
+          <SettingsProvider initialState={this.initialSettingsState}>
+            <KanaStatsProvider initialState={this.initialKanaStatsState}>
+              <AppNavigator />
+            </KanaStatsProvider>
+          </SettingsProvider>
+        </LessonHistoryProvider>
+      </View>
+    );
   }
 
   _loadResourcesAsync = async () => {

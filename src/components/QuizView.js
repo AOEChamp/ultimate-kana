@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FontList } from '../constants/Fonts';
-import { KanaBlock } from '../components/KanaBlock';
-import KanaText from '../components/KanaText';
+import { KanaBlock } from './KanaBlock';
+import KanaText from './KanaText';
 import { SettingsContext } from '../contexts/SettingsContext';
 import playAudio from '../utils/Audio';
 
@@ -16,7 +16,7 @@ export const QuizView = ({
   const { settings } = useContext(SettingsContext);
 
   const getFont = () => {
-    let kanaFont = settings.kanaFont;
+    let { kanaFont } = settings;
     if (settings.randomizeKanaFont) {
       const fontNames = Object.keys(FontList);
       const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));

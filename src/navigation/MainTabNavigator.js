@@ -16,8 +16,8 @@ import ReviewSelectScreen from '../screens/ReviewSelectScreen';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   KanaGrid: KanaGridScreen,
-  LessonSelectScreen: LessonSelectScreen,
-  LessonScreen: LessonScreen,
+  LessonSelectScreen,
+  LessonScreen,
 });
 
 HomeStack.navigationOptions = {
@@ -35,17 +35,15 @@ HomeStack.navigationOptions = {
 };
 
 const ReviewStack = createStackNavigator({
-  ReviewSelectScreen: ReviewSelectScreen,
+  ReviewSelectScreen,
   KanaGrid: KanaGridScreen,
-  QuizScreen: QuizScreen,
-  ReviewScreen: ReviewScreen,
+  QuizScreen,
+  ReviewScreen,
 });
 
 ReviewStack.navigationOptions = {
   tabBarLabel: 'Review',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={'md-book'} />
-  ),
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
 };
 
 const KanaGridStack = createStackNavigator({

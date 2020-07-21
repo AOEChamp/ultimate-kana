@@ -18,7 +18,7 @@ const ReviewSelectScreen = ({ navigation }) => {
             title="Review"
           />
         </View>
-        <View style={styles.hr}></View>
+        <View style={styles.hr} />
         <Text style={styles.headerText}>Custom Quiz</Text>
         <Text style={styles.subtext}>
           Choose the Kana you wish to be quizzed on in the following page

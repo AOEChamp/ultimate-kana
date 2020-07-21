@@ -12,8 +12,8 @@ const KanaText = ({ children, kanaFont, fontSize, style }) => {
         style,
         styles.text,
         {
-          fontSize: fontSize,
-          fontFamily: fontFamily,
+          fontSize,
+          fontFamily,
           height: fontSize,
         },
       ]}

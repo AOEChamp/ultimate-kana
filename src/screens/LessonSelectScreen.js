@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RoundedButtonBase } from '../components/RoundedButton';
 import { Ionicons } from '@expo/vector-icons';
+import { RoundedButtonBase } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 
 const LessonSelectScreen = ({ navigation }) => {
-  let lessonType = navigation.state.params.lessonType;
-  let [lessonSet] = useState(() => {
+  const { lessonType } = navigation.state.params;
+  const [lessonSet] = useState(() => {
     switch (lessonType) {
       case Kana.KanaGridTypes.Hiragana:
         return Kana.HiraganaLessons;
@@ -31,7 +31,7 @@ const LessonSelectScreen = ({ navigation }) => {
   const navigateToLesson = (index) => {
     navigation.navigate('LessonScreen', {
       lesson: lessonSet[index],
-      lessonType: lessonType,
+      lessonType,
     });
   };
 

@@ -5,7 +5,7 @@ import { setItem } from '../utils/Storage';
 const LessonHistoryContext = React.createContext();
 const LessonHistoryKey = 'LessonHistory';
 
-let reducer = (lessonHistory, newLessonHistory) => {
+const reducer = (lessonHistory, newLessonHistory) => {
   if (newLessonHistory === null) {
     const tmp = initialLessionHistory();
     setItem(LessonHistoryKey, tmp);
@@ -32,7 +32,7 @@ function LessonHistoryProvider(props) {
 }
 
 function initialLessionHistory() {
-  let hist = {};
+  const hist = {};
   [...HiraganaLessons, ...KatakanaLessons].forEach(
     (lesson) =>
       (hist[lesson.id] = {

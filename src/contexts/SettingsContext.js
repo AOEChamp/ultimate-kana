@@ -4,7 +4,7 @@ import { setItem } from '../utils/Storage';
 const SettingsContext = React.createContext();
 const SettingsKey = 'Settings';
 
-let reducer = (settings, newSettings) => {
+const reducer = (settings, newSettings) => {
   if (newSettings === null) {
     const tmp = initialSettings();
     setItem(SettinsgKey, tmp);

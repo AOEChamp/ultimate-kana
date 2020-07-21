@@ -4,8 +4,11 @@ import { KanaData } from '../constants/Kana';
 
 class KanaStats {
   totalFailures;
+
   totalViews;
+
   lastNAttempts;
+
   kanaKey;
 
   constructor(kanaKey) {

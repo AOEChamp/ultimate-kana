@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 export const LoadFonts = {
   NotoSansCJK: require('../assets/fonts/NotoSansCJKjp-Regular.otf'),
   Arkipelago: require('../assets/fonts/Arkipelago.otf'),
