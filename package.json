@@ -7,7 +7,11 @@
     "web": "react-scripts start",
     "build-web": "react-scripts build",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll",
+    "prettier:fix": "prettier --write 'src/**/*.js'",
+    "lint": "eslint --ext .js src",
+    "lint:fix": "eslint --ext .js --fix src",
+    "fix:all": "npm run prettier:fix && npm run lint:fix"
   },
   "jest": {
     "preset": "jest-expo"
@@ -44,8 +48,17 @@
     "react-native-webview": "8.1.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "babel-preset-expo": "^8.2.1",
-    "jest-expo": "^37.0.0"
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "jest-expo": "^37.0.0",
+    "prettier": "^2.0.5"
   },
   "private": true,
   "browserslist": [
