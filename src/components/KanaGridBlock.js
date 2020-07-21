@@ -22,7 +22,7 @@ export class KanaGridBlock extends React.Component {
                     backgroundColor: this.props.selected ? this.props.selectColor || '#00BCD4' : '#ccc'
                 }]}>
                 <KanaText fontSize={this.props.fontSize} kanaFont={this.props.kanaFont}>{this.props.kanaItem.kana}</KanaText>
-                <Text>{this.props.kanaItem.eng}</Text>
+                <Text>{this.props.kanaItem.eng}{this.props.kanaItem.stats?.totalViews}</Text>
             </TouchableOpacity>
         );
     }

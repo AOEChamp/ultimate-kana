@@ -9,7 +9,7 @@ import {
 import { KanaGrid } from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
 import * as Kana from '../constants/Kana';
-import { Audio } from 'expo-av';
+import playAudio from '../utils/Audio';
 import { RoundedButton } from '../components/RoundedButton';
 import { SettingsContext } from '../contexts/SettingsContext';
 
@@ -90,16 +90,6 @@ export default class KanaGridScreen extends React.Component {
     )));
     return kanaGridState;
   }
-  playAudio = async (kanaKey) => {
-    const soundObject = new Audio.Sound();
-
-    try {
-      await soundObject.loadAsync(Kana.KanaData[kanaKey].audio);
-      await soundObject.playAsync();
-    } catch (error) {
-      console.log(error);
-    }
-  }
   getCountModifier = (kanaItem, list) => {
     if (list.includes(kanaItem.kana)) {
       return kanaItem.selected ? -1 : 1;
@@ -107,7 +97,7 @@ export default class KanaGridScreen extends React.Component {
     return 0;
   }
   handleKanaPress = (kanaItem) => {
-    this.playAudio(kanaItem.kana);
+    playAudio(Kana.KanaData[kanaItem.kana]);
 
     var gojuonSelectedCount = this.state.gojuonSelectedCount + this.getCountModifier(kanaItem, this.gojuonList);
     var dakutenSelectedCount = this.state.dakutenSelectedCount + this.getCountModifier(kanaItem, this.dakutenList);

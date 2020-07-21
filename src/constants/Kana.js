@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const KanaData = {
     // Hiragana
     'あ': { kana: 'あ', eng: 'a', audio: require('../assets/audio/set1/a.mp3') },

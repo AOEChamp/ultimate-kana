@@ -16,7 +16,7 @@ const ReviewSelectScreen = ({navigation}) => {
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <Text style={styles.headerText}>Review</Text>
                 <View style={styles.buttonContainer}>
-                    <RoundedButton onClick={() => {}} title="Review" />
+                    <RoundedButton onClick={() => navigation.navigate('ReviewScreen')} title="Review" />
                 </View>
                 <View style={styles.hr}></View>
                 <Text style={styles.headerText}>Custom Quiz</Text>

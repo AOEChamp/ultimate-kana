@@ -1,27 +1,61 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet,
     View,
 } from 'react-native';
-
+import { FontList } from '../constants/Fonts';
 import { KanaBlock } from '../components/KanaBlock';
 import KanaText from '../components/KanaText';
+import { SettingsContext } from '../contexts/SettingsContext';
+import playAudio from '../utils/Audio';
 
-export const QuizView = ({ kanaFont, useKanaSelection, onKanaPress, quizOptions, quizQuestion, style }) => (
-    <View style={style}>
-        <View style={styles.displayKanaView}>
-            <View style={styles.quizQuestionView}>
-                <KanaText fontSize={100} kanaFont={kanaFont}>{useKanaSelection ? quizQuestion.eng : quizQuestion.kana}</KanaText>
+export const QuizView = ({ useKanaSelection, onKanaPress, quizOptions, quizQuestion, style }) => {
+    const { settings } = useContext(SettingsContext);
+
+    const getFont = () => {
+        let kanaFont = settings.kanaFont;
+        if (settings.randomizeKanaFont) {
+            const fontNames = Object.keys(FontList);
+            const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
+            kanaFont = fontNames[fontIdx];
+        }
+        return kanaFont;
+    };
+    const [fontName, setFontName] = useState(getFont());
+
+    useEffect(() => {
+        setFontName(getFont());
+    }, [settings]);
+
+    useEffect(() => {
+        if (settings.audioOnQuizDisplay) {
+            playAudio(quizQuestion);
+        }
+    }, [quizQuestion]);
+
+    const internalOnPress = (...props) => {
+        if (settings.audioOnQuizAnswer) {
+            playAudio(quizQuestion);
+        }
+        onKanaPress(...props);
+    }
+
+    return (
+        <View style={style}>
+            <View style={styles.displayKanaView}>
+                <View style={styles.quizQuestionView}>
+                    <KanaText fontSize={100} kanaFont={fontName}>{useKanaSelection ? quizQuestion.eng : quizQuestion.kana}</KanaText>
+                </View>
+            </View>
+            <View style={styles.quizOptionsView}>
+                <KanaQuizRow kanaFont={fontName} useKanaSelection={useKanaSelection} onKanaPress={internalOnPress}
+                    options={quizOptions.slice(0, 3)} />
+                <KanaQuizRow kanaFont={fontName} useKanaSelection={useKanaSelection} onKanaPress={internalOnPress}
+                    options={quizOptions.slice(3, 6)} />
             </View>
         </View>
-        <View style={styles.quizOptionsView}>
-            <KanaQuizRow kanaFont={kanaFont} useKanaSelection={useKanaSelection} onKanaPress={onKanaPress}
-                options={quizOptions.slice(0, 3)} />
-            <KanaQuizRow kanaFont={kanaFont} useKanaSelection={useKanaSelection} onKanaPress={onKanaPress}
-                options={quizOptions.slice(3, 6)} />
-        </View>
-    </View>
-);
+    );
+};
 
 const KanaQuizRow = props => (
     <View style={styles.kanaRow}>

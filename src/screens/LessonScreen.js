@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { RoundedButton } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
 import ProgressBar from 'react-native-progress/Bar';
-import { Audio } from 'expo-av';
+import playAudio from '../utils/Audio';
 import { QuizView } from '../components/QuizView';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 import MemorizeView from '../components/MemorizeView';
@@ -43,7 +43,7 @@ export default class LessonScreen extends React.Component {
             barProgress: 0,
             useKanaSelection: false
         };
-        this.playAudio(this.state.currentKanaItem);
+        playAudio(this.state.currentKanaItem);
     }
     shuffleArray = (a) => {
         for (let i = a.length - 1; i > 0; i--) {
@@ -119,7 +119,7 @@ export default class LessonScreen extends React.Component {
                 barProgress: this.currentLessonStep / this.lessonSteps,
                 lessonState: LessonState.MEMORIZE
             });
-            this.playAudio(currentKanaItem);
+            playAudio(currentKanaItem);
         } else {
             this.quizCounter--;
             currentItemIndex++;
@@ -136,29 +136,15 @@ export default class LessonScreen extends React.Component {
         }
     }
     playCurrentSound = () => {
-        this.playAudio(this.state.currentKanaItem);
+        playAudio(this.state.currentKanaItem);
     }
-    playAudio = async (kanaData) => {
-        const soundObject = new Audio.Sound();
-
-        try {
-            await soundObject.loadAsync(kanaData.audio);
-            await soundObject.playAsync();
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    handleAnswerSelected = (audioOnQuizAnswer, kanaData) => {
+    handleAnswerSelected = (kanaData) => {
         if (this.state.lockUntilNextQuiz) {
             return;
         }
 
         var quizOptions = this.state.quizOptions;
         var idx = quizOptions.indexOf(kanaData);
-
-        if (audioOnQuizAnswer) {
-            this.playAudio(kanaData);
-        }
 
         if (kanaData.kana === this.state.currentKanaItem.kana) {
             quizOptions[idx].success = true;
@@ -209,7 +195,7 @@ export default class LessonScreen extends React.Component {
                     <QuizView style={styles.quizView}
                         kanaFont={settings.kanaFont}
                         useKanaSelection={this.state.useKanaSelection}
-                        onKanaPress={this.handleAnswerSelected.bind(this, settings.audioOnQuizAnswer)}
+                        onKanaPress={this.handleAnswerSelected}
                         quizOptions={this.state.quizOptions}
                         quizQuestion={this.state.currentKanaItem} />
                 </View>

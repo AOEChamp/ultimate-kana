@@ -1,15 +1,22 @@
 Grid
-* Track global accuracy?
+* Display accuracy stats
 
 Quiz
-* Track accuracy
-* Increase frequency of trouble characters
 * Don't play sound on mistakes
+* Allow hira/kata together
+
+Review
+* Increase frequency of trouble characters
+* Limit review size
+* Show session accuracy
 
 Lessons
-* Suggest breaks
+* Add mnemonics
 
 Bugs
 
 Misc
+* License audio
+* Redesign menus and flow
+* Credits/help/github/donate/review links
 * Kana drag drop?

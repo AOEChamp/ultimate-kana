@@ -4,9 +4,7 @@ import {
     StyleSheet,
 } from 'react-native';
 
-import * as Kana from '../constants/Kana';
-import { FontList } from '../constants/Fonts';
-import { Audio } from 'expo-av';
+import * as Kana from '../constants/Kana';;
 import { QuizView } from '../components/QuizView';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
@@ -43,10 +41,6 @@ class QuizScreen extends React.Component {
         var quizOptions = this.state.quizOptions;
         var idx = quizOptions.indexOf(kanaData);
 
-        if (this.context.settings.audioOnQuizAnswer) {
-            this.playAudio(kanaData);
-        }
-
         if (kanaData.kana === this.state.currentQuizItem.kana) {
             quizOptions[idx].success = true;
             this.setState({
@@ -71,16 +65,6 @@ class QuizScreen extends React.Component {
         }
         setKanaStats(newKanaStats);
     }
-    playAudio = async (kanaData) => {
-        const soundObject = new Audio.Sound();
-
-        try {
-            await soundObject.loadAsync(kanaData.audio);
-            await soundObject.playAsync();
-        } catch (error) {
-            console.log(error);
-        }
-    }
     getNewQuizItem = () => {
         const currentQuizItem = this.pickQuizItemFromPool();
 
@@ -95,10 +79,6 @@ class QuizScreen extends React.Component {
                     break;
                 }
             }
-        }
-
-        if (this.context.settings.audioOnQuizDisplay) {
-            this.playAudio(currentQuizItem);
         }
 
         var useKanaSelection = this.context.settings.enableKanaSelectionDrills;
@@ -116,21 +96,11 @@ class QuizScreen extends React.Component {
     showNewQuizItem = () => {
         this.setState(this.getNewQuizItem());
     }
-    getFont = () => {
-        let kanaFont = this.context.settings.kanaFont;
-        if (this.context.settings.randomizeKanaFont) {
-            const fontNames = Object.keys(FontList);
-            const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
-            kanaFont = fontNames[fontIdx];
-        }
-        return kanaFont;
-    }
     render() {
         return (
             <KanaStatsContext.Consumer>
                 {({kanaStats, setKanaStats}) => (
                     <QuizView style={styles.container}
-                        kanaFont={this.getFont()}
                         useKanaSelection={this.state.useKanaSelection}
                         onKanaPress={this.handleAnswerSelected.bind(this, kanaStats, setKanaStats)}
                         quizOptions={this.state.quizOptions}

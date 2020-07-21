@@ -7,11 +7,13 @@ import {
 
 import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
-import { Audio } from 'expo-av';
+import playAudio from '../utils/Audio';
 import { SettingsContext }  from '../contexts/SettingsContext';
+import { KanaStatsContext } from '../contexts/KanaStatsContext';
 import { Dropdown } from 'react-native-material-dropdown';
 
 const KanaReferenceGridScreen = ({navigation}) => {
+    const { kanaStats } = useContext(KanaStatsContext);
     const getGridStateForLayout = (gridType) => {
         var gridLayout;
 
@@ -24,7 +26,12 @@ const KanaReferenceGridScreen = ({navigation}) => {
                 break;
         }
         let kanaGridState = gridLayout.map(row => row.map(kana => (
-            { kana: kana, selected: false, eng: kana === '' ? '' : Kana.KanaData[kana].eng }
+            {
+                kana: kana,
+                selected: false,
+                eng: kana === '' ? '' : Kana.KanaData[kana].eng,
+                stats: kanaStats[kana]
+            }
         )));
         return kanaGridState;
     }
@@ -33,20 +40,9 @@ const KanaReferenceGridScreen = ({navigation}) => {
     const [kanaGridState, setKanaGridState] = useState(getGridStateForLayout(kanaGridType));
     const gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({ value: gridType }));
     const { settings } = useContext(SettingsContext);
-    console.log("font:"+settings.kanaFont);
 
-    const playAudio = async (kanaKey) => {
-        const soundObject = new Audio.Sound();
-
-        try {
-            await soundObject.loadAsync(Kana.KanaData[kanaKey].audio);
-            await soundObject.playAsync();
-        } catch (error) {
-            console.log(error);
-        }
-    }
     const handleKanaPress = (kanaItem) => {
-        playAudio(kanaItem.kana);
+        playAudio(Kana.KanaData[kanaItem.kana]);
     }
     const handleDropdownChange = (value) => {
         if (kanaGridType !== value && Kana.KanaGridTypes[value]) {

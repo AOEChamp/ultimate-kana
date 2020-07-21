@@ -8,6 +8,7 @@ import KanaGridScreen from '../screens/KanaGridScreen';
 import KanaReferenceGridScreen from '../screens/KanaReferenceGridScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QuizScreen from '../screens/QuizScreen';
+import ReviewScreen from '../screens/ReviewScreen';
 import LessonSelectScreen from '../screens/LessonSelectScreen';
 import LessonScreen from '../screens/LessonScreen';
 import ReviewSelectScreen from '../screens/ReviewSelectScreen';
@@ -15,7 +16,6 @@ import ReviewSelectScreen from '../screens/ReviewSelectScreen';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   KanaGrid: KanaGridScreen,
-  QuizScreen: QuizScreen,
   LessonSelectScreen: LessonSelectScreen,
   LessonScreen: LessonScreen
 });
@@ -38,6 +38,7 @@ const ReviewStack = createStackNavigator({
   ReviewSelectScreen: ReviewSelectScreen,
   KanaGrid: KanaGridScreen,
   QuizScreen: QuizScreen,
+  ReviewScreen: ReviewScreen
 });
 
 ReviewStack.navigationOptions = {
