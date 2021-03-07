@@ -29,14 +29,7 @@ const KanaDropText = ({ width, height, style }) => {
     setInterval(draw, 30);
   };
 
-  return (
-    <WebViewCanvas
-      style={style}
-      width={width}
-      height={height}
-      onCanvasLoad={onCanvasLoad}
-    />
-  );
+  return <WebViewCanvas style={style} width={width} height={height} onCanvasLoad={onCanvasLoad} />;
 };
 
 export default KanaDropText;

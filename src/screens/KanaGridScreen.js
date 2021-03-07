@@ -16,11 +16,8 @@ export default class KanaGridScreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.props.navigation.state.params =
-      this.props.navigation.state.params || {};
-    this.kanaGridType =
-      this.props.navigation.state.params.gridType ||
-      Kana.KanaGridTypes.Hiragana;
+    this.props.navigation.state.params = this.props.navigation.state.params || {};
+    this.kanaGridType = this.props.navigation.state.params.gridType || Kana.KanaGridTypes.Hiragana;
 
     let gridLayout;
 
@@ -56,9 +53,7 @@ export default class KanaGridScreen extends React.Component {
   }
 
   toggleDakuten = () => {
-    const selected = !(
-      this.state.dakutenSelectedCount === this.dakutenList.length
-    );
+    const selected = !(this.state.dakutenSelectedCount === this.dakutenList.length);
     const dakutenSelectedCount = selected ? this.dakutenList.length : 0;
     const kanaGridState = this.selectGridWithList(this.dakutenList, selected);
 
@@ -69,9 +64,7 @@ export default class KanaGridScreen extends React.Component {
   };
 
   toggleGojuon = () => {
-    const selected = !(
-      this.state.gojuonSelectedCount === this.gojuonList.length
-    );
+    const selected = !(this.state.gojuonSelectedCount === this.gojuonList.length);
     const gojuonSelectedCount = selected ? this.gojuonList.length : 0;
     const kanaGridState = this.selectGridWithList(this.gojuonList, selected);
 
@@ -113,20 +106,16 @@ export default class KanaGridScreen extends React.Component {
     playAudio(Kana.KanaData[kanaItem.kana]);
 
     const gojuonSelectedCount =
-      this.state.gojuonSelectedCount +
-      this.getCountModifier(kanaItem, this.gojuonList);
+      this.state.gojuonSelectedCount + this.getCountModifier(kanaItem, this.gojuonList);
     const dakutenSelectedCount =
-      this.state.dakutenSelectedCount +
-      this.getCountModifier(kanaItem, this.dakutenList);
+      this.state.dakutenSelectedCount + this.getCountModifier(kanaItem, this.dakutenList);
     const yoonSelectedCount =
-      this.state.yoonSelectedCount +
-      this.getCountModifier(kanaItem, this.yoonList);
+      this.state.yoonSelectedCount + this.getCountModifier(kanaItem, this.yoonList);
 
     const kanaGridState = this.state.kanaGridState.map((row) =>
       row.map((item) => ({
         ...item,
-        selected:
-          item.kana === kanaItem.kana ? !kanaItem.selected : item.selected,
+        selected: item.kana === kanaItem.kana ? !kanaItem.selected : item.selected,
       }))
     );
 
@@ -143,8 +132,7 @@ export default class KanaGridScreen extends React.Component {
       (result, current) =>
         result.concat(
           current.reduce(
-            (result, kanaItem) =>
-              kanaItem.selected ? result.concat(kanaItem.kana) : result,
+            (result, kanaItem) => (kanaItem.selected ? result.concat(kanaItem.kana) : result),
             []
           )
         ),
@@ -188,9 +176,7 @@ export default class KanaGridScreen extends React.Component {
               All Gojūon ({this.gojuonList.length})
             </TextSwitch>
             <TextSwitch
-              value={
-                this.state.dakutenSelectedCount === this.dakutenList.length
-              }
+              value={this.state.dakutenSelectedCount === this.dakutenList.length}
               onValueChange={this.toggleDakuten}
             >
               All (Han)Dakuten ({this.dakutenList.length})

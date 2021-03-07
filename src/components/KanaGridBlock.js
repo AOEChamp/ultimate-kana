@@ -24,9 +24,7 @@ export class KanaGridBlock extends React.Component {
           this.props.style,
           styles.block,
           {
-            backgroundColor: this.props.selected
-              ? this.props.selectColor || '#00BCD4'
-              : '#ccc',
+            backgroundColor: this.props.selected ? this.props.selectColor || '#00BCD4' : '#ccc',
           },
         ]}
       >

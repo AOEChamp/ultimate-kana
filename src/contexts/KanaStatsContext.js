@@ -43,10 +43,4 @@ function initialKanaStats() {
   }, {});
 }
 
-export {
-  KanaStatsContext,
-  KanaStatsProvider,
-  initialKanaStats,
-  KanaStatsKey,
-  KanaStats,
-};
+export { KanaStatsContext, KanaStatsProvider, initialKanaStats, KanaStatsKey, KanaStats };

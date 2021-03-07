@@ -25,16 +25,12 @@ const ReviewScreen = () => {
   };
   const [currentQuizItem, setCurrentQuizItem] = useState(getRandomItem());
   const getQuizOptions = (currItem) => {
-    const quizOptions = new Array(
-      fullQuizPool.length >= 6 ? 6 : fullQuizPool.length
-    );
+    const quizOptions = new Array(fullQuizPool.length >= 6 ? 6 : fullQuizPool.length);
     quizOptions[Math.floor(Math.random() * quizOptions.length)] = currItem;
     for (let i = 0; i < quizOptions.length; i += 1) {
       while (quizOptions[i] !== currItem) {
         const randomItem =
-          Kana.KanaData[
-            fullQuizPool[Math.floor(Math.random() * fullQuizPool.length)]
-          ];
+          Kana.KanaData[fullQuizPool[Math.floor(Math.random() * fullQuizPool.length)]];
         if (randomItem !== currItem && !quizOptions.includes(randomItem)) {
           quizOptions[i] = randomItem;
           break;
@@ -43,18 +39,14 @@ const ReviewScreen = () => {
     }
     return quizOptions;
   };
-  const [currentQuizOptions, setCurrentQuizOptions] = useState(
-    getQuizOptions(currentQuizItem)
-  );
+  const [currentQuizOptions, setCurrentQuizOptions] = useState(getQuizOptions(currentQuizItem));
 
   const showNewQuizItem = () => {
     const newCurrItem = getRandomItem();
     if (currentQuizPool.length === 1) {
       setCurrentQuizPool(fullQuizPool);
     } else {
-      setCurrentQuizPool(
-        currentQuizPool.filter((kanaKey) => kanaKey !== newCurrItem.kana)
-      );
+      setCurrentQuizPool(currentQuizPool.filter((kanaKey) => kanaKey !== newCurrItem.kana));
     }
     setCurrentQuizItem(newCurrItem);
     setCurrentQuizOptions(getQuizOptions(newCurrItem));

@@ -16,11 +16,7 @@ export const RoundedButton = ({ onClick, style, title, disabled }) => (
   <RoundedButtonBase
     disabled={disabled}
     onClick={onClick}
-    style={[
-      styles.roundedButtonStyle,
-      style,
-      disabled ? { backgroundColor: '#ccc' } : {},
-    ]}
+    style={[styles.roundedButtonStyle, style, disabled ? { backgroundColor: '#ccc' } : {}]}
   >
     <Text style={styles.buttonText}>{title}</Text>
   </RoundedButtonBase>

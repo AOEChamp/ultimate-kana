@@ -13,16 +13,8 @@ import {
   initialLessionHistory,
   LessonHistoryKey,
 } from '../contexts/LessonHistoryContext';
-import {
-  SettingsProvider,
-  initialSettings,
-  SettingsKey,
-} from '../contexts/SettingsContext';
-import {
-  KanaStatsProvider,
-  initialKanaStats,
-  KanaStatsKey,
-} from '../contexts/KanaStatsContext';
+import { SettingsProvider, initialSettings, SettingsKey } from '../contexts/SettingsContext';
+import { KanaStatsProvider, initialKanaStats, KanaStatsKey } from '../contexts/KanaStatsContext';
 
 export default class HybridApp extends React.Component {
   constructor(props) {
@@ -54,12 +46,9 @@ export default class HybridApp extends React.Component {
   initialKanaStatsState = null;
 
   loadSavedStates = async () => {
-    this.initialLessionHistoryState =
-      (await getItem(LessonHistoryKey)) || initialLessionHistory();
-    this.initialSettingsState =
-      (await getItem(SettingsKey)) || initialSettings();
-    this.initialKanaStatsState =
-      (await getItem(KanaStatsKey)) || initialKanaStats();
+    this.initialLessionHistoryState = (await getItem(LessonHistoryKey)) || initialLessionHistory();
+    this.initialSettingsState = (await getItem(SettingsKey)) || initialSettings();
+    this.initialKanaStatsState = (await getItem(KanaStatsKey)) || initialKanaStats();
   };
 
   render() {

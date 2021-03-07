@@ -35,9 +35,7 @@ const KanaReferenceGridScreen = ({ navigation }) => {
   const [kanaGridType, setKanaGridType] = useState(
     navigation.state.params?.gridType || Kana.KanaGridTypes.Hiragana
   );
-  const [kanaGridState, setKanaGridState] = useState(
-    getGridStateForLayout(kanaGridType)
-  );
+  const [kanaGridState, setKanaGridState] = useState(getGridStateForLayout(kanaGridType));
   const gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({
     value: gridType,
   }));
@@ -63,10 +61,7 @@ const KanaReferenceGridScreen = ({ navigation }) => {
         containerStyle={styles.dropdownStyle}
         onChangeText={handleDropdownChange}
       />
-      <ScrollView
-        style={styles.kanaGridContainer}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
         <KanaGrid
           gridState={kanaGridState}
           kanaFont={settings.kanaFont}

@@ -24,9 +24,7 @@ export class KanaBlock extends React.Component {
           this.props.style,
           styles.block,
           {
-            backgroundColor: this.props.selected
-              ? this.props.selectColor || '#0c4'
-              : '#ccc',
+            backgroundColor: this.props.selected ? this.props.selectColor || '#0c4' : '#ccc',
           },
         ]}
       >

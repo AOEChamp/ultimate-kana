@@ -38,10 +38,7 @@ const LessonSelectScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>{lessonType} Lessons</Text>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         {lessonSet.map(({ title, subtitle, id }, i) => (
           <LessonButton
             onClick={navigateToLesson.bind(this, i)}
@@ -68,11 +65,7 @@ const LessonButton = ({ text, subtext, onClick, completed, disabled }) => (
     onClick={onClick}
     style={[
       styles.buttonStyle,
-      completed
-        ? { backgroundColor: '#009eb3' }
-        : disabled
-        ? { backgroundColor: '#ccc' }
-        : {},
+      completed ? { backgroundColor: '#009eb3' } : disabled ? { backgroundColor: '#ccc' } : {},
     ]}
   >
     <View style={styles.buttonLeft}>
@@ -88,12 +81,7 @@ const LessonButton = ({ text, subtext, onClick, completed, disabled }) => (
           color="#0f0"
         />
       )}
-      <Ionicons
-        name="ios-arrow-forward"
-        size={26}
-        style={styles.buttonIconStyle}
-        color="#fff"
-      />
+      <Ionicons name="ios-arrow-forward" size={26} style={styles.buttonIconStyle} color="#fff" />
     </View>
   </RoundedButtonBase>
 );

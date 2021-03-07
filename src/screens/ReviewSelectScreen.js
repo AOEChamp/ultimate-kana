@@ -7,16 +7,10 @@ import { RoundedButton } from '../components/RoundedButton';
 const ReviewSelectScreen = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.headerText}>Review</Text>
         <View style={styles.buttonContainer}>
-          <RoundedButton
-            onClick={() => navigation.navigate('ReviewScreen')}
-            title="Review"
-          />
+          <RoundedButton onClick={() => navigation.navigate('ReviewScreen')} title="Review" />
         </View>
         <View style={styles.hr} />
         <Text style={styles.headerText}>Custom Quiz</Text>

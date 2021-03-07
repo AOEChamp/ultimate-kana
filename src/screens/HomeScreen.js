@@ -26,10 +26,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.mainContainer}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <ScalableText style={styles.titleText}>Ultimate Kana</ScalableText>
           </View>
@@ -39,14 +36,8 @@ export default class HomeScreen extends React.Component {
           />
           <Text style={styles.headerText}>Lessons</Text>
           <View style={styles.buttonContainer}>
-            <RoundedButton
-              onClick={this.navigateToLessonSelectH}
-              title="Hiragana"
-            />
-            <RoundedButton
-              onClick={this.navigateToLessonSelectK}
-              title="Katakana"
-            />
+            <RoundedButton onClick={this.navigateToLessonSelectH} title="Hiragana" />
+            <RoundedButton onClick={this.navigateToLessonSelectK} title="Katakana" />
           </View>
         </ScrollView>
       </View>

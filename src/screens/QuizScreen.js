@@ -73,24 +73,13 @@ class QuizScreen extends React.Component {
   getNewQuizItem = () => {
     const currentQuizItem = this.pickQuizItemFromPool();
 
-    const quizOptions = new Array(
-      this.fullQuizPool.length >= 6 ? 6 : this.fullQuizPool.length
-    );
-    quizOptions[
-      Math.floor(Math.random() * quizOptions.length)
-    ] = currentQuizItem;
+    const quizOptions = new Array(this.fullQuizPool.length >= 6 ? 6 : this.fullQuizPool.length);
+    quizOptions[Math.floor(Math.random() * quizOptions.length)] = currentQuizItem;
     for (let i = 0; i < quizOptions.length; i++) {
       while (quizOptions[i] !== currentQuizItem) {
         const randomItem =
-          Kana.KanaData[
-            this.fullQuizPool[
-              Math.floor(Math.random() * this.fullQuizPool.length)
-            ]
-          ];
-        if (
-          randomItem != currentQuizItem &&
-          !quizOptions.includes(randomItem)
-        ) {
+          Kana.KanaData[this.fullQuizPool[Math.floor(Math.random() * this.fullQuizPool.length)]];
+        if (randomItem != currentQuizItem && !quizOptions.includes(randomItem)) {
           quizOptions[i] = randomItem;
           break;
         }
@@ -121,11 +110,7 @@ class QuizScreen extends React.Component {
           <QuizView
             style={styles.container}
             useKanaSelection={this.state.useKanaSelection}
-            onKanaPress={this.handleAnswerSelected.bind(
-              this,
-              kanaStats,
-              setKanaStats
-            )}
+            onKanaPress={this.handleAnswerSelected.bind(this, kanaStats, setKanaStats)}
             quizOptions={this.state.quizOptions}
             quizQuestion={this.state.currentQuizItem}
           />

@@ -26,8 +26,7 @@ export default class LessonScreen extends React.Component {
     this.lessonSteps = this.lessonItems.length * 3;
     this.currentLessonStep = 0;
     this.currentLearnedIndex = 0;
-    this.memorizeCounter =
-      this.lessonItems.length > 3 ? 1 : this.lessonItems.length - 1;
+    this.memorizeCounter = this.lessonItems.length > 3 ? 1 : this.lessonItems.length - 1;
     this.quizCounter = 1;
 
     this.state = {
@@ -50,23 +49,15 @@ export default class LessonScreen extends React.Component {
 
   getStateForQuizItem = (quizItemIndex) => {
     const currentKanaItem = Kana.KanaData[this.lessonItems[quizItemIndex]];
-    const fullQuizPool = this.shuffleArray(
-      this.lessonItems.slice(0, this.currentLearnedIndex + 1)
-    );
+    const fullQuizPool = this.shuffleArray(this.lessonItems.slice(0, this.currentLearnedIndex + 1));
     const quizOptions = new Array(6);
 
     for (var i = 0; i < quizOptions.length; i++) {
       quizOptions[i] = { ignore: true };
     }
 
-    quizOptions[
-      Math.floor(Math.random() * quizOptions.length)
-    ] = currentKanaItem;
-    for (
-      var i = 0;
-      i < Math.min(quizOptions.length - 1, fullQuizPool.length);
-      i++
-    ) {
+    quizOptions[Math.floor(Math.random() * quizOptions.length)] = currentKanaItem;
+    for (var i = 0; i < Math.min(quizOptions.length - 1, fullQuizPool.length); i++) {
       const item = Kana.KanaData[fullQuizPool[i]];
       if (item === currentKanaItem) continue;
       let j;
@@ -99,16 +90,12 @@ export default class LessonScreen extends React.Component {
     if (this.currentLessonStep === (this.lessonSteps / 3) * 2) {
       this.quizCounter = this.lessonItems.length;
       currentItemIndex = -1;
-    } else if (
-      lessonState === LessonState.MEMORIZE &&
-      this.memorizeCounter == 0
-    ) {
+    } else if (lessonState === LessonState.MEMORIZE && this.memorizeCounter == 0) {
       lessonState = LessonState.QUIZ;
       currentItemIndex -= this.quizCounter;
     } else if (lessonState == LessonState.QUIZ && this.quizCounter == 0) {
       lessonState = LessonState.MEMORIZE;
-      this.memorizeCounter +=
-        this.lessonItems.length - currentItemIndex == 4 ? 3 : 2;
+      this.memorizeCounter += this.lessonItems.length - currentItemIndex == 4 ? 3 : 2;
     }
 
     if (lessonState === LessonState.MEMORIZE) {
@@ -192,11 +179,7 @@ export default class LessonScreen extends React.Component {
           <LessonHistoryContext.Consumer>
             {({ lessonHistory, setLessonHistory }) => (
               <RoundedButton
-                onClick={this.endLesson.bind(
-                  this,
-                  lessonHistory,
-                  setLessonHistory
-                )}
+                onClick={this.endLesson.bind(this, lessonHistory, setLessonHistory)}
                 style={styles.nextButtonStyle}
                 title="Finish"
               />
@@ -246,11 +229,7 @@ export default class LessonScreen extends React.Component {
             height={20}
           />
           {__DEV__ && (
-            <RoundedButton
-              onClick={this.skipToEnd}
-              style={styles.skipBtn}
-              title="Skip"
-            />
+            <RoundedButton onClick={this.skipToEnd} style={styles.skipBtn} title="Skip" />
           )}
         </View>
         <SettingsContext.Consumer>

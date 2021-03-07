@@ -6,13 +6,7 @@ import KanaText from './KanaText';
 import { SettingsContext } from '../contexts/SettingsContext';
 import playAudio from '../utils/Audio';
 
-export const QuizView = ({
-  useKanaSelection,
-  onKanaPress,
-  quizOptions,
-  quizQuestion,
-  style,
-}) => {
+export const QuizView = ({ useKanaSelection, onKanaPress, quizOptions, quizQuestion, style }) => {
   const { settings } = useContext(SettingsContext);
 
   const getFont = () => {

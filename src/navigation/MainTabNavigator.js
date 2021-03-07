@@ -53,10 +53,7 @@ const KanaGridStack = createStackNavigator({
 KanaGridStack.navigationOptions = {
   tabBarLabel: 'Grid',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-grid' : 'md-grid'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-grid' : 'md-grid'} />
   ),
 };
 
@@ -67,10 +64,7 @@ const SettingsStack = createStackNavigator({
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
 };
 

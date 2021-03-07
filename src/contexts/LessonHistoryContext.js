@@ -15,10 +15,7 @@ const reducer = (lessonHistory, newLessonHistory) => {
 };
 
 function LessonHistoryProvider(props) {
-  const [lessonHistory, setLessonHistory] = useReducer(
-    reducer,
-    props.initialState
-  );
+  const [lessonHistory, setLessonHistory] = useReducer(reducer, props.initialState);
 
   useEffect(() => {
     setItem(LessonHistoryKey, lessonHistory);
@@ -43,9 +40,4 @@ function initialLessionHistory() {
   return hist;
 }
 
-export {
-  LessonHistoryContext,
-  LessonHistoryProvider,
-  initialLessionHistory,
-  LessonHistoryKey,
-};
+export { LessonHistoryContext, LessonHistoryProvider, initialLessionHistory, LessonHistoryKey };

@@ -505,8 +505,11 @@ export const KatakanaYoon = [
 
 class Lesson {
   id;
+
   title;
+
   subtitle;
+
   kana;
 
   constructor(id, title, subtitle, kana) {

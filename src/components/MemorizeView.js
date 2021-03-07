@@ -4,12 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import KanaText from './KanaText';
 import { RoundedButton, RoundedButtonBase } from './RoundedButton';
 
-const MemorizeView = ({
-  kanaFont,
-  currentKanaItem,
-  playCurrentSound,
-  showNextItem,
-}) => {
+const MemorizeView = ({ kanaFont, currentKanaItem, playCurrentSound, showNextItem }) => {
   return (
     <View style={styles.lessonLearnView}>
       <View style={styles.kanaDisplayContainer}>
@@ -20,18 +15,11 @@ const MemorizeView = ({
         <KanaText fontSize={100} kanaFont={kanaFont}>
           {currentKanaItem.eng}
         </KanaText>
-        <RoundedButtonBase
-          style={styles.soundButton}
-          onClick={playCurrentSound}
-        >
+        <RoundedButtonBase style={styles.soundButton} onClick={playCurrentSound}>
           <Ionicons name="md-volume-high" size={26} color="#fff" />
         </RoundedButtonBase>
       </View>
-      <RoundedButton
-        onClick={showNextItem}
-        style={styles.nextButtonStyle}
-        title="Next"
-      />
+      <RoundedButton onClick={showNextItem} style={styles.nextButtonStyle} title="Next" />
     </View>
   );
 };
