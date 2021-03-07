@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { Asset } from 'expo-asset';

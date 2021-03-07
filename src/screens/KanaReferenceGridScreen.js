@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import { KanaGrid } from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
 import playAudio from '../utils/Audio';
