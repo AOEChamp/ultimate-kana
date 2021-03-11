@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
 import { TextSwitch } from '../components/TextSwitch';
-import { KanaBlock } from '../components/KanaBlock';
+import KanaBlock from '../components/KanaBlock';
 import { FontList } from '../constants/Fonts';
 import { SettingsContext } from '../contexts/SettingsContext';
 
@@ -95,17 +95,17 @@ SettingsScreen.navigationOptions = {
 
 export default SettingsScreen;
 
-const FontSelector = (props) => (
-  <View opacity={props.disabled ? 0.5 : 1} style={styles.fontSelector}>
-    {FontList.map((fontName, i) => (
+const FontSelector = ({ disabled, selectedFont, onSelected }) => (
+  <View opacity={disabled ? 0.5 : 1} style={styles.fontSelector}>
+    {FontList.map((fontName) => (
       // <Text>{fontName}{i}</Text>
       <KanaBlock
         style={styles.kanaBlock}
-        disabled={props.disabled}
-        onPress={props.onSelected.bind(this, fontName)}
-        key={i}
+        disabled={disabled}
+        onPress={() => onSelected(fontName)}
+        key={fontName}
         kanaFont={fontName}
-        selected={props.selectedFont === fontName}
+        selected={selectedFont === fontName}
       >
         き
       </KanaBlock>
@@ -131,9 +131,6 @@ const styles = StyleSheet.create({
   },
   kanaBlock: {
     aspectRatio: 1,
-    borderRadius: 30,
-    borderWidth: 2,
-    borderColor: '#000',
   },
   switch: {
     margin: 10,

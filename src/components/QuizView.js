@@ -1,109 +1,75 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { FontList } from '../constants/Fonts';
-import { KanaBlock } from './KanaBlock';
-import KanaText from './KanaText';
+import React, { useContext, useState } from 'react';
+import { cloneDeep, shuffle } from 'lodash';
+
+import * as Kana from '../constants/Kana';
+import QuizButtons from './QuizButtons';
 import { SettingsContext } from '../contexts/SettingsContext';
-import playAudio from '../utils/Audio';
+import { KanaStatsContext } from '../contexts/KanaStatsContext';
+import { useUpdateLayoutEffect } from '../utils/updateEffects';
 
-export const QuizView = ({ useKanaSelection, onKanaPress, quizOptions, quizQuestion, style }) => {
+const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection }) => {
   const { settings } = useContext(SettingsContext);
+  const { kanaStats, setKanaStats } = useContext(KanaStatsContext);
+  const [isUIDisabled, setIsUIDisabled] = useState(false);
 
-  const getFont = () => {
-    let { kanaFont } = settings;
-    if (settings.randomizeKanaFont) {
-      const fontNames = Object.keys(FontList);
-      const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
-      kanaFont = fontNames[fontIdx];
+  const getUseKanaSelection = () => {
+    if (forceKanaSelection !== undefined) return forceKanaSelection;
+    let val = settings.enableKanaSelectionDrills;
+    if (val && settings.enableRomajiSelectionDrills) {
+      val = Math.random() >= 0.5;
     }
-    return kanaFont;
+    return val;
   };
-  const [fontName, setFontName] = useState(getFont());
 
-  useEffect(() => {
-    setFontName(getFont());
-  }, [settings]);
+  const getQuizOptions = () => {
+    const newQuizOptions = shuffle(optionsPool);
+    newQuizOptions.splice(6);
 
-  useEffect(() => {
-    if (settings.audioOnQuizDisplay) {
-      playAudio(quizQuestion);
+    if (!newQuizOptions.includes(answerItem.kana)) {
+      newQuizOptions[Math.floor(Math.random() * newQuizOptions.length)] = answerItem.kana;
     }
-  }, [quizQuestion]);
+    return newQuizOptions.map((key) => Kana.KanaData[key]);
+  };
 
-  const internalOnPress = (...props) => {
-    if (settings.audioOnQuizAnswer) {
-      playAudio(quizQuestion);
+  const [quizOptions, setQuizOptions] = useState(getQuizOptions());
+  const [useKanaSelection, setUseKanaSelection] = useState(getUseKanaSelection());
+
+  const setQuizStat = (kanaData, fail) => {
+    const newKanaStats = cloneDeep(kanaStats);
+    const stat = newKanaStats[kanaData.kana];
+    stat.totalFailures += fail ? 1 : 0;
+    stat.totalViews++;
+    if (stat.lastNAttempts.unshift(!fail) > 5) {
+      stat.lastNAttempts.pop();
     }
-    onKanaPress(...props);
+    setKanaStats(newKanaStats);
+  };
+
+  useUpdateLayoutEffect(() => {
+    setQuizOptions(getQuizOptions());
+    setUseKanaSelection(getUseKanaSelection());
+    setIsUIDisabled(false);
+  }, [answerItem]);
+
+  const onSelect = (selectedItem) => {
+    if (selectedItem.kana === answerItem.kana) {
+      setIsUIDisabled(true);
+      setQuizStat(answerItem, false);
+      onCorrectAnswer();
+    } else {
+      setQuizStat(selectedItem, true);
+    }
   };
 
   return (
-    <View style={style}>
-      <View style={styles.displayKanaView}>
-        <View style={styles.quizQuestionView}>
-          <KanaText fontSize={100} kanaFont={fontName}>
-            {useKanaSelection ? quizQuestion.eng : quizQuestion.kana}
-          </KanaText>
-        </View>
-      </View>
-      <View style={styles.quizOptionsView}>
-        <KanaQuizRow
-          kanaFont={fontName}
-          useKanaSelection={useKanaSelection}
-          onKanaPress={internalOnPress}
-          options={quizOptions.slice(0, 3)}
-        />
-        <KanaQuizRow
-          kanaFont={fontName}
-          useKanaSelection={useKanaSelection}
-          onKanaPress={internalOnPress}
-          options={quizOptions.slice(3, 6)}
-        />
-      </View>
-    </View>
+    <QuizButtons
+      useKanaSelection={useKanaSelection}
+      onSelect={onSelect}
+      quizOptions={quizOptions}
+      answerItem={answerItem}
+      disabled={isUIDisabled}
+    />
   );
 };
 
-const KanaQuizRow = (props) => (
-  <View style={styles.kanaRow}>
-    {props.options.map((kanaData, i) => (
-      <KanaBlock
-        fontSize={60}
-        style={styles.kanaBlock}
-        kanaFont={props.kanaFont}
-        onPress={props.onKanaPress.bind(this, kanaData)}
-        selectColor={kanaData.fail ? '#f00' : '#0f0'}
-        key={i}
-        selected={kanaData.fail || kanaData.success}
-      >
-        {props.useKanaSelection ? kanaData.kana : kanaData.eng}
-      </KanaBlock>
-    ))}
-  </View>
-);
-
-const styles = StyleSheet.create({
-  quizOptionsView: {
-    flex: 1,
-    width: '100%',
-  },
-  kanaRow: {
-    flex: 1,
-    flexDirection: 'row',
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  kanaBlock: {
-    aspectRatio: 1,
-    borderRadius: 30,
-    borderWidth: 2,
-    borderColor: '#000',
-  },
-  quizQuestionView: {
-    flex: 1,
-    margin: '25%',
-  },
-  displayKanaView: {
-    flex: 1,
-  },
-});
+export default QuizView;
