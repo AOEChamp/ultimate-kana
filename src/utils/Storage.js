@@ -4,7 +4,7 @@ const asyncStorageCache = {};
 
 export const getItem = async (key) => {
   let jsonObj = null;
-  if (asyncStorageCache.hasOwnProperty(key)) {
+  if (asyncStorageCache[key] !== undefined) {
     jsonObj = asyncStorageCache[key];
   } else {
     try {
