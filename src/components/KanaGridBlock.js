@@ -2,43 +2,40 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import KanaText from './KanaText';
 
-export class KanaGridBlock extends React.Component {
-  constructor(props) {
-    super(props);
-    this.toggleSelected = this.toggleSelected.bind(this);
-    this.state = {
-      selected: false,
-    };
-  }
+const KanaGridBlock = ({
+  disabled,
+  onPress,
+  selected,
+  selectColor,
+  kanaFont,
+  style,
+  kanaItem,
+  fontSize,
+}) => {
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={[
+        style,
+        styles.block,
+        {
+          backgroundColor: selected ? selectColor || '#00BCD4' : '#ccc',
+        },
+      ]}
+    >
+      <KanaText fontSize={fontSize} kanaFont={kanaFont}>
+        {kanaItem.kana}
+      </KanaText>
+      <Text>
+        {kanaItem.eng}
+        {kanaItem.stats?.totalViews}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
-  toggleSelected() {
-    this.setState({ selected: !this.state.selected });
-  }
-
-  render() {
-    return (
-      <TouchableOpacity
-        disabled={this.props.disabled}
-        onPress={this.props.onPress}
-        style={[
-          this.props.style,
-          styles.block,
-          {
-            backgroundColor: this.props.selected ? this.props.selectColor || '#00BCD4' : '#ccc',
-          },
-        ]}
-      >
-        <KanaText fontSize={this.props.fontSize} kanaFont={this.props.kanaFont}>
-          {this.props.kanaItem.kana}
-        </KanaText>
-        <Text>
-          {this.props.kanaItem.eng}
-          {this.props.kanaItem.stats?.totalViews}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-}
+export default KanaGridBlock;
 
 const styles = StyleSheet.create({
   block: {

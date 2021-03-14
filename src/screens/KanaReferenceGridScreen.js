@@ -1,26 +1,19 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
-import { KanaGrid } from '../components/KanaGrid';
+import KanaSwitchSelector from '../components/KanaSwitchSelector';
+import KanaGrid from '../components/KanaGrid';
 import * as Kana from '../constants/Kana';
 import playAudio from '../utils/Audio';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
 
-const KanaReferenceGridScreen = ({ navigation }) => {
+const KanaReferenceGridScreen = () => {
   const { kanaStats } = useContext(KanaStatsContext);
   const getGridStateForLayout = (gridType) => {
-    let gridLayout;
+    const gridLayout =
+      gridType === Kana.KanaGridTypes.Hiragana ? Kana.HiraganaGridLayout : Kana.KatakanaGridLayout;
 
-    switch (gridType) {
-      case Kana.KanaGridTypes.Hiragana:
-        gridLayout = Kana.HiraganaGridLayout;
-        break;
-      case Kana.KanaGridTypes.Katakana:
-        gridLayout = Kana.KatakanaGridLayout;
-        break;
-    }
     const kanaGridState = gridLayout.map((row) =>
       row.map((kana) => ({
         kana,
@@ -32,20 +25,15 @@ const KanaReferenceGridScreen = ({ navigation }) => {
     return kanaGridState;
   };
 
-  const [kanaGridType, setKanaGridType] = useState(
-    navigation.state.params?.gridType || Kana.KanaGridTypes.Hiragana
-  );
+  const [kanaGridType, setKanaGridType] = useState(Kana.KanaGridTypes.Hiragana);
   const [kanaGridState, setKanaGridState] = useState(getGridStateForLayout(kanaGridType));
-  const gridTypeData = Object.keys(Kana.KanaGridTypes).map((gridType) => ({
-    value: gridType,
-  }));
   const { settings } = useContext(SettingsContext);
 
   const handleKanaPress = (kanaItem) => {
     playAudio(Kana.KanaData[kanaItem.kana]);
   };
-  const handleDropdownChange = (value) => {
-    if (kanaGridType !== value && Kana.KanaGridTypes[value]) {
+  const changeGridType = (value) => {
+    if (kanaGridType !== value) {
       setKanaGridType(value);
       setKanaGridState(getGridStateForLayout(value));
     }
@@ -53,13 +41,10 @@ const KanaReferenceGridScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Dropdown
-        labelFontSize={0}
-        dropdownPosition={-2}
-        data={gridTypeData}
-        value={kanaGridType}
-        containerStyle={styles.dropdownStyle}
-        onChangeText={handleDropdownChange}
+      <KanaSwitchSelector
+        style={styles.switch}
+        initialType={kanaGridType}
+        onChange={changeGridType}
       />
       <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
         <KanaGrid
@@ -79,19 +64,19 @@ KanaReferenceGridScreen.navigationOptions = {
 export default KanaReferenceGridScreen;
 
 const styles = StyleSheet.create({
-  dropdownStyle: {
-    marginRight: 20,
-    marginLeft: 20,
+  switch: {
+    margin: 20,
   },
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 20,
   },
   kanaGridContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
   contentContainer: {
-    // paddingTop: 30,
+    // paddingTop: 10,
   },
 });

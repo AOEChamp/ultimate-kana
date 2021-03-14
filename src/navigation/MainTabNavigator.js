@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import KanaGridScreen from '../screens/KanaGridScreen';
+import KanaSelectScreen from '../screens/KanaSelectScreen';
 import KanaReferenceGridScreen from '../screens/KanaReferenceGridScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import QuizScreen from '../screens/QuizScreen';
@@ -15,7 +15,6 @@ import ReviewSelectScreen from '../screens/ReviewSelectScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
-  KanaGrid: KanaGridScreen,
   LessonSelectScreen,
   LessonScreen,
 });
@@ -36,7 +35,7 @@ HomeStack.navigationOptions = {
 
 const ReviewStack = createStackNavigator({
   ReviewSelectScreen,
-  KanaGrid: KanaGridScreen,
+  KanaSelectScreen,
   QuizScreen,
   ReviewScreen,
 });

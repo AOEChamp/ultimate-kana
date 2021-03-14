@@ -212,11 +212,6 @@ export const KanaData = {
   リョ: { kana: 'リョ', eng: 'ryo', audio: require('../assets/audio/set1/ryo.mp3') },
 };
 
-export const KanaGridTypes = Object.freeze({
-  Hiragana: 'Hiragana',
-  Katakana: 'Katakana',
-});
-
 export const HiraganaGridLayout = [
   ['あ', 'い', 'う', 'え', 'お'],
   ['か', 'き', 'く', 'け', 'こ'],
@@ -502,6 +497,26 @@ export const KatakanaYoon = [
   'リュ',
   'リョ',
 ];
+
+export const KanaGridTypes = Object.freeze({
+  Hiragana: 'Hiragana',
+  Katakana: 'Katakana',
+});
+
+export const KanaGridData = {
+  Hiragana: {
+    layout: HiraganaGridLayout,
+    gojuon: HiraganaGojuon,
+    dakuten: HiraganaDakuten,
+    yoon: HiraganaYoon,
+  },
+  Katakana: {
+    layout: KatakanaGridLayout,
+    gojuon: KatakanaGojuon,
+    dakuten: KatakanaDakuten,
+    yoon: KatakanaYoon,
+  },
+};
 
 class Lesson {
   id;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { KanaGridBlock } from './KanaGridBlock';
+import KanaGridBlock from './KanaGridBlock';
 
-export const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
+const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
   gridState.map((rowState, i) => (
     <View key={i} style={styles.kanaRow}>
       {rowState.map((item, j) =>
@@ -14,7 +14,7 @@ export const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
             style={styles.kanaBlock}
             kanaFont={kanaFont}
             fontSize={fontSize || 50}
-            onPress={onKanaPress.bind(this, item)}
+            onPress={() => onKanaPress(item)}
             key={j}
             selected={item.selected}
             kanaItem={item}
@@ -23,6 +23,8 @@ export const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
       )}
     </View>
   ));
+
+export default KanaGrid;
 
 const styles = StyleSheet.create({
   dummyBlock: {

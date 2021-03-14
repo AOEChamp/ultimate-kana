@@ -9,30 +9,20 @@ const ReviewSelectScreen = ({ navigation }) => {
     <View style={styles.mainContainer}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Text style={styles.headerText}>Review</Text>
+        <Text style={styles.subtext}>
+          You will be quizzed on kana you have learned so far. Kana that you have trouble with will
+          be shown more often.
+        </Text>
         <View style={styles.buttonContainer}>
           <RoundedButton onClick={() => navigation.navigate('ReviewScreen')} title="Review" />
         </View>
         <View style={styles.hr} />
         <Text style={styles.headerText}>Custom Quiz</Text>
-        <Text style={styles.subtext}>
-          Choose the Kana you wish to be quizzed on in the following page
-        </Text>
+        <Text style={styles.subtext}>Choose the Kana you wish to be quizzed on</Text>
         <View style={styles.buttonContainer}>
           <RoundedButton
-            title="Hiragana"
-            onClick={() =>
-              navigation.navigate('KanaGrid', {
-                gridType: KanaGridTypes.Hiragana,
-              })
-            }
-          />
-          <RoundedButton
-            title="Katakana"
-            onClick={() =>
-              navigation.navigate('KanaGrid', {
-                gridType: KanaGridTypes.Katakana,
-              })
-            }
+            title="Choose Kana"
+            onClick={() => navigation.navigate('KanaSelectScreen')}
           />
         </View>
       </ScrollView>
@@ -47,11 +37,6 @@ ReviewSelectScreen.navigationOptions = {
 export default ReviewSelectScreen;
 
 const styles = StyleSheet.create({
-  titleText: {
-    fontFamily: 'Arkipelago',
-    fontSize: 50,
-    marginTop: 20,
-  },
   headerText: {
     fontWeight: 'bold',
     fontSize: 24,
