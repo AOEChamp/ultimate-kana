@@ -5,7 +5,6 @@ import KanaSwitchSelector from '../components/KanaSwitchSelector';
 import KanaGrid from '../components/KanaGrid';
 import { TextSwitch } from '../components/TextSwitch';
 import { KanaGridData, KanaGridTypes, KanaData } from '../constants/Kana';
-import playAudio from '../utils/Audio';
 import { RoundedButton } from '../components/RoundedButton';
 import { SettingsContext } from '../contexts/SettingsContext';
 
@@ -117,8 +116,6 @@ const KanaSelectScreen = ({ navigation }) => {
   };
 
   const handleKanaPress = (kanaItem) => {
-    playAudio(KanaData[kanaItem.kana]);
-
     const gojuonSelectedCount =
       currentGridCounts.gojuonSelectedCount + changeCount(kanaItem, currentGridData.gojuon);
     const dakutenSelectedCount =
