@@ -35,6 +35,7 @@ function initialSettings() {
     audioOnQuizAnswer: true,
     kanaFont: 'System',
     randomizeKanaFont: false,
+    reviewSize: 5,
   };
 }
 
