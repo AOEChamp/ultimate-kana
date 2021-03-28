@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import KanaText from './KanaText';
+import VerticalMeter from './VerticalMeter';
 
 const KanaGridBlock = ({
   disabled,
@@ -12,6 +13,12 @@ const KanaGridBlock = ({
   kanaItem,
   fontSize,
 }) => {
+  let percentage = 0;
+  if (kanaItem.stats) {
+    percentage =
+      (kanaItem.stats.lastNAttempts.filter((x) => x).length + 1) /
+      (kanaItem.stats.lastNAttempts.length + 1);
+  }
   return (
     <TouchableOpacity
       disabled={disabled}
@@ -24,13 +31,13 @@ const KanaGridBlock = ({
         },
       ]}
     >
-      <KanaText fontSize={fontSize} kanaFont={kanaFont}>
-        {kanaItem.kana}
-      </KanaText>
-      <Text>
-        {kanaItem.eng}
-        {kanaItem.stats?.totalViews}
-      </Text>
+      {kanaItem.stats && <VerticalMeter value={percentage} />}
+      <View style={styles.column}>
+        <KanaText fontSize={fontSize} kanaFont={kanaFont}>
+          {kanaItem.kana}
+        </KanaText>
+        <Text>{kanaItem.eng}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -38,11 +45,15 @@ const KanaGridBlock = ({
 export default KanaGridBlock;
 
 const styles = StyleSheet.create({
-  block: {
+  column: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  block: {
+    flex: 1,
+    flexDirection: 'row',
     padding: 5,
     margin: 5,
   },
