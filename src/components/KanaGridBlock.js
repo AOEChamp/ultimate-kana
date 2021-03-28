@@ -12,12 +12,13 @@ const KanaGridBlock = ({
   style,
   kanaItem,
   fontSize,
+  kanaStats,
 }) => {
   let percentage = 0;
-  if (kanaItem.stats) {
+  if (kanaStats) {
+    const stats = kanaStats[kanaItem.kana];
     percentage =
-      (kanaItem.stats.lastNAttempts.filter((x) => x).length + 1) /
-      (kanaItem.stats.lastNAttempts.length + 1);
+      (stats.lastNAttempts.filter((x) => x).length + 1) / (stats.lastNAttempts.length + 1);
   }
   return (
     <TouchableOpacity
@@ -31,7 +32,7 @@ const KanaGridBlock = ({
         },
       ]}
     >
-      {kanaItem.stats && <VerticalMeter value={percentage} />}
+      {kanaStats && <VerticalMeter value={percentage} />}
       <View style={styles.column}>
         <KanaText fontSize={fontSize} kanaFont={kanaFont}>
           {kanaItem.kana}

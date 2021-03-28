@@ -3,13 +3,12 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import KanaSwitchSelector from '../components/KanaSwitchSelector';
 import KanaGrid from '../components/KanaGrid';
+import KanaDetailsModal from '../components/KanaDetailsModal';
 import * as Kana from '../constants/Kana';
 import playAudio from '../utils/Audio';
 import { SettingsContext } from '../contexts/SettingsContext';
-import { KanaStatsContext } from '../contexts/KanaStatsContext';
 
 const KanaReferenceGridScreen = () => {
-  const { kanaStats } = useContext(KanaStatsContext);
   const getGridStateForLayout = (gridType) => {
     const gridLayout =
       gridType === Kana.KanaGridTypes.Hiragana ? Kana.HiraganaGridLayout : Kana.KatakanaGridLayout;
@@ -19,7 +18,6 @@ const KanaReferenceGridScreen = () => {
         kana,
         selected: false,
         eng: kana === '' ? '' : Kana.KanaData[kana].eng,
-        stats: kanaStats[kana],
       }))
     );
     return kanaGridState;
@@ -28,15 +26,21 @@ const KanaReferenceGridScreen = () => {
   const [kanaGridType, setKanaGridType] = useState(Kana.KanaGridTypes.Hiragana);
   const [kanaGridState, setKanaGridState] = useState(() => getGridStateForLayout(kanaGridType));
   const { settings } = useContext(SettingsContext);
+  const [detailsItem, setDetailsItem] = useState(null);
 
   const handleKanaPress = (kanaItem) => {
     playAudio(Kana.KanaData[kanaItem.kana]);
+    setDetailsItem(kanaItem);
   };
   const changeGridType = (value) => {
     if (kanaGridType !== value) {
       setKanaGridType(value);
       setKanaGridState(getGridStateForLayout(value));
     }
+  };
+
+  const hideDetails = () => {
+    setDetailsItem(null);
   };
 
   return (
@@ -46,13 +50,17 @@ const KanaReferenceGridScreen = () => {
         initialType={kanaGridType}
         onChange={changeGridType}
       />
-      <ScrollView style={styles.kanaGridContainer} contentContainerStyle={styles.contentContainer}>
+      <ScrollView style={styles.kanaGridContainer} onScrollBeginDrag={hideDetails}>
         <KanaGrid
           gridState={kanaGridState}
           kanaFont={settings.kanaFont}
           onKanaPress={handleKanaPress}
+          showStats
         />
       </ScrollView>
+      {detailsItem && (
+        <KanaDetailsModal item={detailsItem} hide={hideDetails} kanaFont={settings.kanaFont} />
+      )}
     </View>
   );
 };
@@ -75,8 +83,5 @@ const styles = StyleSheet.create({
   kanaGridContainer: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  contentContainer: {
-    // paddingTop: 10,
   },
 });

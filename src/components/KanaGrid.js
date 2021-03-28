@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import KanaGridBlock from './KanaGridBlock';
+import { KanaStatsContext } from '../contexts/KanaStatsContext';
 
-const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
-  gridState.map((rowState, i) => (
+const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress, showStats }) => {
+  const { kanaStats } = useContext(KanaStatsContext);
+
+  return gridState.map((rowState, i) => (
     <View key={i} style={styles.kanaRow}>
       {rowState.map((item, j) =>
         item.kana === '' ? (
@@ -18,11 +21,13 @@ const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress }) =>
             key={j}
             selected={item.selected}
             kanaItem={item}
+            kanaStats={showStats ? kanaStats : null}
           />
         )
       )}
     </View>
   ));
+};
 
 export default KanaGrid;
 
