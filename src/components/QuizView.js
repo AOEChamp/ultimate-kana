@@ -31,8 +31,8 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
     return newQuizOptions.map((key) => Kana.KanaData[key]);
   };
 
-  const [quizOptions, setQuizOptions] = useState(getQuizOptions());
-  const [useKanaSelection, setUseKanaSelection] = useState(getUseKanaSelection());
+  const [quizOptions, setQuizOptions] = useState(getQuizOptions);
+  const [useKanaSelection, setUseKanaSelection] = useState(getUseKanaSelection);
 
   const setQuizStat = (kanaData, fail) => {
     const newKanaStats = cloneDeep(kanaStats);

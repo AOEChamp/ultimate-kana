@@ -26,7 +26,7 @@ const KanaReferenceGridScreen = () => {
   };
 
   const [kanaGridType, setKanaGridType] = useState(Kana.KanaGridTypes.Hiragana);
-  const [kanaGridState, setKanaGridState] = useState(getGridStateForLayout(kanaGridType));
+  const [kanaGridState, setKanaGridState] = useState(() => getGridStateForLayout(kanaGridType));
   const { settings } = useContext(SettingsContext);
 
   const handleKanaPress = (kanaItem) => {

@@ -11,7 +11,7 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
 
   const blankArrayFromOptions = () => quizOptions.map(() => false);
 
-  const [quizFailures, setQuizFailures] = useState(blankArrayFromOptions());
+  const [quizFailures, setQuizFailures] = useState(blankArrayFromOptions);
   const [successIndex, setSuccessIndex] = useState(-1);
 
   useUpdateLayoutEffect(() => {
@@ -28,7 +28,7 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
     }
     return kanaFont;
   };
-  const [fontName, setFontName] = useState(getFont());
+  const [fontName, setFontName] = useState(getFont);
 
   useUpdateEffect(() => {
     setFontName(getFont());

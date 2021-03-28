@@ -7,14 +7,14 @@ import { useUpdateEffect } from '../../utils/updateEffects';
 import playAudio from '../../utils/Audio';
 
 const LessonQuizView = ({ optionsPool, questionPool, onComplete, onStep = () => {} }) => {
-  const [quizItemOrder, setQuizItemOrder] = useState(shuffle(questionPool));
+  const [quizItemOrder, setQuizItemOrder] = useState(() => shuffle(questionPool));
 
   const getNextQuizAnswer = () => {
     const key = quizItemOrder[quizItemOrder.length - 1];
     return Kana.KanaData[key];
   };
 
-  const [currentAnswer, setCurrentAnswer] = useState(getNextQuizAnswer());
+  const [currentAnswer, setCurrentAnswer] = useState(getNextQuizAnswer);
 
   useUpdateEffect(() => {
     const newOrder = shuffle(questionPool);

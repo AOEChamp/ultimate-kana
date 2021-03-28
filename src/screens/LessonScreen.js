@@ -58,10 +58,12 @@ const LessonScreen = ({ navigation }) => {
     return segments;
   };
 
-  const [segments] = useState(getSegments());
+  const [segments] = useState(getSegments);
   const [segmentIndex, setSegmentIndex] = useState(0);
   const [stepCount, setStepCount] = useState(0);
-  const [totalStepCount] = useState(segments.reduce((sum, segment) => sum + segment.steps, 0));
+  const [totalStepCount] = useState(() =>
+    segments.reduce((sum, segment) => sum + segment.steps, 0)
+  );
 
   const currentSegment = segments[segmentIndex];
   const barProgress = stepCount / totalStepCount;

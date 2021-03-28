@@ -18,7 +18,7 @@ const RandomQuizView = ({ fullQuizPool }) => {
     return Kana.KanaData[key];
   };
 
-  const [currentAnswer, setCurrentAnswer] = useState(popNextQuizAnswer());
+  const [currentAnswer, setCurrentAnswer] = useState(popNextQuizAnswer);
   const nextAnserTimeoutRef = useRef(-1);
 
   useEffect(() => () => clearTimeout(nextAnserTimeoutRef.current), []);
