@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FontList } from '../constants/Fonts';
 import KanaBlock from './KanaBlock';
 import KanaText from './KanaText';
 import { SettingsContext } from '../contexts/SettingsContext';
-import playAudio from '../utils/Audio';
 import { useUpdateLayoutEffect, useUpdateEffect } from '../utils/updateEffects';
 
 const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disabled }) => {
@@ -35,17 +34,8 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
     setFontName(getFont());
   }, [settings]);
 
-  useEffect(() => {
-    if (settings.audioOnQuizDisplay) {
-      playAudio(answerItem);
-    }
-  }, [answerItem]);
-
   const internalOnPress = (index, kanaData) => {
     if (answerItem.kana === kanaData.kana) {
-      if (settings.audioOnQuizAnswer) {
-        playAudio(answerItem);
-      }
       setSuccessIndex(index);
     } else {
       const newQuizFailures = [...quizFailures];

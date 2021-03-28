@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { chunk, cloneDeep } from 'lodash';
 import ProgressBar from 'react-native-progress/Bar';
 import { RoundedButton } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
-import playAudio from '../utils/Audio';
 import LessonQuizView from '../components/lesson/LessonQuizView';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 import MemorizeView from '../components/lesson/MemorizeView';
 import LessonComplete from '../components/lesson/LessonComplete';
 
-const LESSON_STATE = {
+const SEGMENT_TYPE = {
   MEMORIZE: 1,
   QUIZ: 2,
   COMPLETE: 3,
@@ -26,43 +25,55 @@ const LessonScreen = ({ navigation }) => {
 
   const splitGroups = () => chunk(lessonItems, GROUP_SIZE);
 
-  const [groups] = useState(splitGroups());
-  const [groupIndex, setGroupIndex] = useState(0);
-  const [groupItemIndex, setGroupItemIndex] = useState(0);
-  const [groupState, setGroupState] = useState(LESSON_STATE.MEMORIZE);
+  const getSegments = () => {
+    const segments = [];
+    splitGroups().forEach((group) => {
+      group.forEach((kana) => {
+        segments.push({
+          type: SEGMENT_TYPE.MEMORIZE,
+          item: Kana.KanaData[kana],
+          steps: 1,
+        });
+      });
+
+      segments.push({
+        type: SEGMENT_TYPE.QUIZ,
+        items: group,
+        steps: group.length,
+      });
+    });
+
+    segments.push({
+      type: SEGMENT_TYPE.QUIZ,
+      items: lessonItems,
+      steps: lessonItems.length,
+    });
+
+    segments.push({
+      type: SEGMENT_TYPE.COMPLETE,
+      items: [],
+      steps: 0,
+    });
+
+    return segments;
+  };
+
+  const [segments] = useState(getSegments());
+  const [segmentIndex, setSegmentIndex] = useState(0);
   const [stepCount, setStepCount] = useState(0);
+  const [totalStepCount] = useState(segments.reduce((sum, segment) => sum + segment.steps, 0));
 
-  const currentGroup = groups[groupIndex];
-  const totalStepCount = lessonItems.length + groups.length;
+  const currentSegment = segments[segmentIndex];
   const barProgress = stepCount / totalStepCount;
-  const currentItem = Kana.KanaData[groups[groupIndex][groupItemIndex]];
 
-  useEffect(() => {
-    if (groupState === LESSON_STATE.MEMORIZE) playCurrentSound();
-  }, [groupState, groupIndex, groupItemIndex]);
-
-  const showNextItem = () => {
-    if (groupItemIndex < currentGroup.length - 1) {
-      setGroupItemIndex(groupItemIndex + 1);
-    } else if (groupState === LESSON_STATE.MEMORIZE) {
-      setGroupState(LESSON_STATE.QUIZ);
-    } else if (groupIndex < groups.length - 1) {
-      setGroupIndex(groupIndex + 1);
-      setGroupItemIndex(0);
-      setGroupState(LESSON_STATE.MEMORIZE);
-    } else {
-      setGroupState(LESSON_STATE.COMPLETE);
-    }
+  const showNextSegment = () => {
+    setSegmentIndex(segmentIndex + 1);
     setStepCount(stepCount + 1);
   };
 
-  const playCurrentSound = () => {
-    playAudio(currentItem);
-  };
-
   const skipToEnd = () => {
-    setStepCount(setStepCount);
-    setGroupState(LESSON_STATE.COMPLETE);
+    setStepCount(totalStepCount);
+    setSegmentIndex(segments.length - 1);
   };
 
   const endLesson = () => {
@@ -86,20 +97,19 @@ const LessonScreen = ({ navigation }) => {
         />
         {__DEV__ && <RoundedButton onClick={skipToEnd} style={styles.skipBtn} title="Skip" />}
       </View>
-      {groupState === LESSON_STATE.COMPLETE && <LessonComplete onFinishClick={endLesson} />}
-      {groupState === LESSON_STATE.QUIZ && (
+      {currentSegment.type === SEGMENT_TYPE.COMPLETE && (
+        <LessonComplete onFinishClick={endLesson} />
+      )}
+      {currentSegment.type === SEGMENT_TYPE.QUIZ && (
         <LessonQuizView
           optionsPool={lessonItems}
-          questionPool={groups[groupIndex]}
-          onComplete={showNextItem}
+          questionPool={currentSegment.items}
+          onComplete={showNextSegment}
+          onStep={() => setStepCount(stepCount + 1)}
         />
       )}
-      {groupState === LESSON_STATE.MEMORIZE && (
-        <MemorizeView
-          currentKanaItem={currentItem}
-          playCurrentSound={playCurrentSound}
-          showNextItem={showNextItem}
-        />
+      {currentSegment.type === SEGMENT_TYPE.MEMORIZE && (
+        <MemorizeView currentKanaItem={currentSegment.item} onComplete={showNextSegment} />
       )}
     </View>
   );

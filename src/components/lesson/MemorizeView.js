@@ -1,11 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import KanaText from '../KanaText';
 import { RoundedButton, RoundedButtonBase } from '../RoundedButton';
 import { SettingsContext } from '../../contexts/SettingsContext';
+import playAudio from '../../utils/Audio';
 
-const MemorizeView = ({ currentKanaItem, playCurrentSound, showNextItem }) => {
+const MemorizeView = ({ currentKanaItem, onComplete }) => {
+  useEffect(() => {
+    playAudio(currentKanaItem);
+  }, [currentKanaItem]);
+
   const { settings } = useContext(SettingsContext);
   return (
     <View style={styles.contentContainer}>
@@ -19,11 +24,11 @@ const MemorizeView = ({ currentKanaItem, playCurrentSound, showNextItem }) => {
           <KanaText fontSize={100} kanaFont={settings.kanaFont}>
             {currentKanaItem.eng}
           </KanaText>
-          <RoundedButtonBase style={styles.soundButton} onClick={playCurrentSound}>
+          <RoundedButtonBase style={styles.soundButton} onClick={() => playAudio(currentKanaItem)}>
             <Ionicons name="md-volume-high" size={26} color="#fff" />
           </RoundedButtonBase>
         </View>
-        <RoundedButton onClick={showNextItem} style={styles.nextButtonStyle} title="Next" />
+        <RoundedButton onClick={onComplete} style={styles.nextButtonStyle} title="Next" />
       </View>
     </View>
   );

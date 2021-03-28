@@ -4,13 +4,10 @@ import { shuffle } from 'lodash';
 import * as Kana from '../../constants/Kana';
 import QuizView from '../QuizView';
 import { useUpdateEffect } from '../../utils/updateEffects';
+import playAudio from '../../utils/Audio';
 
-const LessonQuizView = ({ optionsPool, questionPool, onComplete }) => {
+const LessonQuizView = ({ optionsPool, questionPool, onComplete, onStep = () => {} }) => {
   const [quizItemOrder, setQuizItemOrder] = useState(shuffle(questionPool));
-
-  useUpdateEffect(() => {
-    setQuizItemOrder(shuffle(questionPool));
-  }, [questionPool]);
 
   const getNextQuizAnswer = () => {
     const key = quizItemOrder[quizItemOrder.length - 1];
@@ -18,6 +15,13 @@ const LessonQuizView = ({ optionsPool, questionPool, onComplete }) => {
   };
 
   const [currentAnswer, setCurrentAnswer] = useState(getNextQuizAnswer());
+
+  useUpdateEffect(() => {
+    const newOrder = shuffle(questionPool);
+    setQuizItemOrder(newOrder);
+    const key = newOrder[newOrder.length - 1];
+    setCurrentAnswer(Kana.KanaData[key]);
+  }, [questionPool]);
 
   useLayoutEffect(
     () => setQuizItemOrder(quizItemOrder.filter((key) => key !== currentAnswer.kana)),
@@ -33,10 +37,12 @@ const LessonQuizView = ({ optionsPool, questionPool, onComplete }) => {
       onComplete();
     } else {
       setCurrentAnswer(getNextQuizAnswer());
+      onStep();
     }
   };
 
   const onCorrectAnswer = () => {
+    playAudio(currentAnswer);
     nextAnserTimeoutRef.current = setTimeout(() => showNextQuestion(), 1000);
   };
 
