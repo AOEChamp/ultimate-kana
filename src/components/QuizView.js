@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { cloneDeep, shuffle } from 'lodash';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 import * as Kana from '../constants/Kana';
 import QuizButtons from './QuizButtons';
@@ -7,10 +8,14 @@ import { SettingsContext } from '../contexts/SettingsContext';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
 import { useUpdateLayoutEffect } from '../utils/updateEffects';
 
+// Needs to be constant to prevent slow performance from re-draws
+const origin = { x: 0, y: -20 };
+
 const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection }) => {
   const { settings } = useContext(SettingsContext);
   const { kanaStats, setKanaStats } = useContext(KanaStatsContext);
   const [isUIDisabled, setIsUIDisabled] = useState(false);
+  const confettiCannon = useRef(null);
 
   const getUseKanaSelection = () => {
     if (forceKanaSelection !== undefined) return forceKanaSelection;
@@ -53,6 +58,9 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
 
   const onSelect = (selectedItem) => {
     if (selectedItem.kana === answerItem.kana) {
+      if (settings.successAnimation) {
+        confettiCannon.current.start();
+      }
       setIsUIDisabled(true);
       setQuizStat(answerItem, false);
       onCorrectAnswer();
@@ -62,13 +70,26 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
   };
 
   return (
-    <QuizButtons
-      useKanaSelection={useKanaSelection}
-      onSelect={onSelect}
-      quizOptions={quizOptions}
-      answerItem={answerItem}
-      disabled={isUIDisabled}
-    />
+    <>
+      <QuizButtons
+        useKanaSelection={useKanaSelection}
+        onSelect={onSelect}
+        quizOptions={quizOptions}
+        answerItem={answerItem}
+        disabled={isUIDisabled}
+      />
+      {settings.successAnimation && (
+        <ConfettiCannon
+          ref={confettiCannon}
+          autoStart={false}
+          count={200}
+          fadeOut
+          explosionSpeed={250}
+          fallSpeed={0}
+          origin={origin}
+        />
+      )}
+    </>
   );
 };
 

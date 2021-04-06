@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { FontList } from '../constants/Fonts';
 import KanaBlock from './KanaBlock';
 import KanaText from './KanaText';

@@ -3,8 +3,9 @@ import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
 import { TextSwitch } from '../components/TextSwitch';
 import KanaBlock from '../components/KanaBlock';
+import { RoundedButton } from '../components/RoundedButton';
 import { FontList } from '../constants/Fonts';
-import { SettingsContext } from '../contexts/SettingsContext';
+import { SettingsContext, initialSettings } from '../contexts/SettingsContext';
 
 const SettingsScreen = () => {
   const { settings, setSettings } = useContext(SettingsContext);
@@ -16,6 +17,7 @@ const SettingsScreen = () => {
       : settings.enableKanaSelectionDrills;
     setSettings(settings);
   };
+
   const toggleKanaDrill = () => {
     settings.enableKanaSelectionDrills = !settings.enableKanaSelectionDrills;
     settings.enableRomajiSelectionDrills = !settings.enableKanaSelectionDrills
@@ -23,21 +25,22 @@ const SettingsScreen = () => {
       : settings.enableRomajiSelectionDrills;
     setSettings(settings);
   };
-  const toggleAudioDisplay = () => {
-    settings.audioOnQuizDisplay = !settings.audioOnQuizDisplay;
-    setSettings(settings);
+
+  const toggleSetting = (setting) => () => {
+    const newSettings = {
+      ...settings,
+      [setting]: !settings[setting],
+    };
+    setSettings(newSettings);
   };
-  const toggleAudioAnswer = () => {
-    settings.audioOnQuizAnswer = !settings.audioOnQuizAnswer;
-    setSettings(settings);
-  };
-  const toggleRandomizeFont = () => {
-    settings.randomizeKanaFont = !settings.randomizeKanaFont;
-    setSettings(settings);
-  };
+
   const setFont = (fontName) => {
     settings.kanaFont = fontName;
     setSettings(settings);
+  };
+
+  const reset = () => {
+    setSettings(initialSettings());
   };
 
   return (
@@ -58,23 +61,30 @@ const SettingsScreen = () => {
       </TextSwitch>
       <TextSwitch
         value={settings.audioOnQuizAnswer}
-        onValueChange={toggleAudioAnswer}
+        onValueChange={toggleSetting('audioOnQuizAnswer')}
         style={styles.switch}
       >
         Play audio on selection
       </TextSwitch>
       <TextSwitch
         value={settings.audioOnQuizDisplay}
-        onValueChange={toggleAudioDisplay}
+        onValueChange={toggleSetting('audioOnQuizDisplay')}
         style={styles.switch}
       >
         Play audio on drill
+      </TextSwitch>
+      <TextSwitch
+        value={settings.successAnimation}
+        onValueChange={toggleSetting('successAnimation')}
+        style={styles.switch}
+      >
+        Confetti animation
       </TextSwitch>
       <View>
         <Text style={styles.fontLabel}>Font:</Text>
         <TextSwitch
           value={settings.randomizeKanaFont}
-          onValueChange={toggleRandomizeFont}
+          onValueChange={toggleSetting('randomizeKanaFont')}
           style={styles.switch}
         >
           Randomize font
@@ -85,6 +95,7 @@ const SettingsScreen = () => {
           onSelected={setFont}
         />
       </View>
+      <RoundedButton onClick={reset} title="Reset All" />
     </ScrollView>
   );
 };
