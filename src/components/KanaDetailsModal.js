@@ -7,10 +7,16 @@ import KanaText from './KanaText';
 const KanaDetailsModal = ({ item, hide, kanaFont }) => {
   const { kanaStats } = useContext(KanaStatsContext);
   const stats = kanaStats[item.kana];
-  const recentAcc = Math.round(
-    (stats.lastNAttempts.filter((x) => x).length / stats.lastNAttempts.length) * 100
-  );
-  const totalAcc = Math.round(((stats.totalViews - stats.totalFailures) / stats.totalViews) * 100);
+  const recentAcc =
+    stats.lastNAttempts.length === 0
+      ? 0
+      : Math.round(
+          (stats.lastNAttempts.filter((x) => x).length / stats.lastNAttempts.length) * 100
+        );
+  const totalAcc =
+    stats.totalViews === 0
+      ? 0
+      : Math.round(((stats.totalViews - stats.totalFailures) / stats.totalViews) * 100);
 
   return (
     <TouchableOpacity onPress={hide} style={styles.modalView}>
