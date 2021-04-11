@@ -1,10 +1,23 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useContext } from 'react';
+import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
 
-import { KanaGridTypes } from '../constants/Kana';
 import { RoundedButton } from '../components/RoundedButton';
+import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 
 const ReviewSelectScreen = ({ navigation }) => {
+  const { lessonHistory } = useContext(LessonHistoryContext);
+
+  const goToReviewScreen = () => {
+    if (Object.values(lessonHistory).some((lesson) => lesson.completed)) {
+      navigation.navigate('ReviewScreen');
+    } else {
+      Alert.alert(
+        'No Reviews',
+        "You don't have any reviews yet. Try completing some lessons first!",
+        [{ text: 'OK', onPress: () => {} }]
+      );
+    }
+  };
   return (
     <View style={styles.mainContainer}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -14,7 +27,7 @@ const ReviewSelectScreen = ({ navigation }) => {
           be shown more often.
         </Text>
         <View style={styles.buttonContainer}>
-          <RoundedButton onClick={() => navigation.navigate('ReviewScreen')} title="Review" />
+          <RoundedButton onClick={goToReviewScreen} title="Review" />
         </View>
         <View style={styles.hr} />
         <Text style={styles.headerText}>Custom Quiz</Text>
