@@ -22,8 +22,8 @@ class KanaStats {
 const KanaStatsContext = React.createContext();
 const KanaStatsKey = 'KanaStats';
 
-function KanaStatsProvider(props) {
-  const [kanaStats, setKanaStats] = useState(props.initialState);
+function KanaStatsProvider({ children, initialState }) {
+  const [kanaStats, setKanaStats] = useState(initialState);
 
   useEffect(() => {
     setItem(KanaStatsKey, kanaStats);
@@ -31,16 +31,18 @@ function KanaStatsProvider(props) {
 
   return (
     <KanaStatsContext.Provider value={{ kanaStats, setKanaStats }}>
-      {props.children}
+      {children}
     </KanaStatsContext.Provider>
   );
 }
 
 function initialKanaStats() {
-  return Object.keys(KanaData).reduce(function (result, key) {
+  /* eslint-disable no-param-reassign */
+  return Object.keys(KanaData).reduce((result, key) => {
     result[key] = new KanaStats(key);
     return result;
   }, {});
+  /* eslint-enable no-param-reassign */
 }
 
 export { KanaStatsContext, KanaStatsProvider, initialKanaStats, KanaStatsKey, KanaStats };
