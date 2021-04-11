@@ -23,9 +23,8 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
   const getFont = () => {
     let { kanaFont } = settings;
     if (settings.randomizeKanaFont) {
-      const fontNames = Object.keys(FontList);
-      const fontIdx = Math.floor(Math.random() * (fontNames.length - 1));
-      kanaFont = fontNames[fontIdx];
+      const fontIdx = Math.floor(Math.random() * (FontList.length - 1));
+      kanaFont = FontList[fontIdx].fontFamily;
     }
     return kanaFont;
   };

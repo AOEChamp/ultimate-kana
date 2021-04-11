@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, Platform, PlatformColor } from 'react-native';
+import { SettingsSwitch, SettingsButton } from 'react-native-settings-components';
 
-import { TextSwitch } from '../components/TextSwitch';
-import KanaBlock from '../components/KanaBlock';
-import { RoundedButton } from '../components/RoundedButton';
 import { FontList } from '../constants/Fonts';
 import { SettingsContext, initialSettings } from '../contexts/SettingsContext';
+import { KanaStatsContext, initialKanaStats } from '../contexts/KanaStatsContext';
+import { LessonHistoryContext, initialLessionHistory } from '../contexts/LessonHistoryContext';
+import SettingsSection from '../components/SettingsSection';
+import SettingsFontItem from '../components/SettingsFontItem';
 
 const SettingsScreen = () => {
   const { settings, setSettings } = useContext(SettingsContext);
+  const { setKanaStats } = useContext(KanaStatsContext);
+  const { setLessonHistory } = useContext(LessonHistoryContext);
 
   const toggleRomajiDrill = () => {
     settings.enableRomajiSelectionDrills = !settings.enableRomajiSelectionDrills;
@@ -39,63 +43,84 @@ const SettingsScreen = () => {
     setSettings(settings);
   };
 
-  const reset = () => {
+  const resetSettings = () => {
     setSettings(initialSettings());
   };
 
+  const resetHistory = () => {
+    setKanaStats(initialKanaStats());
+    setLessonHistory(initialLessionHistory());
+  };
+
+  const resetAll = () => {
+    resetSettings();
+    resetHistory();
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <TextSwitch
-        value={settings.enableRomajiSelectionDrills}
-        onValueChange={toggleRomajiDrill}
-        style={styles.switch}
-      >
-        Enable Romaji selection drills
-      </TextSwitch>
-      <TextSwitch
-        value={settings.enableKanaSelectionDrills}
-        onValueChange={toggleKanaDrill}
-        style={styles.switch}
-      >
-        Enable Kana selection drills
-      </TextSwitch>
-      <TextSwitch
-        value={settings.audioOnQuizAnswer}
-        onValueChange={toggleSetting('audioOnQuizAnswer')}
-        style={styles.switch}
-      >
-        Play audio on selection
-      </TextSwitch>
-      <TextSwitch
-        value={settings.audioOnQuizDisplay}
-        onValueChange={toggleSetting('audioOnQuizDisplay')}
-        style={styles.switch}
-      >
-        Play audio on drill
-      </TextSwitch>
-      <TextSwitch
-        value={settings.successAnimation}
-        onValueChange={toggleSetting('successAnimation')}
-        style={styles.switch}
-      >
-        Confetti animation
-      </TextSwitch>
-      <View>
-        <Text style={styles.fontLabel}>Font:</Text>
-        <TextSwitch
-          value={settings.randomizeKanaFont}
-          onValueChange={toggleSetting('randomizeKanaFont')}
-          style={styles.switch}
-        >
-          Randomize font
-        </TextSwitch>
-        <FontSelector
-          disabled={settings.randomizeKanaFont}
-          selectedFont={settings.kanaFont}
-          onSelected={setFont}
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <SettingsSection title="Review">
+        <SettingsSwitch
+          title="Romaji drills"
+          onValueChange={toggleRomajiDrill}
+          value={settings.enableRomajiSelectionDrills}
         />
-      </View>
-      <RoundedButton onClick={reset} title="Reset All" />
+        <SettingsSwitch
+          title="Kana drills"
+          onValueChange={toggleKanaDrill}
+          value={settings.enableKanaSelectionDrills}
+        />
+      </SettingsSection>
+      <SettingsSection title="Audio">
+        <SettingsSwitch
+          title="After correct answer"
+          onValueChange={toggleSetting('audioOnQuizAnswer')}
+          value={settings.audioOnQuizAnswer}
+        />
+        <SettingsSwitch
+          title="With each question"
+          onValueChange={toggleSetting('audioOnQuizDisplay')}
+          value={settings.audioOnQuizDisplay}
+        />
+      </SettingsSection>
+      <SettingsSection title="Animation">
+        <SettingsSwitch
+          title="Confetti animation"
+          onValueChange={toggleSetting('successAnimation')}
+          value={settings.successAnimation}
+        />
+      </SettingsSection>
+      <SettingsSection title="Font">
+        <SettingsSwitch
+          title="Randomize font"
+          onValueChange={toggleSetting('randomizeKanaFont')}
+          value={settings.randomizeKanaFont}
+        />
+        {!settings.randomizeKanaFont &&
+          FontList.map(({ fontFamily, name }) => (
+            <SettingsFontItem
+              key={fontFamily}
+              title={name}
+              subtitle="きふれゆ"
+              fontFamily={fontFamily}
+              checked={settings.kanaFont === fontFamily}
+              onPress={() => setFont(fontFamily)}
+            />
+          ))}
+      </SettingsSection>
+      <SettingsSection title="">
+        <SettingsButton
+          title="Reset settings"
+          onPress={resetSettings}
+          titleStyle={styles.resetButton}
+        />
+        <SettingsButton
+          title="Reset history"
+          onPress={resetHistory}
+          titleStyle={styles.resetButton}
+        />
+        <SettingsButton title="Reset all" onPress={resetAll} titleStyle={styles.resetButton} />
+      </SettingsSection>
     </ScrollView>
   );
 };
@@ -106,44 +131,22 @@ SettingsScreen.navigationOptions = {
 
 export default SettingsScreen;
 
-const FontSelector = ({ disabled, selectedFont, onSelected }) => (
-  <View opacity={disabled ? 0.5 : 1} style={styles.fontSelector}>
-    {FontList.map((fontName) => (
-      // <Text>{fontName}{i}</Text>
-      <KanaBlock
-        style={styles.kanaBlock}
-        disabled={disabled}
-        onPress={() => onSelected(fontName)}
-        key={fontName}
-        kanaFont={fontName}
-        selected={selectedFont === fontName}
-      >
-        き
-      </KanaBlock>
-    ))}
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    ...Platform.select({
+      ios: { backgroundColor: PlatformColor('secondarySystemBackground') },
+      default: { backgroundColor: '#fff' },
+    }),
+  },
+  contentContainer: {
     paddingTop: 15,
-    backgroundColor: '#fff',
+    paddingBottom: 15,
   },
-  fontLabel: {
-    marginTop: 20,
-    marginLeft: 10,
-  },
-  fontSelector: {
-    flex: 1,
-    flexDirection: 'row',
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  kanaBlock: {
-    aspectRatio: 1,
-  },
-  switch: {
-    margin: 10,
+  resetButton: {
+    ...Platform.select({
+      ios: { color: PlatformColor('systemRed') },
+      default: { backgroundColor: 'red' },
+    }),
   },
 });
