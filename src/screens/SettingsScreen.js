@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, Platform, PlatformColor } from 'react-native';
+import { ScrollView, StyleSheet, Platform, PlatformColor, Alert } from 'react-native';
 import { SettingsSwitch, SettingsButton } from 'react-native-settings-components';
 
 import { FontList } from '../constants/Fonts';
@@ -48,17 +48,51 @@ const SettingsScreen = ({ navigation }) => {
   };
 
   const resetSettings = () => {
-    setSettings(initialSettings());
+    Alert.alert(
+      'Are you sure you want to reset settings?',
+      'Settings will be reset to defaults. Your lesson history will be preserved.',
+      [
+        { text: 'Cancel', style: 'cancel', onPress: () => {} },
+        { text: 'Reset', style: 'destructive', onPress: () => setSettings(initialSettings()) },
+      ]
+    );
   };
 
   const resetHistory = () => {
-    setKanaStats(initialKanaStats());
-    setLessonHistory(initialLessionHistory());
+    Alert.alert(
+      'Are you sure you want to reset history?',
+      'Your lesson progress and stats will cleared.',
+      [
+        { text: 'Cancel', style: 'cancel', onPress: () => {} },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: () => {
+            setKanaStats(initialKanaStats());
+            setLessonHistory(initialLessionHistory());
+          },
+        },
+      ]
+    );
   };
 
   const resetAll = () => {
-    resetSettings();
-    resetHistory();
+    Alert.alert(
+      'Are you sure you want to reset all data?',
+      'Your lesson progress and stats will cleared, and all settings will revert to defaults.',
+      [
+        { text: 'Cancel', style: 'cancel', onPress: () => {} },
+        {
+          text: 'Reset',
+          style: 'destructive',
+          onPress: () => {
+            setSettings(initialSettings());
+            setKanaStats(initialKanaStats());
+            setLessonHistory(initialLessionHistory());
+          },
+        },
+      ]
+    );
   };
 
   return (
