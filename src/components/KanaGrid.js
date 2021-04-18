@@ -3,9 +3,11 @@ import { StyleSheet, View } from 'react-native';
 
 import KanaGridBlock from './KanaGridBlock';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
+import { SettingsContext } from '../contexts/SettingsContext';
 
 const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress, showStats }) => {
   const { kanaStats } = useContext(KanaStatsContext);
+  const { settings } = useContext(SettingsContext);
 
   return gridState.map((rowState, i) => (
     <View key={i} style={styles.kanaRow}>
@@ -22,6 +24,7 @@ const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress, showStats }) => 
             selected={item.selected}
             kanaItem={item}
             kanaStats={showStats ? kanaStats : null}
+            accuracySize={settings.accuracySize}
           />
         )
       )}

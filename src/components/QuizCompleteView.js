@@ -4,10 +4,11 @@ import { StackActions } from 'react-navigation';
 
 import { RoundedButton } from './RoundedButton';
 
-const QuizCompleteView = ({ navigation, quizAgain }) => {
+const QuizCompleteView = ({ navigation, accuracy, quizAgain }) => {
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.headerText}>Quiz Complete!</Text>
+      <Text style={styles.accuracyText}>Accuracy: {Math.round(accuracy)}%</Text>
       <RoundedButton
         onClick={() => navigation.dispatch(StackActions.popToTop())}
         title="Take a Break"
@@ -23,6 +24,11 @@ export default QuizCompleteView;
 const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  accuracyText: {
     fontSize: 24,
     marginBottom: 20,
     alignSelf: 'center',

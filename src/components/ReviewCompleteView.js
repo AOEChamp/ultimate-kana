@@ -4,10 +4,11 @@ import { StackActions } from 'react-navigation';
 
 import { RoundedButton } from './RoundedButton';
 
-const ReviewCompleteView = ({ navigation, reviewAgain }) => {
+const ReviewCompleteView = ({ navigation, accuracy, reviewAgain }) => {
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.headerText}>Review Complete!</Text>
+      <Text style={styles.accuracyText}>Accuracy: {Math.round(accuracy)}%</Text>
       <RoundedButton
         onClick={() => navigation.dispatch(StackActions.popToTop())}
         title="Take a Break"
@@ -22,6 +23,11 @@ export default ReviewCompleteView;
 const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
+    fontSize: 24,
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  accuracyText: {
     fontSize: 24,
     marginBottom: 20,
     alignSelf: 'center',

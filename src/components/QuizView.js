@@ -16,6 +16,8 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
   const { kanaStats, setKanaStats } = useContext(KanaStatsContext);
   const [isUIDisabled, setIsUIDisabled] = useState(false);
   const confettiCannon = useRef(null);
+  const didSetStatsRef = useRef(false);
+  const didFailQuestion = useRef(false);
 
   const getUseKanaSelection = () => {
     if (forceKanaSelection !== undefined) return forceKanaSelection;
@@ -40,17 +42,22 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
   const [useKanaSelection, setUseKanaSelection] = useState(getUseKanaSelection);
 
   const setQuizStat = (kanaData, fail) => {
-    const newKanaStats = cloneDeep(kanaStats);
-    const stat = newKanaStats[kanaData.kana];
-    stat.totalFailures += fail ? 1 : 0;
-    stat.totalViews++;
-    if (stat.lastNAttempts.unshift(!fail) > 5) {
-      stat.lastNAttempts.pop();
+    if (!didSetStatsRef.current) {
+      const newKanaStats = cloneDeep(kanaStats);
+      const stat = newKanaStats[kanaData.kana];
+      stat.totalFailures += fail ? 1 : 0;
+      stat.totalViews++;
+      if (stat.lastNAttempts.unshift(!fail) > settings.accuracySize) {
+        stat.lastNAttempts.pop();
+      }
+      setKanaStats(newKanaStats);
+      didSetStatsRef.current = true;
     }
-    setKanaStats(newKanaStats);
   };
 
   useUpdateLayoutEffect(() => {
+    didSetStatsRef.current = false;
+    didFailQuestion.current = false;
     setQuizOptions(getQuizOptions());
     setUseKanaSelection(getUseKanaSelection());
     setIsUIDisabled(false);
@@ -63,9 +70,10 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
       }
       setIsUIDisabled(true);
       setQuizStat(answerItem, false);
-      onCorrectAnswer();
+      onCorrectAnswer(didFailQuestion.current);
     } else {
-      setQuizStat(selectedItem, true);
+      didFailQuestion.current = true;
+      setQuizStat(answerItem, true);
     }
   };
 

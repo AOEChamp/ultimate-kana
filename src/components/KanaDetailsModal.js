@@ -4,19 +4,21 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
 import KanaText from './KanaText';
 
+const GRADES = ['F', 'D', 'C', 'B', 'A', 'A+'];
+
 const KanaDetailsModal = ({ item, hide, kanaFont }) => {
   const { kanaStats } = useContext(KanaStatsContext);
   const stats = kanaStats[item.kana];
+  const recentCorrectCount = stats.lastNAttempts.filter((x) => x).length;
   const recentAcc =
     stats.lastNAttempts.length === 0
       ? 0
-      : Math.round(
-          (stats.lastNAttempts.filter((x) => x).length / stats.lastNAttempts.length) * 100
-        );
+      : Math.round((recentCorrectCount / stats.lastNAttempts.length) * 100);
   const totalAcc =
     stats.totalViews === 0
       ? 0
       : Math.round(((stats.totalViews - stats.totalFailures) / stats.totalViews) * 100);
+  const grade = stats.lastNAttempts.length === 0 ? '-' : GRADES[recentCorrectCount];
 
   return (
     <TouchableOpacity onPress={hide} style={styles.modalView}>
@@ -25,6 +27,7 @@ const KanaDetailsModal = ({ item, hide, kanaFont }) => {
           {item.kana}
         </KanaText>
         <View>
+          <Text style={styles.modalText}>Grade: {grade}</Text>
           <Text style={styles.modalText}>Recent Accuracy: {recentAcc}%</Text>
           <Text style={styles.modalText}>Lifetime Accuracy: {totalAcc}%</Text>
         </View>

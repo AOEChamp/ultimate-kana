@@ -21,13 +21,17 @@ const ReviewScreen = ({ navigation }) => {
   const [fullQuizPool] = useState(getFullQuizPool);
 
   const [isComplete, setIsComplete] = useState(false);
+  const [accuracy, setAccuracy] = useState(0);
 
-  const onComplete = () => setIsComplete(true);
+  const onComplete = (failCount) => {
+    setAccuracy(((fullQuizPool.length - failCount) / fullQuizPool.length) * 100);
+    setIsComplete(true);
+  };
 
   const reviewAgain = () => setIsComplete(false);
 
   return isComplete ? (
-    <ReviewCompleteView navigation={navigation} reviewAgain={reviewAgain} />
+    <ReviewCompleteView navigation={navigation} accuracy={accuracy} reviewAgain={reviewAgain} />
   ) : (
     <RandomQuizView fullQuizPool={fullQuizPool} onRoundComplete={onComplete} />
   );

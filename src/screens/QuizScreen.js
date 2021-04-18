@@ -6,13 +6,17 @@ const QuizScreen = ({ navigation }) => {
   const fullQuizPool = navigation.state.params.kanaSet;
 
   const [isComplete, setIsComplete] = useState(false);
+  const [accuracy, setAccuracy] = useState(0);
 
-  const onComplete = () => setIsComplete(true);
+  const onComplete = (failCount) => {
+    setAccuracy(((fullQuizPool.length - failCount) / fullQuizPool.length) * 100);
+    setIsComplete(true);
+  };
 
   const quizAgain = () => setIsComplete(false);
 
   return isComplete ? (
-    <QuizCompleteView navigation={navigation} quizAgain={quizAgain} />
+    <QuizCompleteView navigation={navigation} accuracy={accuracy} quizAgain={quizAgain} />
   ) : (
     <RandomQuizView fullQuizPool={fullQuizPool} onRoundComplete={onComplete} />
   );

@@ -11,9 +11,11 @@ import { SettingsContext } from '../contexts/SettingsContext';
 const RandomQuizView = ({ fullQuizPool, onRoundComplete }) => {
   const { settings } = useContext(SettingsContext);
   const quizItemOrderRef = useRef(shuffle(fullQuizPool));
+  const failCountRef = useRef(0);
 
   const popNextQuizAnswer = () => {
     if (quizItemOrderRef.current.length === 0) {
+      failCountRef.current = 0;
       quizItemOrderRef.current = shuffle(fullQuizPool);
     }
     const key = quizItemOrderRef.current.pop();
@@ -33,13 +35,16 @@ const RandomQuizView = ({ fullQuizPool, onRoundComplete }) => {
     setCurrentAnswer(nextAnswer);
   };
 
-  const onCorrectAnswer = () => {
+  const onCorrectAnswer = (didFailQuestion) => {
     if (settings.audioOnQuizAnswer) {
       playAudio(currentAnswer);
     }
+    if (didFailQuestion) {
+      failCountRef.current++;
+    }
 
     if (quizItemOrderRef.current.length === 0 && onRoundComplete) {
-      nextAnswerTimeoutRef.current = setTimeout(() => onRoundComplete(), 1000);
+      nextAnswerTimeoutRef.current = setTimeout(() => onRoundComplete(failCountRef.current), 1000);
     } else {
       nextAnswerTimeoutRef.current = setTimeout(() => showNextQuestion(), 1000);
     }

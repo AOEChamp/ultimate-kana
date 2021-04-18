@@ -13,13 +13,13 @@ const KanaGridBlock = ({
   kanaItem,
   fontSize,
   kanaStats,
+  accuracySize,
 }) => {
   let percentage = 0;
   if (kanaStats) {
     const stats = kanaStats[kanaItem.kana];
     if (stats.lastNAttempts.length > 0) {
-      percentage =
-        (stats.lastNAttempts.filter((x) => x).length + 1) / (stats.lastNAttempts.length + 1);
+      percentage = (stats.lastNAttempts.filter((x) => x).length + 1) / (accuracySize + 1);
     }
   }
   return (
