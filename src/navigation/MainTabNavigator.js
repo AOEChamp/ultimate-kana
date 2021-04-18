@@ -12,6 +12,7 @@ import ReviewScreen from '../screens/ReviewScreen';
 import LessonSelectScreen from '../screens/LessonSelectScreen';
 import LessonScreen from '../screens/LessonScreen';
 import ReviewSelectScreen from '../screens/ReviewSelectScreen';
+import SettingsPickerScreen from '../components/settings/SettingsPickerScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -58,6 +59,7 @@ KanaGridStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
+  SettingsPickerScreen,
 });
 
 SettingsStack.navigationOptions = {

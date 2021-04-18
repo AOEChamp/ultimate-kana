@@ -6,10 +6,11 @@ import { FontList } from '../constants/Fonts';
 import { SettingsContext, initialSettings } from '../contexts/SettingsContext';
 import { KanaStatsContext, initialKanaStats } from '../contexts/KanaStatsContext';
 import { LessonHistoryContext, initialLessionHistory } from '../contexts/LessonHistoryContext';
-import SettingsSection from '../components/SettingsSection';
-import SettingsFontItem from '../components/SettingsFontItem';
+import SettingsSection from '../components/settings/SettingsSection';
+import SettingsCheckbox from '../components/settings/SettingsCheckbox';
+import SettingsPicker from '../components/settings/SettingsPicker';
 
-const SettingsScreen = () => {
+const SettingsScreen = ({ navigation }) => {
   const { settings, setSettings } = useContext(SettingsContext);
   const { setKanaStats } = useContext(KanaStatsContext);
   const { setLessonHistory } = useContext(LessonHistoryContext);
@@ -38,9 +39,12 @@ const SettingsScreen = () => {
     setSettings(newSettings);
   };
 
-  const setFont = (fontName) => {
-    settings.kanaFont = fontName;
-    setSettings(settings);
+  const setValue = (key, value) => {
+    const newSettings = {
+      ...settings,
+      [key]: value,
+    };
+    setSettings(newSettings);
   };
 
   const resetSettings = () => {
@@ -70,6 +74,19 @@ const SettingsScreen = () => {
           onValueChange={toggleKanaDrill}
           value={settings.enableKanaSelectionDrills}
         />
+        <SettingsPicker
+          title="Review batch size"
+          screenTitle="Review Batch Size"
+          value={settings.reviewSize}
+          options={[
+            { label: '5', longLabel: '5 reviews', value: 5 },
+            { label: '10', longLabel: '10 reviews', value: 10 },
+            { label: '15', longLabel: '15 reviews', value: 15 },
+            { label: '20', longLabel: '20 reviews', value: 20 },
+          ]}
+          navigation={navigation}
+          onChange={(value) => setValue('reviewSize', value)}
+        />
       </SettingsSection>
       <SettingsSection title="Audio">
         <SettingsSwitch
@@ -98,13 +115,13 @@ const SettingsScreen = () => {
         />
         {!settings.randomizeKanaFont &&
           FontList.map(({ fontFamily, name }) => (
-            <SettingsFontItem
+            <SettingsCheckbox
               key={fontFamily}
               title={name}
               subtitle="きふれゆ"
               fontFamily={fontFamily}
               checked={settings.kanaFont === fontFamily}
-              onPress={() => setFont(fontFamily)}
+              onPress={() => setValue('kanaFont', fontFamily)}
             />
           ))}
       </SettingsSection>

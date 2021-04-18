@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
-const SettingsFontItem = ({ title, subtitle, checked, fontFamily, onPress, disabled }) => (
+const SettingsCheckbox = ({ title, subtitle, checked, fontFamily, onPress, disabled }) => (
   <CheckBox
     checked={!disabled && checked}
     iconRight
@@ -22,7 +22,7 @@ const SettingsFontItem = ({ title, subtitle, checked, fontFamily, onPress, disab
   />
 );
 
-export default SettingsFontItem;
+export default SettingsCheckbox;
 
 const styles = StyleSheet.create({
   wrapper: {
