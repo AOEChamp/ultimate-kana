@@ -35,7 +35,7 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
   }, [settings]);
 
   const internalOnPress = (index, kanaData) => {
-    if (answerItem.kana === kanaData.kana) {
+    if (answerItem.eng === kanaData.eng) {
       setSuccessIndex(index);
     } else {
       const newQuizFailures = [...quizFailures];

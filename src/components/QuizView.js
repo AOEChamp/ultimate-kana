@@ -64,7 +64,7 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
   }, [answerItem]);
 
   const onSelect = (selectedItem) => {
-    if (selectedItem.kana === answerItem.kana) {
+    if (selectedItem.eng === answerItem.eng) {
       if (settings.successAnimation) {
         confettiCannon.current.start();
       }
