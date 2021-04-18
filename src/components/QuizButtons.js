@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   quizQuestionView: {
     flex: 1,
-    margin: '25%',
+    justifyContent: 'center',
   },
   displayKanaView: {
     flex: 1,
