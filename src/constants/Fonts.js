@@ -37,3 +37,5 @@ export const FontList = [
   { fontFamily: 'ShipporiMinchoB1', name: 'Shippori Mincho B1' },
   { fontFamily: 'HachiMaruPop', name: 'Hachi Maru Pop' },
 ];
+
+export const FontFamilyList = FontList.map((f) => f.fontFamily);
