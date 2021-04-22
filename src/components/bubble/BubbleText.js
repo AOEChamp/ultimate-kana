@@ -6,6 +6,7 @@ import BubbleLetter from './BubbleLetter';
 
 const GOLDEN_RATIO = 0.618033988749895;
 
+// https://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
 const generateRandomPastelColor = () => {
   const hue = Math.floor((Math.random() * 360 + GOLDEN_RATIO * 360) % 360);
   const sat = 20 + Math.floor(Math.random() * 70);
@@ -13,6 +14,7 @@ const generateRandomPastelColor = () => {
   return `hsl(${hue}, ${sat}%, ${val}%)`;
 };
 
+// Based on https://github.com/blakazulu/Ngx-Sbz-Text-Animation
 const BubbleText = memo(
   ({ maxFontSize, minFontSize, maxOffest, maxDuration, textPool, fontFamily }) => {
     const keyRef = useRef(0);

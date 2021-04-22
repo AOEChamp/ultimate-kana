@@ -3,6 +3,7 @@ import { Animated, Easing, StyleSheet } from 'react-native';
 
 const easeOut = Easing.bezier(0, 0, 0.58, 1);
 
+// Based on https://github.com/davidsansome/tsurukame/blob/master/ios/SuccessAnimation.m
 const Spark = memo(({ startX, startY, distance, radians, size, duration, color, animating }) => {
   const sizeTiming = useRef(new Animated.Value(0)).current;
   const opacityTiming = useRef(new Animated.Value(0)).current;
