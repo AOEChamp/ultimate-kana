@@ -136,7 +136,7 @@ const SettingsScreen = ({ navigation }) => {
       </SettingsSection>
       <SettingsSection title="Animation">
         <SettingsSwitch
-          title="Confetti animation"
+          title="Explosion animation"
           onValueChange={toggleSetting('successAnimation')}
           value={settings.successAnimation}
         />

@@ -1,21 +1,17 @@
 import React, { useContext, useState, useRef } from 'react';
 import { cloneDeep, shuffle } from 'lodash';
-import ConfettiCannon from 'react-native-confetti-cannon';
 
 import * as Kana from '../constants/Kana';
 import QuizButtons from './QuizButtons';
 import { SettingsContext } from '../contexts/SettingsContext';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
 import { useUpdateLayoutEffect } from '../utils/updateEffects';
-
-// Needs to be constant to prevent slow performance from re-draws
-const origin = { x: 0, y: -20 };
+import { DefaultExplosion } from './explosion/Explosion';
 
 const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection }) => {
   const { settings } = useContext(SettingsContext);
   const { kanaStats, setKanaStats } = useContext(KanaStatsContext);
   const [isUIDisabled, setIsUIDisabled] = useState(false);
-  const confettiCannon = useRef(null);
   const didSetStatsRef = useRef(false);
   const didFailQuestion = useRef(false);
 
@@ -65,9 +61,6 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
 
   const onSelect = (selectedItem) => {
     if (selectedItem.eng === answerItem.eng) {
-      if (settings.successAnimation) {
-        confettiCannon.current.start();
-      }
       setIsUIDisabled(true);
       setQuizStat(answerItem, false);
       onCorrectAnswer(didFailQuestion.current);
@@ -86,17 +79,7 @@ const QuizView = ({ optionsPool, answerItem, onCorrectAnswer, forceKanaSelection
         answerItem={answerItem}
         disabled={isUIDisabled}
       />
-      {settings.successAnimation && (
-        <ConfettiCannon
-          ref={confettiCannon}
-          autoStart={false}
-          count={200}
-          fadeOut
-          explosionSpeed={250}
-          fallSpeed={0}
-          origin={origin}
-        />
-      )}
+      {settings.successAnimation && <DefaultExplosion animating={isUIDisabled} />}
     </>
   );
 };
