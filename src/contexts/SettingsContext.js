@@ -36,6 +36,7 @@ function initialSettings() {
     kanaFont: 'System',
     randomizeKanaFont: false,
     successAnimation: true,
+    homeAnimation: true,
     reviewSize: 5,
     accuracySize: 5,
   };

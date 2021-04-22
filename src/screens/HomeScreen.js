@@ -29,14 +29,16 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <BubbleText
-          maxFontSize={40}
-          minFontSize={5}
-          maxOffest={50}
-          maxDuration={15000}
-          textPool={kanaRef.current}
-          fontFamily={settings.randomizeKanaFont ? FontFamilyList : settings.kanaFont}
-        />
+        {settings.homeAnimation && (
+          <BubbleText
+            maxFontSize={40}
+            minFontSize={5}
+            maxOffest={50}
+            maxDuration={15000}
+            textPool={kanaRef.current}
+            fontFamily={settings.randomizeKanaFont ? FontFamilyList : settings.kanaFont}
+          />
+        )}
         <View style={styles.welcomeContainer}>
           <ScalableText style={styles.titleText}>Ultimate Kana</ScalableText>
         </View>
