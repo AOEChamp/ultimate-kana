@@ -21,17 +21,8 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  ),
+  tabBarLabel: 'Learn',
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
 };
 
 const ReviewStack = createStackNavigator({
@@ -43,7 +34,7 @@ const ReviewStack = createStackNavigator({
 
 ReviewStack.navigationOptions = {
   tabBarLabel: 'Review',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-alarm" />,
 };
 
 const KanaGridStack = createStackNavigator({
@@ -64,9 +55,7 @@ const SettingsStack = createStackNavigator({
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
-  ),
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-settings" />,
 };
 
 export default createBottomTabNavigator({
