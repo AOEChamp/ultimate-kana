@@ -207,8 +207,6 @@ export default KanaSelectScreen;
 const styles = StyleSheet.create({
   switch: {
     margin: 20,
-    marginTop: 30,
-    marginBottom: 10,
   },
   container: {
     flex: 1,

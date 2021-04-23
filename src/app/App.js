@@ -1,9 +1,8 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, SafeAreaView } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
-import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts } from '../constants/Fonts';
@@ -33,17 +32,15 @@ export default class HybridApp extends React.Component {
     this.state = {
       isLoadingComplete: false,
     };
+
+    this.initialLessionHistoryState = null;
+    this.initialSettingsState = null;
+    this.initialKanaStatsState = null;
   }
 
   initAsync = async () => {
-    return Promise.all([this._loadResourcesAsync(), this.loadSavedStates()]);
+    return Promise.all([this.loadResourcesAsync(), this.loadSavedStates()]);
   };
-
-  initialLessionHistoryState = null;
-
-  initialSettingsState = null;
-
-  initialKanaStatsState = null;
 
   loadSavedStates = async () => {
     this.initialLessionHistoryState = (await getItem(LessonHistoryKey)) || initialLessionHistory();
@@ -51,36 +48,8 @@ export default class HybridApp extends React.Component {
     this.initialKanaStatsState = (await getItem(KanaStatsKey)) || initialKanaStats();
   };
 
-  render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={this.initAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    }
-    return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
-          <SettingsProvider initialState={this.initialSettingsState}>
-            <KanaStatsProvider initialState={this.initialKanaStatsState}>
-              <AppNavigator />
-            </KanaStatsProvider>
-          </SettingsProvider>
-        </LessonHistoryProvider>
-      </View>
-    );
-  }
-
-  _loadResourcesAsync = async () => {
+  loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([
-        require('../assets/images/robot-dev.png'),
-        require('../assets/images/robot-prod.png'),
-      ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Ionicons.font,
@@ -89,15 +58,40 @@ export default class HybridApp extends React.Component {
     ]);
   };
 
-  _handleLoadingError = (error) => {
+  handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
   };
 
-  _handleFinishLoading = () => {
+  handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
+
+  render() {
+    const { isLoadingComplete } = this.state;
+    if (!isLoadingComplete) {
+      return (
+        <AppLoading
+          startAsync={this.initAsync}
+          onError={this.handleLoadingError}
+          onFinish={this.handleFinishLoading}
+        />
+      );
+    }
+    return (
+      <SafeAreaView style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <LessonHistoryProvider initialState={this.initialLessionHistoryState}>
+          <SettingsProvider initialState={this.initialSettingsState}>
+            <KanaStatsProvider initialState={this.initialKanaStatsState}>
+              <AppNavigator />
+            </KanaStatsProvider>
+          </SettingsProvider>
+        </LessonHistoryProvider>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
