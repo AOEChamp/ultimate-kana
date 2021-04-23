@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import TabBarIcon from '../components/TabBarIcon';
@@ -34,7 +33,7 @@ const ReviewStack = createStackNavigator({
 
 ReviewStack.navigationOptions = {
   tabBarLabel: 'Review',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-alarm" />,
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-checkbox" />,
 };
 
 const KanaGridStack = createStackNavigator({
@@ -43,9 +42,7 @@ const KanaGridStack = createStackNavigator({
 
 KanaGridStack.navigationOptions = {
   tabBarLabel: 'Grid',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-grid' : 'md-grid'} />
-  ),
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-grid" />,
 };
 
 const SettingsStack = createStackNavigator({
