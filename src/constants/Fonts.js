@@ -23,7 +23,7 @@ export const FontList = [
       ios: 'HiraginoSans-W3',
       default: 'HiraKakuPro',
     }),
-    name: 'Hiragino Kaku Gothic Pro',
+    name: 'Hiragino Kaku Pro',
   },
   {
     fontFamily: Platform.select({

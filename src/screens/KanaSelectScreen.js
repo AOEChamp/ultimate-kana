@@ -186,7 +186,7 @@ const KanaSelectScreen = ({ navigation }) => {
           </TextSwitch>
         </View>
         <View style={styles.tabBarRightView}>
-          <Text>{totalSelectedCount} kana selected</Text>
+          <Text style={styles.selectText}>{totalSelectedCount} kana selected</Text>
           <RoundedButton
             onClick={navigateToQuiz}
             disabled={totalSelectedCount < 6}
@@ -221,6 +221,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  selectText: {
+    textAlign: 'center',
   },
   tabBarInfoContainer: {
     height: 130,
