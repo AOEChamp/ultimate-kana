@@ -138,7 +138,7 @@ const SettingsScreen = ({ navigation }) => {
         <SettingsSwitch
           title="Home screen animation"
           onValueChange={toggleSetting('homeAnimation')}
-          value={settings.successAnimation}
+          value={settings.homeAnimation}
         />
         <SettingsSwitch
           title="Explosion animation"
