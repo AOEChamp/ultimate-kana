@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Platform, ScrollView, StyleSheet, View, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import KanaSwitchSelector from '../components/KanaSwitchSelector';
 import KanaGrid from '../components/KanaGrid';
@@ -206,7 +207,7 @@ export default KanaSelectScreen;
 
 const styles = StyleSheet.create({
   switch: {
-    margin: 20,
+    margin: wp(5),
   },
   container: {
     flex: 1,

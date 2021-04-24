@@ -62,9 +62,8 @@ const styles = StyleSheet.create({
   },
   subtitleText: {
     fontSize: 16,
-    marginTop: 5,
-    marginBottom: 20,
-    marginLeft: 20,
+    marginBottom: 10,
+    marginLeft: wp(5),
   },
   container: {
     flex: 1,

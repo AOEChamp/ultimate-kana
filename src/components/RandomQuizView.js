@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { shuffle } from 'lodash';
 import { StyleSheet, View } from 'react-native';
 import ProgressBar from 'react-native-progress/Bar';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import * as Kana from '../constants/Kana';
 import QuizView from './QuizView';
@@ -76,8 +77,7 @@ export default RandomQuizView;
 
 const styles = StyleSheet.create({
   progressView: {
-    margin: 20,
-    marginTop: 40,
+    margin: wp(5),
   },
   container: {
     flex: 1,

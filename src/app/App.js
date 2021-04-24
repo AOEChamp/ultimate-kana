@@ -4,6 +4,8 @@ import AppLoading from 'expo-app-loading';
 import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import * as Font from 'expo-font';
+import Constants from 'expo-constants';
+
 import AppNavigator from '../navigation/AppNavigator';
 import { LoadFonts } from '../constants/Fonts';
 import { getItem } from '../utils/Storage';
@@ -98,5 +100,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    ...Platform.select({
+      android: { paddingTop: Constants.statusBarHeight },
+      default: {},
+    }),
   },
 });

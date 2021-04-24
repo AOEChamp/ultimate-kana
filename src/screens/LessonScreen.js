@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { chunk, cloneDeep } from 'lodash';
 import ProgressBar from 'react-native-progress/Bar';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 import { RoundedButton } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
 import LessonQuizView from '../components/lesson/LessonQuizView';
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   progressView: {
-    margin: 20,
+    margin: wp(5),
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
