@@ -1,22 +1,25 @@
 import React, { useContext, useState } from 'react';
-import { shuffle } from 'lodash';
 
 import * as Kana from '../constants/Kana';
 import RandomQuizView from '../components/RandomQuizView';
 import ReviewCompleteView from '../components/ReviewCompleteView';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
 import { SettingsContext } from '../contexts/SettingsContext';
+import { KanaStatsContext } from '../contexts/KanaStatsContext';
+import { weightedRandomSample } from '../utils/WeightedRandomSampling';
 
 const ReviewScreen = ({ navigation }) => {
   const { settings } = useContext(SettingsContext);
   const { lessonHistory } = useContext(LessonHistoryContext);
+  const { kanaStats } = useContext(KanaStatsContext);
   const getFullQuizPool = () => {
     let pool = [...Kana.HiraganaLessons, ...Kana.KatakanaLessons]
       .filter((lesson) => lessonHistory[lesson.id].completed)
-      .flatMap((lesson) => lesson.kana);
+      .flatMap((lesson) => lesson.kana)
+      .map((kana) => [kana, 1 + kanaStats[kana].lastNAttempts.filter((a) => !a).length]);
 
-    pool = shuffle(pool);
-    return pool.slice(0, Math.min(settings.reviewSize, pool.length));
+    pool = weightedRandomSample(pool, settings.reviewSize);
+    return pool;
   };
   const [fullQuizPool] = useState(getFullQuizPool);
 
