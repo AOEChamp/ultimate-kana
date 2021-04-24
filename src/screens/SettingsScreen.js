@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   resetButton: {
     ...Platform.select({
       ios: { color: PlatformColor('systemRed') },
-      default: { backgroundColor: 'red' },
+      default: { color: 'red' },
     }),
   },
 });
