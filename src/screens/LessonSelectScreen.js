@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 import { RoundedButtonBase } from '../components/RoundedButton';
 import * as Kana from '../constants/Kana';
 import { LessonHistoryContext } from '../contexts/LessonHistoryContext';
@@ -92,13 +94,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: wp(3.6),
   },
   buttonLeft: {
     marginLeft: 20,
   },
   titleText: {
     fontWeight: 'bold',
-    fontSize: 35,
+    fontSize: wp(8.5),
     marginTop: 40,
     marginLeft: 20,
   },

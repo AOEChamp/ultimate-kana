@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export const RoundedButtonBase = ({ onClick, children, style, disabled }) => (
   <TouchableOpacity
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: wp(6),
     color: '#fff',
     textAlign: 'center',
   },

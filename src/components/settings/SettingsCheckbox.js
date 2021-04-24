@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Pressable, Platform, PlatformColor } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SettingsCheckbox = ({ title, subtitle, checked, fontFamily, onPress }) => (
   <Pressable
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   kanaText: {
-    fontSize: 30,
+    fontSize: wp(7.3),
     fontWeight: 'normal',
     color: 'black',
   },

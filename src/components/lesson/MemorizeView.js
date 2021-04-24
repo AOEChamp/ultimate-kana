@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 import KanaText from '../KanaText';
 import { RoundedButton, RoundedButtonBase } from '../RoundedButton';
 import { SettingsContext } from '../../contexts/SettingsContext';
@@ -17,11 +19,11 @@ const MemorizeView = ({ currentKanaItem, onComplete }) => {
       <Text style={styles.subtitleText}>Memorize the following...</Text>
       <View style={styles.lessonLearnView}>
         <View style={styles.kanaDisplayContainer}>
-          <KanaText fontSize={150} kanaFont={settings.kanaFont}>
+          <KanaText fontSize={wp(36)} kanaFont={settings.kanaFont}>
             {currentKanaItem.kana}
           </KanaText>
 
-          <KanaText fontSize={100} kanaFont={settings.kanaFont}>
+          <KanaText fontSize={wp(24)} kanaFont={settings.kanaFont}>
             {currentKanaItem.eng}
           </KanaText>
           <RoundedButtonBase style={styles.soundButton} onClick={() => playAudio(currentKanaItem)}>

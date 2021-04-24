@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { FontList } from '../constants/Fonts';
 import KanaBlock from './KanaBlock';
@@ -49,7 +50,7 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
     <View style={styles.container}>
       <View style={styles.displayKanaView}>
         <View style={styles.quizQuestionView}>
-          <KanaText fontSize={100} kanaFont={fontName}>
+          <KanaText fontSize={wp(24)} kanaFont={fontName}>
             {useKanaSelection ? answerItem.eng : answerItem.kana}
           </KanaText>
         </View>
@@ -59,7 +60,7 @@ const QuizButtons = ({ useKanaSelection, quizOptions, answerItem, onSelect, disa
           <View key={kanaData.kana} style={styles.kanaBlock}>
             <KanaBlock
               disabled={disabled}
-              fontSize={60}
+              fontSize={wp(14.5)}
               kanaFont={fontName}
               onPress={() => internalOnPress(i, kanaData)}
               selectColor={quizFailures[i] ? '#f00' : '#0f0'}

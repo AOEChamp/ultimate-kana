@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import KanaGridBlock from './KanaGridBlock';
 import { KanaStatsContext } from '../contexts/KanaStatsContext';
 import { SettingsContext } from '../contexts/SettingsContext';
 
-const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress, showStats }) => {
+const KanaGrid = ({ gridState, kanaFont, onKanaPress, showStats }) => {
   const { kanaStats } = useContext(KanaStatsContext);
   const { settings } = useContext(SettingsContext);
 
@@ -18,7 +19,7 @@ const KanaGrid = ({ gridState, kanaFont, fontSize, onKanaPress, showStats }) => 
           <KanaGridBlock
             style={styles.kanaBlock}
             kanaFont={kanaFont}
-            fontSize={fontSize || 50}
+            fontSize={wp(12)}
             onPress={() => onKanaPress(item)}
             key={j}
             selected={item.selected}
