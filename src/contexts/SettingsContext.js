@@ -1,20 +1,13 @@
 import React, { useReducer, useEffect } from 'react';
-import { setItem } from '../utils/Storage';
+import { setItem, getItem } from '../utils/Storage';
 
 const SettingsContext = React.createContext();
 const SettingsKey = 'Settings';
 
-const reducer = (settings, newSettings) => {
-  if (newSettings === null) {
-    const tmp = initialSettings();
-    setItem(SettinsgKey, tmp);
-    return tmp;
-  }
-  return { ...settings, ...newSettings };
-};
+const reducer = (settings, newSettings) => ({ ...settings, ...newSettings });
 
-function SettingsProvider(props) {
-  const [settings, setSettings] = useReducer(reducer, props.initialState);
+function SettingsProvider({ initialState, children }) {
+  const [settings, setSettings] = useReducer(reducer, initialState);
 
   useEffect(() => {
     setItem(SettingsKey, settings);
@@ -22,7 +15,7 @@ function SettingsProvider(props) {
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>
-      {props.children}
+      {children}
     </SettingsContext.Provider>
   );
 }
@@ -42,4 +35,12 @@ function initialSettings() {
   };
 }
 
-export { SettingsContext, SettingsProvider, initialSettings, SettingsKey };
+async function loadSettings() {
+  const settings = await getItem(SettingsKey);
+  // ensures that newly added settings always exist
+  const mergedSettings = { ...initialSettings(), ...settings };
+  await setItem(SettingsKey, mergedSettings);
+  return mergedSettings;
+}
+
+export { SettingsContext, SettingsProvider, initialSettings, loadSettings };
