@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButtonStyle: {
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: wp(5),
   },
   lessonLearnView: {
     flex: 1,
